@@ -1,0 +1,88 @@
+﻿@model TimeKeeping_Demo.Models.ChinhSachNghiPhep
+
+@{
+    ViewData["Title"] = "Edit timeoff policy " + Model.MaChinhSachNghiPhep;
+}
+
+<h4>Edit timeoff policy @Model.MaChinhSachNghiPhep</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="MaChinhSachNghiPhep" />
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="TenChinhSach" class="control-label h5 text-secondary"></label>
+				</div>
+				<div class="col-5">
+					<input asp-for="TenChinhSach" class="form-control" />
+					<span asp-validation-for="TenChinhSach" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="MaLoaiChinhSach" class="control-label h5 text-secondary"></label>
+				</div>
+				<div class="col-5">
+					<select asp-for="MaLoaiChinhSach" class="form-control" asp-items="ViewBag.typeOfPolicyID"></select>
+					<span asp-validation-for="MaLoaiChinhSach" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="SoLuongPhepChuanNam" class="control-label h5 text-secondary"></label>
+				</div>
+				<div class="col-5">
+					<input asp-for="SoLuongPhepChuanNam" class="form-control" />
+					<span asp-validation-for="SoLuongPhepChuanNam" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="SoLuongPhepTon" class="control-label h5 text-secondary"></label>
+				</div>
+				<div class="col-5">
+					<input asp-for="SoLuongPhepTon" class="form-control" />
+					<span asp-validation-for="SoLuongPhepTon" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="MoTa" class="control-label h5 text-secondary"></label>
+				</div>
+				<div class="col-5">
+					<input asp-for="MoTa" class="form-control" />
+					<span asp-validation-for="MoTa" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-4">
+					<label asp-for="Xoa" class="control-label h5 text-secondary"></label>
+				</div>
+				<div class="col-5">
+					@*<input asp-for="Xoa" class="form-control" />*@
+					<select asp-for="Xoa" class="form-control" asp-items="ViewBag.DeleteSate">
+					</select>
+					<span asp-validation-for="Xoa" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-1">
+					<input type="submit" value="Save" class="btn btn-outline-primary" />
+				</div>
+				<div>
+					<input type="reset" value="Reset" class="btn btn-outline-info" />
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to list</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
