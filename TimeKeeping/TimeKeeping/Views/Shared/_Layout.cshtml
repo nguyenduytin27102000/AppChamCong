@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - QuanLyChamCong_Demo</title>
+	<title>@ViewData["Title"] - Timekeeping</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" />
 
@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuanLyChamCong_Demo</a>
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Timekeeping</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,13 +30,7 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="TimeoffPolicies" asp-action="Index">Timeoff Policy</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="SeniorityPolicies" asp-action="Index">Seniority Policy</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="PolicyTypes" asp-action="Index">Policy type</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="ApplySeniorityPolicies" asp-action="Index">Apply Seniority Policies</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Personnels" asp-action="Index">Personnel</a>
 						</li>
 					</ul>
                 </div>
@@ -50,9 +44,9 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - QuanLyChamCong_Demo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+		<div class="container">
+			&copy; 2021 - Timekeeping - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

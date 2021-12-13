@@ -22,7 +22,7 @@ namespace TimeKeeping
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<TimekeepingContext>(options =>
+            services.AddDbContext<TimeKeepingDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 

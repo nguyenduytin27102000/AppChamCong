@@ -8,27 +8,27 @@ using TimeKeeping.Models;
 
 namespace TimeKeeping.Controllers
 {
-    public class TimeoffPoliciesController : Controller
+    public class TimeOffPoliciesController : Controller
     {
-        private readonly TimekeepingContext _context;
+        private readonly TimeKeepingDBContext _context;
 
-        public TimeoffPoliciesController(TimekeepingContext context)
+        public TimeOffPoliciesController(TimeKeepingDBContext context)
         {
             _context = context;
         }
 
-        // GET: TimeoffPolicys
+        // GET: TimeOffPolicies
         public async Task<IActionResult> Index()
         {
             // Get list timeoff policy in database for display.
-            var timekeepingContext = _context.ChinhSachNghiPheps.Include(c => c.MaLoaiChinhSachNavigation);
+            var timeKeepingDBContext = _context.TimeOffPolicies.Include(t => t.TypePolicy);
 
             // Pass arguments for index view.
             // After that index will display data.
-            return View(await timekeepingContext.ToListAsync());
+            return View(await timeKeepingDBContext.ToListAsync());
         }
 
-        // GET: TimeoffPolicys/Details/5
+        // GET: TimeOffPolicies/Details/5
         public async Task<IActionResult> Details(string id)
         {
             // If id doen't exist display not found.
@@ -38,43 +38,43 @@ namespace TimeKeeping.Controllers
             }
 
             // Uses the FirstOrDefaultAsync method to retrieve a single TimeoffPolicy entity.
-            // Include methods cause the context to load the ChinhSachNghiPheps. LoaiChinhSach property.
-            var timeoffPolicys = await _context.ChinhSachNghiPheps
-                .Include(c => c.MaLoaiChinhSachNavigation)
-                .FirstOrDefaultAsync(m => m.MaChinhSachNghiPhep == id);
+            // Include methods cause the context to load the TimeOffPolicies.TimeOffPolicyId property.
+            var timeOffPolicy = await _context.TimeOffPolicies
+                .Include(t => t.TypePolicy)
+                .FirstOrDefaultAsync(m => m.TimeOffPolicyId == id);
 
             // If this timeoff policy doesn't exist display not found.
-            if (timeoffPolicys == null)
+            if (timeOffPolicy == null)
             {
                 return NotFound();
             }
 
             // Pass argument for detail view.
-            return View(timeoffPolicys);
+            return View(timeOffPolicy);
         }
 
-        // GET: TimeoffPolicys/Create
+        // GET: TimeOffPolicies/Create
         public IActionResult Create()
         {
             // Save a list type of policy through ViewData
             // then use for create view.
-            ViewData["TypeOfPolicyID"] = new SelectList(_context.LoaiChinhSaches, "MaLoaiChinhSach", "TenLoaiChinhSach");
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName");
             return View();
         }
 
-        // POST: TimeoffPolicys/Create
+        // POST: TimeOffPolicies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaChinhSachNghiPhep,TenChinhSach,MaLoaiChinhSach,SoLuongPhepChuanNam,SoLuongPhepTon,MoTa,Xoa")] ChinhSachNghiPhep timeOffPolicy)
+        public async Task<IActionResult> Create([Bind("TimeOffPolicyId,TimeOffPolicyName,TypePolicyId,NumberOfDaysOffStandard,NumberOfDaysOffLastYear,Describe,Del")] TimeOffPolicy timeOffPolicy)
         {
-            var listTimeoffPolicys = _context.ChinhSachNghiPheps.ToList();
+            var listTimeoffPolicies = _context.TimeOffPolicies.ToList();
 
             // If Id is exict in database, then alert.
-            foreach (var oldTimeOffPolics in listTimeoffPolicys)
+            foreach (var oldTimeOffPolicy in listTimeoffPolicies)
             {
-                if (timeOffPolicy.MaChinhSachNghiPhep == oldTimeOffPolics.MaChinhSachNghiPhep)
+                if (timeOffPolicy.TimeOffPolicyId == oldTimeOffPolicy.TimeOffPolicyId)
                 {
                     ModelState.AddModelError("", "This ID is exict in list!");
                     break;
@@ -87,20 +87,13 @@ namespace TimeKeeping.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeOfPolicyID"] = new SelectList(_context.LoaiChinhSaches, "MaLoaiChinhSach", "MaLoaiChinhSach", timeOffPolicy.MaLoaiChinhSach);
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
             return View(timeOffPolicy);
         }
 
-        // GET: TimeoffPolicys/Edit/5
+        // GET: TimeOffPolicies/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            // List state of timeoff policy.
-            var deleteSate = new Dictionary<bool, string>()
-            {
-                {true, "Using" },
-                {false, "Don't use"}
-            };
-
             // If this id doesn't exict, display not found.
             if (id == null)
             {
@@ -108,32 +101,38 @@ namespace TimeKeeping.Controllers
             }
 
             // Find a timeoff policy in data.
-            var timeOffPolicy = await _context.ChinhSachNghiPheps.FindAsync(id);
+            var timeOffPolicy = await _context.TimeOffPolicies.FindAsync(id);
 
-            // If this policy don't exict, then display not found.
+            // If this policy doesn't exict, then display not found.
             if (timeOffPolicy == null)
             {
                 return NotFound();
             }
-            
+
             // Save list typeOfPolicyID though ViewData use for view.
-            ViewData["typeOfPolicyID"] = new SelectList(_context.LoaiChinhSaches, "MaLoaiChinhSach", "TenLoaiChinhSach", timeOffPolicy.MaLoaiChinhSach);
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyId", timeOffPolicy.TypePolicyId);
+
+            // List state of timeoff policy.
+            var deleteSate = new Dictionary<bool, string>()
+            {
+                {true, "Using" },
+                {false, "Don't use"}
+            };
 
             // Use ViewBag save list of delete state use for view.
             ViewBag.DeleteSate = new SelectList(deleteSate, "Key", "Value");
-
             return View(timeOffPolicy);
         }
 
-        // POST: TimeoffPolicys/Edit/5
+        // POST: TimeOffPolicies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MaChinhSachNghiPhep,TenChinhSach,MaLoaiChinhSach,SoLuongPhepChuanNam,SoLuongPhepTon,MoTa,Xoa")] ChinhSachNghiPhep timeOffPolicy)
+        public async Task<IActionResult> Edit(string id, [Bind("TimeOffPolicyId,TimeOffPolicyName,TypePolicyId,NumberOfDaysOffStandard,NumberOfDaysOffLastYear,Describe,Del")] TimeOffPolicy timeOffPolicy)
         {
             // If this time off policy doesn't exict, then display not found.
-            if (id != timeOffPolicy.MaChinhSachNghiPhep)
+            if (id != timeOffPolicy.TimeOffPolicyId)
             {
                 return NotFound();
             }
@@ -148,7 +147,7 @@ namespace TimeKeeping.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ChinhSachNghiPhepExists(timeOffPolicy.MaChinhSachNghiPhep))
+                    if (!TimeOffPolicyExists(timeOffPolicy.TimeOffPolicyId))
                     {
                         return NotFound();
                     }
@@ -159,11 +158,11 @@ namespace TimeKeeping.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeOfPolicyID"] = new SelectList(_context.LoaiChinhSaches, "MaLoaiChinhSach", "MaLoaiChinhSach", timeOffPolicy.MaLoaiChinhSach);
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyId", timeOffPolicy.TypePolicyId);
             return View(timeOffPolicy);
         }
 
-        // GET: TimeoffPolicys/Delete/5
+        // GET: TimeOffPolicies/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             // If this id doesn't exict, then display not found.
@@ -172,9 +171,9 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            var timeOffPolicy = await _context.ChinhSachNghiPheps
-                .Include(c => c.MaLoaiChinhSachNavigation)
-                .FirstOrDefaultAsync(m => m.MaChinhSachNghiPhep == id);
+            var timeOffPolicy = await _context.TimeOffPolicies
+                .Include(t => t.TypePolicy)
+                .FirstOrDefaultAsync(m => m.TimeOffPolicyId == id);
 
             // If this timeoff policy doesn't exict, then display not found.
             if (timeOffPolicy == null)
@@ -186,20 +185,20 @@ namespace TimeKeeping.Controllers
             return View(timeOffPolicy);
         }
 
-        // POST: TimeoffPolicys/Delete/5
+        // POST: TimeOffPolicies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var timeOffPolicy = await _context.ChinhSachNghiPheps.FindAsync(id);
-            _context.ChinhSachNghiPheps.Remove(timeOffPolicy);
+            var timeOffPolicy = await _context.TimeOffPolicies.FindAsync(id);
+            _context.TimeOffPolicies.Remove(timeOffPolicy);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ChinhSachNghiPhepExists(string id)
+        private bool TimeOffPolicyExists(string id)
         {
-            return _context.ChinhSachNghiPheps.Any(e => e.MaChinhSachNghiPhep == id);
+            return _context.TimeOffPolicies.Any(e => e.TimeOffPolicyId == id);
         }
     }
 }
