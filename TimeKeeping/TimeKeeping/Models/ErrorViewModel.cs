@@ -1,3 +1,5 @@
+using System;
+
 namespace TimeKeeping.Models
 {
     public class ErrorViewModel

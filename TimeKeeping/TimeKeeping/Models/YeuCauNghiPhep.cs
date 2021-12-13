@@ -22,10 +22,10 @@ namespace TimeKeeping.Models
         public string CacCongViecBanGiao { get; set; }
         public string MaNguoiQuanLy { get; set; }
         public string TaiLieuDinhKem { get; set; }
-        public DateTime NgayTao { get; set; }
-        public string TrangThai { get; set; }
-        public string PhanHoi { get; set; }
-        public bool? Xoa { get; set; }
+        public DateTime NgayTao { get; set; } = DateTime.Now;
+        public string TrangThai { get; set; } = string.Empty;
+        public string PhanHoi { get; set; } = string.Empty;
+        public bool? Xoa { get; set; } = false;
 
         public virtual MauNghiPhep MaMauNghiPhepNavigation { get; set; }
         public virtual NhanSu MaNguoiQuanLyNavigation { get; set; }

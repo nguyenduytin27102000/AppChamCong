@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -12,13 +12,8 @@ namespace TimeKeeping.Models
             ChinhSachNghiPheps = new HashSet<ChinhSachNghiPhep>();
         }
 
-        [Display(Name = "Policy ID")]
         public string MaLoaiChinhSach { get; set; }
-
-        [Display(Name = "Policy name")]
         public string TenLoaiChinhSach { get; set; }
-
-        [Display(Name = "Delete State")]
         public bool? Xoa { get; set; }
 
         public virtual ICollection<ChinhSachNghiPhep> ChinhSachNghiPheps { get; set; }
