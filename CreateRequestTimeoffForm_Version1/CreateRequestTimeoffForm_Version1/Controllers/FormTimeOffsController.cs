@@ -12,9 +12,9 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
 {
     public class FormTimeOffsController : Controller
     {
-        private readonly TimeKeepingDBContext _context=new TimeKeepingDBContext();
+        private readonly TimeKeepingDBContext _context = new TimeKeepingDBContext();
 
-       
+
         // GET: FormTimeOffs
         public async Task<IActionResult> Index()
         {
@@ -26,12 +26,12 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
 
         // GET: FormTimeOffs/AddOrEdit
         [NoDirectAccess]
-        public async Task<IActionResult> AddOrEdit(string id=null)
+        public async Task<IActionResult> AddOrEdit(string id = null)
         {
-            if(id==null)
+            if (id == null)
             {
-                ViewData["ApprovalProcessId"] = new SelectList(_context.ApprovalProcesses, "ApprovalProcessId", "ApprovalProcessId");
-                ViewData["TypeTimeOffId"] = new SelectList(_context.TypeTimeOffs, "TypeTimeOffId", "TypeTimeOffId");
+                ViewData["ApprovalProcessName"] = new SelectList(_context.ApprovalProcesses, "ApprovalProcessId", "ApprovalProcessName");
+                ViewData["TypeTimeOffName"] = new SelectList(_context.TypeTimeOffs, "TypeTimeOffId", "TypeTimeOffName");
                 return View(new FormTimeOff());
             }
             else
@@ -41,8 +41,8 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
                 {
                     return NotFound();
                 }
-                ViewData["ApprovalProcessId"] = new SelectList(_context.ApprovalProcesses, "ApprovalProcessId", "ApprovalProcessId", formTimeOff.ApprovalProcessId);
-                ViewData["TypeTimeOffId"] = new SelectList(_context.TypeTimeOffs, "TypeTimeOffId", "TypeTimeOffId", formTimeOff.TypeTimeOffId);
+                ViewData["ApprovalProcessName"] = new SelectList(_context.ApprovalProcesses, "ApprovalProcessId", "ApprovalProcessName", formTimeOff.ApprovalProcessId);
+                ViewData["TypeTimeOffName"] = new SelectList(_context.TypeTimeOffs, "TypeTimeOffId", "TypeTimeOffName", formTimeOff.TypeTimeOffId);
                 return View(formTimeOff);
             }
         }
@@ -56,7 +56,7 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(id==null)
+                if (id == null)
                 {
                     _context.Add(formTimeOff);
                     await _context.SaveChangesAsync();
@@ -83,8 +83,8 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
 
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.FormTimeOffs.ToList()) });
             }
-            ViewData["ApprovalProcessId"] = new SelectList(_context.ApprovalProcesses, "ApprovalProcessId", "ApprovalProcessId", formTimeOff.ApprovalProcessId);
-            ViewData["TypeTimeOffId"] = new SelectList(_context.TypeTimeOffs, "TypeTimeOffId", "TypeTimeOffId", formTimeOff.TypeTimeOffId);
+            ViewData["ApprovalProcessName"] = new SelectList(_context.ApprovalProcesses, "ApprovalProcessId", "ApprovalProcessName", formTimeOff.ApprovalProcessId);
+            ViewData["TypeTimeOffName"] = new SelectList(_context.TypeTimeOffs, "TypeTimeOffId", "TypeTimeOffName", formTimeOff.TypeTimeOffId);
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", formTimeOff) });
         }
 
