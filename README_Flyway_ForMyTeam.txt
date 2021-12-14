@@ -5,4 +5,4 @@
 4. You must change SQL Login Authen in SSMS
 5. Before migrate. run this command "flyway baseline"
 6. then command "flyway migrate"
-Inbox to me if you get troubles
+Inbox to me if you get troubles.
