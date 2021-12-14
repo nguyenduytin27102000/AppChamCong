@@ -49,7 +49,6 @@ namespace TimeKeeping.Controllers
             //HttpContext.Session.SetString("userId", "1");
             YeuCauNghiPhep yeuCauNghiPhep = _mapper.Map<YeuCauNghiPhep>(timeOffRequestModel);
 
-            // thiết lập id (tạm thời lấy bằng Guild)
             yeuCauNghiPhep.MaYeuCauNghiPhep = _identityFactory.GenerateId(_context.YeuCauNghiPheps.Max(m => m.MaYeuCauNghiPhep), "NS");
             yeuCauNghiPhep.MaNhanSu = "1";// lấy thông tin bằng Session
             yeuCauNghiPhep.TrangThai = "Pending";
@@ -70,18 +69,21 @@ namespace TimeKeeping.Controllers
 
             var offDates = new List<NgayNghiPhep>();
             var shifts = new List<CaNghiPhep>();
-
+            var dayoffCurrentId = _context.NgayNghiPheps.Max(m => m.MaNgayNghiPhep);
 
             for (int i = 1; i <= dateOffCount; i++)
             {
                 var date = DateTime.Parse(formData[$"Date{i}"]);
+                
                 NgayNghiPhep ngayNghiPhep = new NgayNghiPhep()
                 {
-                    MaNgayNghiPhep = _identityFactory.GenerateId(_context.NgayNghiPheps.Max(m => m.MaNgayNghiPhep), "NP"),
+                    MaNgayNghiPhep = _identityFactory.GenerateId(dayoffCurrentId, "NP"),
                     MaYeuCauNghiPhep = yeuCauNghiPhep.MaYeuCauNghiPhep,
                     NgayNghi = date,
                     Xoa = false
                 };
+
+                dayoffCurrentId = ngayNghiPhep.MaNgayNghiPhep;
 
                 // get shift id array
                 var shiftIds = formData[$"DateShitfId{i}"];
@@ -101,18 +103,19 @@ namespace TimeKeeping.Controllers
             }
 
 
-            _context.YeuCauNghiPheps.Add(yeuCauNghiPhep);
-            _context.NgayNghiPheps.AddRange(offDates);
-            _context.CaNghiPheps.AddRange(shifts);
+            var t1 = _context.YeuCauNghiPheps.AddRangeAsync(yeuCauNghiPhep);
+            var t2 = _context.NgayNghiPheps.AddRangeAsync(offDates);
+            var t3 = _context.CaNghiPheps.AddRangeAsync(shifts);
             try
             {
-                await _context.SaveChangesAsync(true);
-                ViewBag.message = "Tạo yêu cầu nghỉ phép thành công";
+                await Task.WhenAll(t1, t2, t3);
+                _context.SaveChanges(true);
+                ViewBag.message = "You have successfully sent time off request";
                 ViewBag.status = "success";
             }
             catch (Exception ex)
             {
-                ViewBag.message = $"Đã có lỗi xảy ra: {ex.Message}";
+                ViewBag.message = $"Sorry, an error occurred: {ex.Message}";
                 ViewBag.status = "danger";
             }
 

@@ -2,17 +2,17 @@
     const formRules = {};
     const validatorMethods = {
         required: function(value){
-            return value ? undefined : 'không để trống trường này';
+            return value ? undefined : 'Blanks are not allowed';
         },
         minLength: function(minLength){
             return function(value){
-                return value.length >= minLength ? undefined : `số kí tự phải lớn ${minLength} kí tự`;
+                return value.length >= minLength ? undefined : `Must not be less than ${minLength} characters`;
             }
         },
         boxChecked: function(name){
             const boxes = document.querySelectorAll(`input[name="${name}"]:checked`);
             console.log(boxes.length);
-            return boxes.length > 0 ? undefined : 'phải chọn ít nhất 1 ca';
+            return boxes.length > 0 ? undefined : 'You must choose at least one';
         },
         uniqueDate: function(value){
             const dateInputs = document.querySelectorAll('input[type="date"]');
@@ -24,7 +24,7 @@
                     result = true;
                 }
             });
-            return result ? 'không được chọn nghỉ trùng ngày' : undefined;
+            return result ? 'Selected date already exists' : undefined;
         }
     }
     const formElement = document.querySelector(formSelector);
