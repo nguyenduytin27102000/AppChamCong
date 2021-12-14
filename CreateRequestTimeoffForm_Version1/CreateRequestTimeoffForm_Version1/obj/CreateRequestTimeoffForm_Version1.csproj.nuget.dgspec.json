@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj": {}
+    "C:\\Users\\DELL\\Desktop\\Internship\\Trainning2021\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj": {}
   },
   "projects": {
-    "D:\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj": {
+    "C:\\Users\\DELL\\Desktop\\Internship\\Trainning2021\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\Desktop\\Internship\\Trainning2021\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj",
         "projectName": "CreateRequestTimeoffForm_Version1",
-        "projectPath": "D:\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj",
-        "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
-        "outputPath": "D:\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\obj\\",
+        "projectPath": "C:\\Users\\DELL\\Desktop\\Internship\\Trainning2021\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DELL\\Desktop\\Internship\\Trainning2021\\CreateRequestTimeoffForm_Version1\\CreateRequestTimeoffForm_Version1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -80,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

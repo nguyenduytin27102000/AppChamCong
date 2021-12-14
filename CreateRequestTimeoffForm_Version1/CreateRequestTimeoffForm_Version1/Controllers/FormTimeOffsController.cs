@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,8 +10,12 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
 {
     public class FormTimeOffsController : Controller
     {
-        private readonly TimeKeepingDBContext _context=new TimeKeepingDBContext();
+        private readonly TimeKeepingDBContext _context;
 
+        public FormTimeOffsController(TimeKeepingDBContext context)
+        {
+            _context = context;
+        }
        
         // GET: FormTimeOffs
         public async Task<IActionResult> Index()
@@ -21,8 +23,6 @@ namespace CreateRequestTimeoffForm_Version1.Controllers
             var timeKeepingDBContext = _context.FormTimeOffs.Include(f => f.ApprovalProcess).Include(f => f.TypeTimeOff);
             return View(await timeKeepingDBContext.ToListAsync());
         }
-
-
 
         // GET: FormTimeOffs/AddOrEdit
         [NoDirectAccess]

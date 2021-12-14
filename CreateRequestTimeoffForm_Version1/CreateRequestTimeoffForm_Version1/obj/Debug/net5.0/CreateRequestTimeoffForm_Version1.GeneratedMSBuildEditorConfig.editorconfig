@@ -6,3 +6,5 @@ build_property.ProjectTypeGuids =
 build_property.PublishSingleFile = 
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
+build_property.RootNamespace = CreateRequestTimeoffForm_Version1
+build_property.ProjectDir = C:\Users\DELL\Desktop\Internship\Trainning2021\CreateRequestTimeoffForm_Version1\CreateRequestTimeoffForm_Version1\
