@@ -172,7 +172,13 @@ FormTimeOffId varchar(10) not null,
 Del bit default(1)
 );
 
-CREATE TABLE TimeOffRequest( /*1*/
+CREATE TABLE TimeOffRequestState ( /*1*/
+TimeOffRequestStateId varchar(10) not null,
+TimeOffRequestState Nvarchar(50) not null,
+Del bit default(1)
+);
+
+CREATE TABLE TimeOffRequest( /*2*/
 PersonnelId varchar(10) not null,
 TimeOffRequestId varchar(10) not null,
 Title Nvarchar(50) not null,
@@ -183,10 +189,11 @@ HandOverWorks Nvarchar(200),
 ManagerId varchar(10) not null,
 Attachment Nvarchar(100),
 TimeOffDate datetime not null,
-States Nvarchar(50) not null,
+TimeOffRequestStateId varchar(10) not null,
 Feedback Nvarchar(100),
 Del bit default(1)
 );
+
 
 CREATE TABLE DayOff( /*2*/
 DayOffId varchar(10) not null,
@@ -337,6 +344,11 @@ add constraint PK_TimeOffApprover primary key(PersonnelId, FormTimeOffId)
 alter table TimeOffFollower
 add constraint PK_TimeOffFollower primary key(PersonnelId,FormTimeOffId)
 
+
+alter table TimeOffRequestState
+add constraint PK_TimeOffRequestState primary key(TimeOffRequestStateId)
+
+
 alter table TimeOffRequest
 add constraint PK_TimeOffRequest primary key(TimeOffRequestId)
 
@@ -383,7 +395,9 @@ constraint PR_TimeOffFollower_FormTimeOff foreign key(FormTimeOffId) references 
 ALTER TABLE TimeOffRequest
 add constraint PR_TimeOffRequest_Personnel foreign key(PersonnelId) references Personnel(PersonnelId),
 constraint PR_TimeOffRequest_FormTimeOff foreign key(FormTimeOffId) references FormTimeOff(FormTimeOffId),
-constraint PR_TimeOffRequest_Manager foreign key(PersonnelId) references Personnel(PersonnelId)
+constraint PR_TimeOffRequest_Manager foreign key(ManagerId) references Personnel(PersonnelId),
+constraint PR_TimeOffRequest_TimeOffRequestState foreign key(TimeOffRequestStateId) references TimeOffRequestState(TimeOffRequestStateId)
+
 
 ALTER TABLE DayOff
 add constraint PR_DayOff_TimeOffRequest foreign key(TimeOffRequestId) references TimeOffRequest(TimeOffRequestId)
