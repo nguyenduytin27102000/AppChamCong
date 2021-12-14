@@ -84,7 +84,7 @@ namespace TimeKeeping.Models
 
         public bool Sex { get; set; }
 
-        [Display(Name = "Personnel Address")]
+        [Display(Name = "Personal Address")]
         [Required(ErrorMessage = "Please enter personnel address!")]
         public string PersonnelAddress { get; set; }
 

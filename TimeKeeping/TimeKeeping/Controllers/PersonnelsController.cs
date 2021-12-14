@@ -121,14 +121,14 @@ namespace TimeKeeping.Controllers
             ViewData["WorkingAreaId"] = new SelectList(_context.WorkingAreas, "WorkingAreaId", "WorkingAreaName", personnel.WorkingAreaId);
 
             // List delete state of this personnel.
-            var deleteSate = new Dictionary<bool, string>()
-            {
-                {true, "Using" },
-                {false, "Don't use"}
-            };
+            //var deleteSate = new Dictionary<bool, string>()
+            //{
+            //    {true, "Using" },
+            //    {false, "Don't use"}
+            //};
 
             // Use ViewBag save list of delete state use for view.
-            ViewBag.DeleteSate = new SelectList(deleteSate, "Key", "Value");
+            //ViewBag.DeleteSate = new SelectList(deleteSate, "Key", "Value");
 
             return View(personnel);
         }
@@ -150,10 +150,6 @@ namespace TimeKeeping.Controllers
                 try
                 {
                     _context.Update(personnel);
-                    if (personnel.Del == false)
-                    {
-                        UpdateDeleteStateFromOtherTable(id, false);
-                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -199,7 +195,11 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            return View(personnel);
+            personnel.Del = false;
+            _context.Update(personnel);
+            UpdateDeleteStateFromOtherTable(id, false);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Personnels/Delete/5
@@ -216,6 +216,33 @@ namespace TimeKeeping.Controllers
         private bool PersonnelExists(string id)
         {
             return _context.Personnel.Any(e => e.PersonnelId == id);
+        }
+
+        // GET: Personnels/Restore/5
+        public async Task<IActionResult> Restore(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var personnel = await _context.Personnel
+                .Include(p => p.Office)
+                .Include(p => p.Position)
+                .Include(p => p.SalaryPolicy)
+                .Include(p => p.TypePersonnel)
+                .Include(p => p.WorkSchedule)
+                .Include(p => p.WorkingArea)
+                .FirstOrDefaultAsync(m => m.PersonnelId == id);
+            if (personnel == null)
+            {
+                return NotFound();
+            }
+
+            personnel.Del = true;
+            _context.Update(personnel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // If delete state of this personnel change

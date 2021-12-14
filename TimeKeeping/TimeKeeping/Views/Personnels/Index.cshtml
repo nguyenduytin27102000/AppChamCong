@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<TimeKeeping.Models.Personnel>
 
 @{
-    ViewData["Title"] = "List of Personnel";
+	ViewData["Title"] = "List of Personnel";
 }
 
 <h1 class="text-center">List of Personnel</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create A New Personnel</a>
+	<a class="btn btn-primary" asp-action="Create">Create A New Personnel</a>
 </p>
 <table class="table">
-    <thead>
+	<thead>
 		<tr>
 			<th>
 				@Html.DisplayNameFor(model => model.FirstName)
@@ -56,85 +56,104 @@
 			</th>
 			<th></th>
 		</tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model)
-{
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.FirstName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.LastName)
-			</td>
-			<td>
-				@*@Html.DisplayFor(modelItem => item.Sex)*@
-				@{
-					string displayGender;
-					if (item.Sex == true)
-					{
-						displayGender = "Male";
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.FirstName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.LastName)
+				</td>
+				<td>
+					@*@Html.DisplayFor(modelItem => item.Sex)*@
+					@{
+						string displayGender;
+						if (item.Sex == true)
+						{
+							displayGender = "Male";
+						}
+						else
+						{
+							displayGender = "Female";
+						}
 					}
-					else
-					{
-						displayGender = "Female";
-					}
-				}
 
-				@displayGender
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.DateOfBirth)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Phone)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Email)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.PersonnelAddress)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Office.OfficeName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Position.PositionName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.SalaryPolicy.SalaryPolicyName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.TypePersonnel.TypePersonnelName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.WorkSchedule.WorkScheduleName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.WorkingArea.WorkingAreaName)
-			</td>
-			<td>
-				@*@Html.DisplayFor(modelItem => item.Del)*@
-				@{
-					string displayDeleteState;
-					if (item.Sex == true)
-					{
-						displayDeleteState = "Using";
+					@displayGender
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DateOfBirth)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Phone)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Email)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PersonnelAddress)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Office.OfficeName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Position.PositionName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SalaryPolicy.SalaryPolicyName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TypePersonnel.TypePersonnelName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.WorkSchedule.WorkScheduleName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.WorkingArea.WorkingAreaName)
+				</td>
+				<td>
+					@*@Html.DisplayFor(modelItem => item.Del)*@
+					@{
+						string displayDeleteState;
+						if (item.Del == true)
+						{
+							displayDeleteState = "Using";
+						}
+						else
+						{
+							displayDeleteState = "Don't use";
+						}
 					}
-					else
-					{
-						displayDeleteState = "Don't use";
-					}
-				}
 
-				@displayDeleteState
-			</td>
-			<td>
-				<a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.PersonnelId">Edit</a> |
-				<a class="btn btn-info" asp-action="Details" asp-route-id="@item.PersonnelId">Details</a> @*|*@
-				@*<a asp-action="Delete" asp-route-id="@item.PersonnelId">Delete</a>*@
-			</td>
-		</tr>
-}
-    </tbody>
+					@displayDeleteState
+				</td>
+				<td>
+					<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.PersonnelId">Edit</a>
+					<a class="btn btn-info" asp-action="Details" asp-route-id="@item.PersonnelId">Details</a>
+					@{
+						if (item.Del == true)
+						{
+							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.PersonnelId">Delete</a>
+						}
+						else
+						{
+							<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.PersonnelId">Restore</a>
+						}
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
+
+<script>
+	function deleteAlert() {
+		alert("Delete successful!");
+	}
+
+	function restoreAlert() {
+		alert("Restore successful!");
+	}
+</script>
