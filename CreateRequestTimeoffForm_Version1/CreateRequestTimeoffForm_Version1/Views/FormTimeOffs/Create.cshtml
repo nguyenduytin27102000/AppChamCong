@@ -1,0 +1,51 @@
+﻿@model CreateRequestTimeoffForm_Version1.Models.FormTimeOff
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>FormTimeOff</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FormTimeOffId" class="control-label"></label>
+                <input asp-for="FormTimeOffId" class="form-control" />
+                <span asp-validation-for="FormTimeOffId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FormTimeOffName" class="control-label"></label>
+                <input asp-for="FormTimeOffName" class="form-control" />
+                <span asp-validation-for="FormTimeOffName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypeTimeOffId" class="control-label"></label>
+                <select asp-for="TypeTimeOffId" class ="form-control" asp-items="ViewBag.TypeTimeOffId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApprovalProcessId" class="control-label"></label>
+                <select asp-for="ApprovalProcessId" class ="form-control" asp-items="ViewBag.ApprovalProcessId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Regulations" class="control-label"></label>
+                <input asp-for="Regulations" class="form-control" />
+                <span asp-validation-for="Regulations" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
