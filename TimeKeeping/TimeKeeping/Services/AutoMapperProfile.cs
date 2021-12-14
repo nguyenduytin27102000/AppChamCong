@@ -12,7 +12,7 @@ namespace TimeKeeping.Services
     {
         public AutoMapperProfile()
         {
-            CreateMap<TimeOffRequestModel, YeuCauNghiPhep>();
+            CreateMap<TimeOffRequestModel, TimeOffRequest>();
         }
     }
 }

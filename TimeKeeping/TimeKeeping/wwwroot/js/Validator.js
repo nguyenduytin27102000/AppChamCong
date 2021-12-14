@@ -25,6 +25,13 @@
                 }
             });
             return result ? 'Selected date already exists' : undefined;
+        },
+        greaterEqual: function (selector) {
+            return function (value) {
+                const previous = document.querySelector(selector);
+                const label = getParentElement(previous, groupSelector).querySelector('label').innerText;
+                return previous.value <= value ? undefined : `Must greater than ${label}`;
+            }
         }
     }
     const formElement = document.querySelector(formSelector);
@@ -43,7 +50,6 @@
                 else ruleMethod = validatorMethods[rule];
                 formRules[inputElement.name].push(ruleMethod);
             }
-            console.log(formRules);
             
             // add event for input
             

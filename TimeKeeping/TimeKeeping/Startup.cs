@@ -27,7 +27,7 @@ namespace TimeKeeping
         {
             services.AddControllersWithViews();
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-            services.AddDbContext<QLChamCongContext>();
+            services.AddDbContext<TimeKeepingDBContext>();
             services.AddScoped<IdentityFactory>();
         }
 
