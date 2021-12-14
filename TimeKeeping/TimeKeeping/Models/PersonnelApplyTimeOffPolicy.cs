@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 #nullable disable
@@ -37,6 +36,7 @@ namespace TimeKeeping.Models
 
         [DisplayName("Personnal")]
         public virtual Personnel Personnel { get; set; }
+
         [DisplayName("TimeOff Policy")]
         public virtual TimeOffPolicy TimeOffPolicy { get; set; }
     }

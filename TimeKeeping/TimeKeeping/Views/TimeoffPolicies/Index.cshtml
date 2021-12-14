@@ -1,0 +1,78 @@
+﻿@model IEnumerable<TimeKeeping.Models.TimeOffPolicy>
+
+@{
+    ViewData["Title"] = "List of Timeoff Policy";
+}
+
+<h1 class="text-center">List of Timeoff Policy</h1>
+
+<p>
+	<a class="btn btn-primary" asp-action="Create">Create New Timeoff Policy</a>
+</p>
+<table class="table">
+    <thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.TimeOffPolicyName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NumberOfDaysOffStandard)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NumberOfDaysOffLastYear)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Describe)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TypePolicy)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Del)
+			</th>
+			<th></th>
+		</tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.TimeOffPolicyName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.NumberOfDaysOffStandard)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.NumberOfDaysOffLastYear)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Describe)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.TypePolicy.TypePolicyName)
+			</td>
+			<td>
+				@*@Html.DisplayFor(modelItem => item.Del)*@
+				@{
+					string displayDeleteSate;
+					if (item.Del == true)
+					{
+						displayDeleteSate = "Using";
+					}
+					else
+					{
+						displayDeleteSate = "Don't use";
+					}
+				}
+				@displayDeleteSate
+			</td>
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId">Edit</a> |
+				<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId">Details</a> |
+				<a asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
+			</td>
+		</tr>
+}
+    </tbody>
+</table>

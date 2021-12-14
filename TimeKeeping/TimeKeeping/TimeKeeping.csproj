@@ -25,4 +25,8 @@
     <Folder Include="wwwroot\storage\attachments\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

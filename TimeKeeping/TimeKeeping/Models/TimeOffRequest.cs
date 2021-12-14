@@ -24,6 +24,7 @@ namespace TimeKeeping.Models
         public string Attachment { get; set; }
         public DateTime TimeOffDate { get; set; }
         public string TimeOffRequestStateId { get; set; }
+        public string States { get; set; }
         public string Feedback { get; set; }
         public bool? Del { get; set; }
 

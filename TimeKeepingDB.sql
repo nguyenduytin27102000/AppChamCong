@@ -1,6 +1,7 @@
 CREATE DATABASE TimeKeepingDB
 USE TimeKeepingDB 
 GO 
+
 --  Create all tables in DB
 -- module 1: "human resource management"
 -- This section will store information about employees, offices, etc
@@ -178,7 +179,7 @@ TimeOffRequestState Nvarchar(50) not null,
 Del bit default(1)
 );
 
-CREATE TABLE TimeOffRequest( /*2*/
+CREATE TABLE TimeOffRequest( /*1*/
 PersonnelId varchar(10) not null,
 TimeOffRequestId varchar(10) not null,
 Title Nvarchar(50) not null,
@@ -193,7 +194,6 @@ TimeOffRequestStateId varchar(10) not null,
 Feedback Nvarchar(100),
 Del bit default(1)
 );
-
 
 CREATE TABLE DayOff( /*2*/
 DayOffId varchar(10) not null,
@@ -344,10 +344,8 @@ add constraint PK_TimeOffApprover primary key(PersonnelId, FormTimeOffId)
 alter table TimeOffFollower
 add constraint PK_TimeOffFollower primary key(PersonnelId,FormTimeOffId)
 
-
 alter table TimeOffRequestState
 add constraint PK_TimeOffRequestState primary key(TimeOffRequestStateId)
-
 
 alter table TimeOffRequest
 add constraint PK_TimeOffRequest primary key(TimeOffRequestId)
@@ -397,7 +395,7 @@ add constraint PR_TimeOffRequest_Personnel foreign key(PersonnelId) references P
 constraint PR_TimeOffRequest_FormTimeOff foreign key(FormTimeOffId) references FormTimeOff(FormTimeOffId),
 constraint PR_TimeOffRequest_Manager foreign key(ManagerId) references Personnel(PersonnelId),
 constraint PR_TimeOffRequest_TimeOffRequestState foreign key(TimeOffRequestStateId) references TimeOffRequestState(TimeOffRequestStateId)
-
+constraint PR_TimeOffRequest_Manager foreign key(ManagerId) references Personnel(PersonnelId)
 
 ALTER TABLE DayOff
 add constraint PR_DayOff_TimeOffRequest foreign key(TimeOffRequestId) references TimeOffRequest(TimeOffRequestId)
@@ -418,4 +416,95 @@ constraint PR_ApplySeniorityPolicy_SeniorityPolicy foreign key(SeniorityPolicyId
 
 ALTER TABLE PersonnelApplyTimeOffPolicy
 add constraint PR_PersonnelApplyTimeOffPolicy_Personnel foreign key(PersonnelId) references Personnel(PersonnelId),
+
 constraint PR_PersonnelApplyTimeOffPolicy_TimeOffPolicy foreign key(TimeOffPolicyId) references TimeOffPolicy(TimeOffPolicyId)
+-- INSERT INTO
+
+-- Office
+INSERT INTO Office
+(OfficeId, OfficeName, OfficeAddress, OfficePhone, OfficeEmail, Del)
+VALUES
+('OF001', 'Office A', 'Tran Phu Street', '0123456789', 'a@gmail.com', 1),
+('OF002', 'Office B', 'Nguyen Thi Minh Khai Street', '0456789123', 'b@gmail.com', 1),
+('OF003', 'Office C', 'Hung Vuong Street', '0789123456', 'c@gmail.com', 1)
+GO
+
+-- Type Work Schedule
+INSERT INTO TypeWorkSchedule
+(TypeWorkScheduleId, TypeWorkScheduleName, Del)
+VALUES
+('TWS001', 'Type 001', 1),
+('TWS002', 'Type 002', 1),
+('TWS003', 'Type 003', 1)
+GO
+
+-- Checkin Policy
+INSERT INTO CheckinPolicy
+(CheckinPolicyId, CheckinPolicyName, Del)
+VALUES
+('CP001', 'Checkin Policy 1', 1),
+('CP002', 'Checkin Policy 2', 1),
+('CP003', 'Checkin Policy 3', 1)
+GO
+
+-- Number Of Shift
+INSERT INTO NumberOfShift
+(NumberOfShiftId, NumberOfShift, Del)
+VALUES
+('NOS001', 1, 1),
+('NOS002', 2, 1),
+('NOS003', 3, 1)
+GO
+
+-- Work Schedule
+INSERT INTO WorkSchedule
+(WorkScheduleId, WorkScheduleName, TypeWorkScheduleId, CheckinPolicyId, NumberOfShiftId, RequireCheckout, WorkingHoursPerDay, MinutesLate, MinutesEarly, Regulations, States, Del)
+VALUES
+('WS001', 'Work Schedule 1', 'TWS001', 'CP001', 'NOS001', 1, 4, 0, 0, '...', 1, 1),
+('WS002', 'Work Schedule 2', 'TWS002', 'CP002', 'NOS002', 2, 8, 0, 0, '...', 1, 1),
+('WS003', 'Work Schedule 3', 'TWS003', 'CP003', 'NOS003', 3, 12, 0, 0, '...', 1, 1)
+GO
+
+-- Working Area
+INSERT INTO WorkingArea
+(WorkingAreaId, WorkingAreaName, Describe, States, Del)
+VALUES
+('WA001', 'Office', '...', 1, 1),
+('WA002', 'Design', '...', 1, 1),
+('WA003', 'IT', '...', 1, 1)
+GO
+
+-- Type Position
+INSERT INTO TypePosition
+(TypePositionId, TypePositionName, Describe, Del)
+VALUES
+('TP001', 'Type Position 1', '...', 1),
+('TP002', 'Type Position 2', '...', 1),
+('TP003', 'Type Position 3', '...', 1)
+GO
+
+-- Position
+INSERT INTO Position
+(PositionId, PositionName, WorkingAreaId, TypePositionId, LowestSalary, HighestSalary, Del)
+VALUES
+('P001', 'Position 1', 'WA001', 'TP001', 500000, 2500000, 1),
+('P002', 'Position 2', 'WA002', 'TP002', 2000000, 10000000, 1),
+('P003', 'Position 3', 'WA003', 'TP003', 5000000, 25000000, 1)
+GO
+
+-- Salary Policy
+INSERT INTO SalaryPolicy
+(SalaryPolicyId, SalaryPolicyName, Describe, States, Del)
+VALUES
+('SP001', 'Salary Policy 1', '...', 1, 1),
+('SP002', 'Salary Policy 2', '...', 1, 1),
+('SP003', 'Salary Policy 3', '...', 1, 1)
+GO
+
+-- Type Personnel
+INSERT INTO TypePersonnel
+(TypePersonnelId, TypePersonnelName, Describe, States, Del)
+VALUES
+('TP001', 'Type Personnel 1', '...', 1, 1),
+('TP002', 'Type Personnel 2', '...', 1, 1),
+('TP003', 'Type Personnel 3', '...', 1, 1)
