@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,19 +13,29 @@ namespace TimeKeeping.ViewModels
     public class TimeOffRequestModel
     {
         [DisplayName("Title *")]
-        public string TieuDe { get; set; }
+        public string Title { get; set; }
         [DisplayName("Time off form *")]
-        public string MaMauNghiPhep { get; set; }
+        public string FormTimeOffId { get; set; }
         [DisplayName("Reason *")]
-        public string LyDoNghiPhep { get; set; }
+        public string Reason { get; set; }
         [DisplayName("Handover")]
-        public bool BanGiaoCongViec { get; set; }
+        public bool RequireHandOver { get; set; }
         [DisplayName("Handover works")]
-        public string CacCongViecBanGiao { get; set; }
+        public string HandOverWorks { get; set; }
         [DisplayName("Approver *")]
-        public string MaNguoiQuanLy { get; set; }
+        public string ManagerId { get; set; }
         //public string TaiLieuDinhKem { get; set; }
         [DisplayName("Attachment")]
-        public IFormFile TaiLieuDinhKem { get; set; }
+        public IFormFile Attachment { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime FromDate { get; set; } = DateTime.Now;
+        [DataType(DataType.Date)]
+        public DateTime ToDate { get; set; } = DateTime.Now;
+        // there are 3 options (1: half day, 2: full day, 3: specify time)
+        public int Duration { get; set; }
+        public string FromHour { get; set; }
+        public string ToHour { get; set; }
+        public string HalfDay { get; set; }
+
     }
 }

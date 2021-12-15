@@ -15,7 +15,7 @@
 					<label asp-for="TimeOffPolicyId" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="TimeOffPolicyId" class="form-control" />
+					<input asp-for="TimeOffPolicyId" class="form-control"/>
 					<span asp-validation-for="TimeOffPolicyId" class="text-danger"></span>
 				</div>
 			</div>
@@ -77,3 +77,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
