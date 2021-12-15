@@ -22,10 +22,10 @@ namespace TimeKeeping.Models
         public string ManagerId { get; set; }
         public string Attachment { get; set; }
 
-        public DateTime TimeOffDate { get; set; } = DateTime.Now;
+        public DateTime TimeOffDate { get; set; }
         public string TimeOffRequestStateId { get; set; }
-        public string Feedback { get; set; } = string.Empty;
-        public bool? Del { get; set; } = false;
+        public string Feedback { get; set; }
+        public bool? Del { get; set; }
 
 
         public virtual FormTimeOff FormTimeOff { get; set; }
