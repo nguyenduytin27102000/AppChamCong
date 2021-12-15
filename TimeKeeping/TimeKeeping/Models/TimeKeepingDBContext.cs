@@ -1,4 +1,6 @@
+﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -20,7 +22,6 @@ namespace TimeKeeping.Models
         public virtual DbSet<CheckinPolicy> CheckinPolicies { get; set; }
         public virtual DbSet<DayOff> DayOffs { get; set; }
         public virtual DbSet<DaysOfWeek> DaysOfWeeks { get; set; }
-        public virtual DbSet<FlywaySchemaHistory> FlywaySchemaHistories { get; set; }
         public virtual DbSet<FormTimeOff> FormTimeOffs { get; set; }
         public virtual DbSet<NumberOfShift> NumberOfShifts { get; set; }
         public virtual DbSet<Office> Offices { get; set; }
@@ -35,7 +36,6 @@ namespace TimeKeeping.Models
         public virtual DbSet<TimeOffPolicy> TimeOffPolicies { get; set; }
         public virtual DbSet<TimeOffRequest> TimeOffRequests { get; set; }
         public virtual DbSet<TimeOffRequestState> TimeOffRequestStates { get; set; }
-        public virtual DbSet<TimeOffShift> TimeOffShifts { get; set; }
         public virtual DbSet<TypePersonnel> TypePersonnel { get; set; }
         public virtual DbSet<TypePolicy> TypePolicies { get; set; }
         public virtual DbSet<TypePosition> TypePositions { get; set; }
@@ -50,6 +50,7 @@ namespace TimeKeeping.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=.;Database=TimeKeepingDB;Trusted_Connection=True;UID=sa;PWD=123456");
             }
         }
@@ -57,6 +58,7 @@ namespace TimeKeeping.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
             modelBuilder.Entity<ApplySeniorityPolicy>(entity =>
             {
                 entity.HasKey(e => new { e.TimeOffPolicyId, e.SeniorityPolicyId });
@@ -122,15 +124,23 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DayOff1)
-                    .HasColumnType("datetime")
-                    .HasColumnName("DayOff");
+                entity.Property(e => e.DayOffAt).HasColumnType("datetime");
 
                 entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.FromHour)
+                    .IsRequired()
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.TimeOffRequestId)
                     .IsRequired()
                     .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ToHour)
+                    .IsRequired()
+                    .HasMaxLength(5)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.TimeOffRequest)
@@ -153,54 +163,6 @@ namespace TimeKeeping.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Del).HasDefaultValueSql("((1))");
-            });
-
-            modelBuilder.Entity<FlywaySchemaHistory>(entity =>
-            {
-                entity.HasKey(e => e.InstalledRank)
-                    .HasName("flyway_schema_history_pk");
-
-                entity.ToTable("flyway_schema_history");
-
-                entity.HasIndex(e => e.Success, "flyway_schema_history_s_idx");
-
-                entity.Property(e => e.InstalledRank)
-                    .ValueGeneratedNever()
-                    .HasColumnName("installed_rank");
-
-                entity.Property(e => e.Checksum).HasColumnName("checksum");
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(200)
-                    .HasColumnName("description");
-
-                entity.Property(e => e.ExecutionTime).HasColumnName("execution_time");
-
-                entity.Property(e => e.InstalledBy)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnName("installed_by");
-
-                entity.Property(e => e.InstalledOn)
-                    .HasColumnType("datetime")
-                    .HasColumnName("installed_on")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Script)
-                    .IsRequired()
-                    .HasMaxLength(1000)
-                    .HasColumnName("script");
-
-                entity.Property(e => e.Success).HasColumnName("success");
-
-                entity.Property(e => e.Type)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnName("type");
-
-                entity.Property(e => e.Version)
-                    .HasMaxLength(50)
-                    .HasColumnName("version");
             });
 
             modelBuilder.Entity<FormTimeOff>(entity =>
@@ -265,8 +227,6 @@ namespace TimeKeeping.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Del).HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.NumberOfShift1).HasColumnName("NumberOfShift");
             });
 
             modelBuilder.Entity<Office>(entity =>
@@ -693,9 +653,6 @@ namespace TimeKeeping.Models
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
-                entity.Property(e => e.States)
-                    .IsRequired()
-                    .HasMaxLength(50);
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -718,6 +675,7 @@ namespace TimeKeeping.Models
                     .HasForeignKey(d => d.PersonnelId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PR_TimeOffRequest_Personnel");
+
                 entity.HasOne(d => d.TimeOffRequestState)
                     .WithMany(p => p.TimeOffRequests)
                     .HasForeignKey(d => d.TimeOffRequestStateId)
@@ -735,49 +693,9 @@ namespace TimeKeeping.Models
 
                 entity.Property(e => e.Del).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.TimeOffRequestState1)
+                entity.Property(e => e.TimeOffRequestStateName)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("TimeOffRequestState");
-            });
-
-            modelBuilder.Entity<TimeOffShift>(entity =>
-            {
-                entity.HasKey(e => new { e.DayOffId, e.TimeOffRequestId, e.ShiftId });
-
-                entity.ToTable("TimeOffShift");
-
-                entity.Property(e => e.DayOffId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TimeOffRequestId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ShiftId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
-
-                entity.HasOne(d => d.DayOff)
-                    .WithMany(p => p.TimeOffShifts)
-                    .HasForeignKey(d => d.DayOffId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PR_TimeOffShift_DayOff");
-
-                entity.HasOne(d => d.Shift)
-                    .WithMany(p => p.TimeOffShifts)
-                    .HasForeignKey(d => d.ShiftId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PR_TimeOffShift_Shift");
-
-                entity.HasOne(d => d.TimeOffRequest)
-                    .WithMany(p => p.TimeOffShifts)
-                    .HasForeignKey(d => d.TimeOffRequestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PR_TimeOffShift_TimeOffRequest");
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<TypePersonnel>(entity =>

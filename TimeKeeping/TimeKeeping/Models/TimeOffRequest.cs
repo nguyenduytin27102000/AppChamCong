@@ -10,7 +10,6 @@ namespace TimeKeeping.Models
         public TimeOffRequest()
         {
             DayOffs = new HashSet<DayOff>();
-            TimeOffShifts = new HashSet<TimeOffShift>();
         }
 
         public string PersonnelId { get; set; }
@@ -24,7 +23,6 @@ namespace TimeKeeping.Models
         public string Attachment { get; set; }
         public DateTime TimeOffDate { get; set; }
         public string TimeOffRequestStateId { get; set; }
-        public string States { get; set; }
         public string Feedback { get; set; }
         public bool? Del { get; set; }
 
@@ -33,6 +31,5 @@ namespace TimeKeeping.Models
         public virtual Personnel Personnel { get; set; }
         public virtual TimeOffRequestState TimeOffRequestState { get; set; }
         public virtual ICollection<DayOff> DayOffs { get; set; }
-        public virtual ICollection<TimeOffShift> TimeOffShifts { get; set; }
     }
 }

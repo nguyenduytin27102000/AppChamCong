@@ -13,7 +13,7 @@ namespace TimeKeeping.Models
         }
 
         public string TimeOffRequestStateId { get; set; }
-        public string TimeOffRequestState1 { get; set; }
+        public string TimeOffRequestStateName { get; set; }
         public bool? Del { get; set; }
 
         public virtual ICollection<TimeOffRequest> TimeOffRequests { get; set; }

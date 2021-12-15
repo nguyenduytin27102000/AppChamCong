@@ -1,6 +1,6 @@
-/* CREATE DATABASE TimeKeepingDB
-USE TimeKeepingDB 
-GO */
+-- CREATE DATABASE TimeKeepingDB
+--USE TimeKeepingDB 
+--GO 
 --  Create all tables in DB
 -- module 1: "human resource management"
 -- This section will store information about employees, offices, etc
