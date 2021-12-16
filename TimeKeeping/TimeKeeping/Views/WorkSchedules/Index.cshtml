@@ -1,0 +1,113 @@
+﻿@model IEnumerable<TimeKeeping.Models.WorkSchedule>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4 class="text-center">List of Work Schedule</h4>
+
+<p>
+	<a asp-action="Create" class="btn btn-primary">Create New Work Schedule</a>
+</p>
+<table class="table">
+    <thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.WorkScheduleName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.RequireCheckout)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.WorkingHoursPerDay)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.MinutesLate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.MinutesEarly)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Regulations)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.States)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CheckinPolicyId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NumberOfShiftId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TypeWorkScheduleId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Del)
+			</th>
+			<th></th>
+		</tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.WorkScheduleName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.RequireCheckout)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.WorkingHoursPerDay)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.MinutesLate)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.MinutesEarly)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Regulations)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.States)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.CheckinPolicy.CheckinPolicyName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.NumberOfShift.Count)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.TypeWorkSchedule.TypeWorkScheduleName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Del)
+			<td>
+				<a asp-action="Edit" asp-route-id="@item.WorkScheduleId" class="btn btn-warning">Edit</a>
+				<a asp-action="Details" asp-route-id="@item.WorkScheduleId" class="btn btn-info">Details</a>
+				@{
+					if (item.Del == true)
+					{
+						<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.WorkScheduleId">Delete</a>
+					}
+					else
+					{
+						<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.WorkScheduleId">Restore</a>
+					}
+				}
+			</td>
+		</tr>
+}
+    </tbody>
+</table>
+
+<script>
+	function deleteAlert() {
+		alert("Delete successful!");
+	}
+
+	function restoreAlert() {
+		alert("Restore successful!");
+	}
+</script>

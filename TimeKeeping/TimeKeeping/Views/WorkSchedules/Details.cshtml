@@ -1,0 +1,104 @@
+﻿@model TimeKeeping.Models.WorkSchedule
+
+@{
+	ViewData["Title"] = "Work Schedule: " + @Model.WorkScheduleName;
+}
+
+<div>
+	<h4>Work Schedule: @Model.WorkScheduleName</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.WorkScheduleName)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.WorkScheduleName)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.RequireCheckout)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.RequireCheckout)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.WorkingHoursPerDay)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.WorkingHoursPerDay)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.MinutesLate)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.MinutesLate)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.MinutesEarly)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.MinutesEarly)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Regulations)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.Regulations)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.CheckinPolicy)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.CheckinPolicy.CheckinPolicyName)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.NumberOfShift)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.NumberOfShift.Count)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.TypeWorkSchedule)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.TypeWorkSchedule.TypeWorkScheduleName)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.States)
+		</dt>
+		<dd class="col-sm-9">
+			@Html.DisplayFor(model => model.States)
+		</dd>
+		<dt class="col-sm-3">
+			@Html.DisplayNameFor(model => model.Del)
+		</dt>
+		<dd class="col-sm-9">
+			@{
+				string displayDeleteState;
+				if (Model.Del == true)
+				{
+					displayDeleteState = "Using";
+				}
+				else
+				{
+					displayDeleteState = "Don't use";
+				}
+			}
+			@displayDeleteState
+		</dd>
+	</dl>
+
+	@{
+		if (Model.Shifts.Count > 0)
+		{
+			@Html.Partial("_ShiftsInWorkSchedulePartial", Model.Shifts);
+		}
+		else
+		{
+			@Html.Partial("_CreateShiftsPartial");
+		}
+	}
+</div>
+<div>
+	<a asp-action="Edit" asp-route-id="@Model.WorkScheduleId">Edit</a> |
+	<a asp-action="Index">Back to List</a>
+</div>

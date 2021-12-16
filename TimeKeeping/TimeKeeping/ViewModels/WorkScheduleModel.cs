@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using TimeKeeping.Models;
 
-#nullable disable
-
-namespace TimeKeeping.Models
+namespace TimeKeeping.ViewModels
 {
-    public partial class WorkSchedule
+    [BindProperties]
+    public class WorkScheduleModel
     {
-        public WorkSchedule()
-        {
-            Personnel = new HashSet<Personnel>();
-            Shifts = new HashSet<Shift>();
-        }
-
         [Display(Name = "Work Schedule ID")]
         public string WorkScheduleId { get; set; }
 
@@ -36,7 +34,7 @@ namespace TimeKeeping.Models
 
         [Display(Name = "Minutes Late")]
         public byte MinutesLate { get; set; }
-
+        
         [Display(Name = "Minutes Early")]
         public byte MinutesEarly { get; set; }
 

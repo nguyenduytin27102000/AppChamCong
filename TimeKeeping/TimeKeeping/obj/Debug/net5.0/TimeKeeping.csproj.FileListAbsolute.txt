@@ -323,3 +323,11 @@ C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug
 C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\TimeKeeping.Views.pdb
 C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\TimeKeeping.csproj.CopyComplete
 C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\TimeKeeping.genruntimeconfig.cache
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\Shifts\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\_CreateShiftsPartial.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\_ShiftsInWorkSchedulePartial.cshtml.g.cs
