@@ -1,6 +1,7 @@
-CREATE DATABASE TimeKeepingDB
+
+CREATE DATABASE TimeKeepingDB3
 GO
-USE TimeKeepingDB 
+USE TimeKeepingDB3
 GO 
 --  Create all tables in DB
 -- module 1: "human resource management"
@@ -11,53 +12,54 @@ OfficeName Nvarchar(100) not null,
 OfficeAddress Nvarchar(100) not null,
 OfficePhone varchar(15) not null,
 OfficeEmail varchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE TypeWorkSchedule ( /*1*/
 TypeWorkScheduleId varchar(10) not null,
 TypeWorkScheduleName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE CheckinPolicy (/*1*/
 CheckinPolicyId varchar(10) not null,
 CheckinPolicyName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE NumberOfShift /*1*/
 (
 NumberOfShiftId varchar(10) not null,
-NumberOfShift tinyint not null,
-Del bit default(1)
+-- change NumberOfShift to Count
+Count tinyint not null,
+Active bit default(1)
 );
 CREATE TABLE DaysOfWeek( /*1*/
 DaysOfWeekId varchar(10) not null,
 DaysOfWeekName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE TypeShift( /*1*/
 TypeShiftId varchar(10) not null,
 TypeShiftName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE WorkingArea ( /*1*/
 WorkingAreaId varchar(10) not null,
 WorkingAreaName Nvarchar(100) not null,
 Describe Nvarchar(100),
 States bit default(1),
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE TypePosition ( /*1*/
 TypePositionId varchar(10) not null,
 TypePositionName Nvarchar(50) not null,
 Describe Nvarchar(100),
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE SalaryPolicy ( /*1*/
 SalaryPolicyId varchar(10) not null,
 SalaryPolicyName Nvarchar(100) not null,
 Describe Nvarchar(100),
 States bit default(1),
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE TypePersonnel ( /*1*/
@@ -65,7 +67,7 @@ TypePersonnelId varchar(10) not null,
 TypePersonnelName Nvarchar(100) not null,
 Describe Nvarchar(100),
 States bit default(1),
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE WorkSchedule ( /*2*/
@@ -80,7 +82,7 @@ MinutesLate tinyint default(15) not null,
 MinutesEarly tinyint default(15) not null,
 Regulations Nvarchar(100),
 States bit default(1),
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE Shift( /*2*/
@@ -92,7 +94,7 @@ ShiftName Nvarchar(50) not null,
 StartTime datetime not null,
 EndTime datetime not null,
 DayOff bit default(1) not null,
-Del bit default(1)
+Active bit default(1)
 );
 CREATE TABLE Position ( /*2*/
 PositionId varchar(10) not null,
@@ -101,7 +103,7 @@ WorkingAreaId varchar(10) not null,
 TypePositionId varchar(10) not null,
 LowestSalary money not null,
 HighestSalary money not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE Personnel ( /*2*/
@@ -124,7 +126,7 @@ DateOfBirth datetime not null,
 Phone varchar(15),
 Sex bit not null,
 PersonnelAddress Nvarchar(100) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 -- Module 2: TimeOff. this section will contain information sheets about leave application form, leave application, leave policy etc
@@ -132,13 +134,13 @@ Del bit default(1)
 CREATE TABLE TypeTimeOff( /*1*/
 TypeTimeOffId varchar(10) not null,
 TypeTimeOffName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE ApprovalProcess( /*1*/
 ApprovalProcessId  varchar(10) not null,
 ApprovalProcessName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE FormTimeOff( /*2*/
@@ -152,31 +154,32 @@ ProcessingTime tinyint default(24),
 NumberOfDaysBeforeTimeOff tinyint default(2),
 LimitedDaysOff tinyint default(5),
 Regulations Nvarchar(100),
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE WorkingAreaApplyFormTimeOff( /*3*/
 WorkingAreaId varchar(10) not null,
 FormTimeOffId varchar(10) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE TimeOffApprover( /*3*/
 PersonnelId varchar(10) not null,
 FormTimeOffId varchar(10) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE TimeOffFollower( /*3*/
 PersonnelId varchar(10) not null,
 FormTimeOffId varchar(10) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE TimeOffRequestState ( /*1*/
 TimeOffRequestStateId varchar(10) not null,
-TimeOffRequestState Nvarchar(50) not null,
-Del bit default(1)
+-- change name TimeOffRequestState to TimeOffRequestStateName
+TimeOffRequestStateName Nvarchar(50) not null,
+Active bit default(1)
 );
 
 CREATE TABLE TimeOffRequest( /*2*/
@@ -192,35 +195,41 @@ Attachment Nvarchar(100),
 TimeOffDate datetime not null,
 TimeOffRequestStateId varchar(10) not null,
 Feedback Nvarchar(100),
-Del bit default(1)
+Active bit default(1)
 );
 
 
 CREATE TABLE DayOff( /*2*/
 DayOffId varchar(10) not null,
 TimeOffRequestId varchar(10) not null,
-DayOff datetime not null,
-Del bit default(1)
+--change name DayOff to DayOffAt
+DayOffAt datetime not null,
+--add new 2 columns
+FromHour varchar(5) not null,
+ToHour varchar(5) not null,
+Active bit default(1)
 );
 
-CREATE TABLE TimeOffShift( /*3*/
+/* this is deleted in version 1
+CREATE TABLE TimeOffShift( 3
 DayOffId varchar(10) not null,
 TimeOffRequestId varchar(10) not null,
 ShiftId varchar(10) not null,
 Del bit default(1)
-);
+); 
+*/
 
 CREATE TABLE TypePolicy( /*1*/
 TypePolicyId varchar(10) not null,
 TypePolicyName Nvarchar(50) not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE SeniorityPolicy( /*1*/
 SeniorityPolicyId varchar(10) not null,
 SeniorityMonth int not null,
 PolicyDay tinyint not null,
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE TimeOffPolicy( /*2*/
@@ -230,7 +239,7 @@ TypePolicyId varchar(10) not null,
 NumberOfDaysOffStandard tinyint not null,
 NumberOfDaysOffLastYear tinyint not null,
 Describe Nvarchar(100),
-Del bit default(1)
+Active bit default(1)
 );
 
 CREATE TABLE ApplySeniorityPolicy( /*3*/
@@ -247,11 +256,16 @@ NumberOfDaysOffStandard tinyint not null,
 NumberOfDaysOffSeniority tinyint not null,
 NumberOfDaysOffOffset tinyint not null,
 Note Nvarchar(100),
-Del bit default(1)
+Active bit default(1)
 );
 
+-- Module 3: TimeSheet: this section will contain information sheets about Timesheet, checkin
+CREATE TABLE Checkin (
+CheckinId varchar(10) not null,    
+PersonnelId varchar(10) not null,
+Time datetime not null,
+);
 -- Create all Key
-
 -- Keys for Module 1: 
 --   primary key
 alter table Office
@@ -356,8 +370,9 @@ add constraint PK_TimeOffRequest primary key(TimeOffRequestId)
 alter table DayOff
 add constraint PK_DayOff primary key(DayOffId)
 
+/* this is deleted in version 1
 alter table TimeOffShift
-add constraint PK_TimeOffShift primary key(DayOffId,TimeOffRequestId,ShiftId)
+add constraint PK_TimeOffShift primary key(DayOffId,TimeOffRequestId,ShiftId) */
 
 
 alter table TypePolicy
@@ -404,10 +419,12 @@ ALTER TABLE DayOff
 add constraint PR_DayOff_TimeOffRequest foreign key(TimeOffRequestId) references TimeOffRequest(TimeOffRequestId)
 
 
+/* this is deleted in version 1
 ALTER TABLE TimeOffShift
 add constraint PR_TimeOffShift_TimeOffRequest foreign key(TimeOffRequestId) references TimeOffRequest(TimeOffRequestId),
 constraint PR_TimeOffShift_Shift foreign key(ShiftId) references Shift(ShiftId),
 constraint PR_TimeOffShift_DayOff foreign key(DayOffId) references DayOff(DayOffId)
+*/
 
 
 ALTER TABLE TimeOffPolicy
@@ -420,3 +437,103 @@ constraint PR_ApplySeniorityPolicy_SeniorityPolicy foreign key(SeniorityPolicyId
 ALTER TABLE PersonnelApplyTimeOffPolicy
 add constraint PR_PersonnelApplyTimeOffPolicy_Personnel foreign key(PersonnelId) references Personnel(PersonnelId),
 constraint PR_PersonnelApplyTimeOffPolicy_TimeOffPolicy foreign key(TimeOffPolicyId) references TimeOffPolicy(TimeOffPolicyId)
+
+-- Keys for Module 3: 
+--   Primary key
+alter table Checkin
+add constraint PK_Checkin primary key(CheckinId)
+--   Foreign key
+ALTER TABLE Checkin
+add constraint PR_Checkin_Personnel foreign key(PersonnelId) references Personnel(PersonnelId)
+
+
+-- Add Data --------------------------------
+/* ERROR
+-- Office
+INSERT INTO Office
+(OfficeId, OfficeName, OfficeAddress, OfficePhone, OfficeEmail, Del)
+VALUES
+('OF001', 'Office A', 'Tran Phu Street', '0123456789', 'a@gmail.com', 1),
+('OF002', 'Office B', 'Nguyen Thi Minh Khai Street', '0456789123', 'b@gmail.com', 1),
+('OF003', 'Office C', 'Hung Vuong Street', '0789123456', 'c@gmail.com', 1)
+GO
+
+-- Type Work Schedule
+INSERT INTO TypeWorkSchedule
+(TypeWorkScheduleId, TypeWorkScheduleName, Del)
+VALUES
+('TWS001', 'Type 001', 1),
+('TWS002', 'Type 002', 1),
+('TWS003', 'Type 003', 1)
+GO
+
+-- Checkin Policy
+INSERT INTO CheckinPolicy
+(CheckinPolicyId, CheckinPolicyName, Del)
+VALUES
+('CP001', 'Checkin Policy 1', 1),
+('CP002', 'Checkin Policy 2', 1),
+('CP003', 'Checkin Policy 3', 1)
+GO
+
+-- Number Of Shift
+INSERT INTO NumberOfShift
+VALUES
+('NOS001', 1, 1),
+('NOS002', 2, 1),
+('NOS003', 3, 1)
+GO
+
+-- Work Schedule
+INSERT INTO WorkSchedule
+(WorkScheduleId, WorkScheduleName, TypeWorkScheduleId, CheckinPolicyId, NumberOfShiftId, RequireCheckout, WorkingHoursPerDay, MinutesLate, MinutesEarly, Regulations, States, Del)
+VALUES
+('WS001', 'Work Schedule 1', 'TWS001', 'CP001', 'NOS001', 1, 4, 0, 0, '...', 1, 1),
+('WS002', 'Work Schedule 2', 'TWS002', 'CP002', 'NOS002', 2, 8, 0, 0, '...', 1, 1),
+('WS003', 'Work Schedule 3', 'TWS003', 'CP003', 'NOS003', 3, 12, 0, 0, '...', 1, 1)
+GO
+
+-- Working Area
+INSERT INTO WorkingArea
+(WorkingAreaId, WorkingAreaName, Describe, States, Del)
+VALUES
+('WA001', 'Office', '...', 1, 1),
+('WA002', 'Design', '...', 1, 1),
+('WA003', 'IT', '...', 1, 1)
+GO
+
+-- Type Position
+INSERT INTO TypePosition
+(TypePositionId, TypePositionName, Describe, Del)
+VALUES
+('TP001', 'Type Position 1', '...', 1),
+('TP002', 'Type Position 2', '...', 1),
+('TP003', 'Type Position 3', '...', 1)
+GO
+
+-- Position
+INSERT INTO Position
+(PositionId, PositionName, WorkingAreaId, TypePositionId, LowestSalary, HighestSalary, Del)
+VALUES
+('P001', 'Position 1', 'WA001', 'TP001', 500000, 2500000, 1),
+('P002', 'Position 2', 'WA002', 'TP002', 2000000, 10000000, 1),
+('P003', 'Position 3', 'WA003', 'TP003', 5000000, 25000000, 1)
+GO
+
+-- Salary Policy
+INSERT INTO SalaryPolicy
+(SalaryPolicyId, SalaryPolicyName, Describe, States, Del)
+VALUES
+('SP001', 'Salary Policy 1', '...', 1, 1),
+('SP002', 'Salary Policy 2', '...', 1, 1),
+('SP003', 'Salary Policy 3', '...', 1, 1)
+GO
+
+-- Type Personnel
+INSERT INTO TypePersonnel
+(TypePersonnelId, TypePersonnelName, Describe, States, Del)
+VALUES
+('TP001', 'Type Personnel 1', '...', 1, 1),
+('TP002', 'Type Personnel 2', '...', 1, 1),
+('TP003', 'Type Personnel 3', '...', 1, 1)
+*/
