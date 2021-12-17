@@ -16,7 +16,7 @@ namespace TimeKeeping.Models
         public string SalaryPolicyName { get; set; }
         public string Describe { get; set; }
         public bool? States { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<Personnel> Personnel { get; set; }
     }
