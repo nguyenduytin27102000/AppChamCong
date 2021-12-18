@@ -14,7 +14,7 @@ namespace TimeKeeping.Models
 
         public string TypeWorkScheduleId { get; set; }
         public string TypeWorkScheduleName { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<WorkSchedule> WorkSchedules { get; set; }
     }

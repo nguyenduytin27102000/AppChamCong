@@ -14,7 +14,7 @@ namespace TimeKeeping.Models
 
         public string DaysOfWeekId { get; set; }
         public string DaysOfWeekName { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<Shift> Shifts { get; set; }
     }

@@ -39,7 +39,6 @@ namespace TimeKeeping.ViewModels
         public DateTime TimeOffDate { get; set; } = DateTime.Now;
         public string TimeOffRequestStateId { get; set; }
         public string Feedback { get; set; } = string.Empty;
-        public bool? Del { get; set; } = false;
-
+        public bool? Active { get; set; } = true;
     }
 }

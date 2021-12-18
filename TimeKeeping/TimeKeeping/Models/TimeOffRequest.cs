@@ -21,12 +21,10 @@ namespace TimeKeeping.Models
         public string HandOverWorks { get; set; }
         public string ManagerId { get; set; }
         public string Attachment { get; set; }
-
         public DateTime TimeOffDate { get; set; }
         public string TimeOffRequestStateId { get; set; }
         public string Feedback { get; set; }
-        public bool? Del { get; set; }
-
+        public bool? Active { get; set; }
 
         public virtual FormTimeOff FormTimeOff { get; set; }
         public virtual Personnel Manager { get; set; }
