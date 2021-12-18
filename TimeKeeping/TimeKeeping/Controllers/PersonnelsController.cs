@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,93 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: Personnels
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder,
+                                               string name,
+                                               string office,
+                                               string position,
+                                               string workArea)
         {
-            var timeKeepingDBContext = _context.Personnel.Include(p => p.Office).Include(p => p.Position).Include(p => p.SalaryPolicy).Include(p => p.TypePersonnel).Include(p => p.WorkSchedule).Include(p => p.WorkingArea);
-            return View(await timeKeepingDBContext.ToListAsync());
+            var personnels = from p in _context.Personnel
+                             select p;
+
+            // Searching.
+            ViewData["Name"] = name;
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "OfficeId", "OfficeName", office);
+            ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionName", position);
+            ViewData["WorkingAreaId"] = new SelectList(_context.WorkingAreas, "WorkingAreaId", "WorkingAreaName", workArea);
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                personnels = personnels.Where(p => p.LastName.Contains(name)
+                                                || p.FirstName.Contains(name));
+            }
+
+            if (!String.IsNullOrEmpty(office))
+            {
+                personnels = personnels.Where(p => p.OfficeId == office);
+            }
+
+            if (!String.IsNullOrEmpty(position))
+            {
+                personnels = personnels.Where(p => p.PositionId == position);
+            }
+
+            if (!String.IsNullOrEmpty(workArea))
+            {
+                personnels = personnels.Where(p => p.WorkingAreaId == workArea);
+            }
+
+            // Sorted.
+            ViewData["ActiveParm"] = String.IsNullOrEmpty(sortOrder) ? "active" : "";
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+            ViewData["DateOfBirthParm"] = sortOrder == "date" ? "date_desc" : "date";
+            ViewData["OfficeParm"] = sortOrder == "office" ? "office_desc" : "office";
+            ViewData["PositionParm"] = sortOrder == "position" ? "position_desc" : "position";
+            ViewData["WorkScheduleParm"] = sortOrder == "workSchedule" ? "workSchedule_desc" : "workSchedule";
+
+            switch (sortOrder)
+            {
+                case "name":
+                    personnels = personnels.OrderBy(p => p.LastName);
+                    break;
+                case "name_desc":
+                    personnels = personnels.OrderByDescending(p => p.LastName);
+                    break;
+                case "date":
+                    personnels = personnels.OrderBy(p => p.DateOfBirth);
+                    break;
+                case "date_desc":
+                    personnels = personnels.OrderByDescending(p => p.DateOfBirth);
+                    break;
+                case "office":
+                    personnels = personnels.OrderBy(p => p.Office.OfficeName);
+                    break;
+                case "position":
+                    personnels = personnels.OrderByDescending(p => p.Position.PositionName);
+                    break;
+                case "position_desc":
+                    personnels = personnels.OrderBy(p => p.Position.PositionName);
+                    break;
+                case "office_desc":
+                    personnels = personnels.OrderByDescending(p => p.Office.OfficeName);
+                    break;
+                case "workSchedule":
+                    personnels = personnels.OrderBy(p => p.WorkSchedule.WorkScheduleName);
+                    break;
+                case "workSchedule_desc":
+                    personnels = personnels.OrderBy(p => p.WorkSchedule.WorkScheduleName);
+                    break;
+                case "active":
+                    personnels = personnels.OrderBy(p => p.Del);
+                    break;
+                default:
+                    personnels = personnels.OrderByDescending(p => p.Del);
+                    break;
+            }
+
+
+
+            return View(await personnels.ToListAsync());
         }
 
         // GET: Personnels/Details/5

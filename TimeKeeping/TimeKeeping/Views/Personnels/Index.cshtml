@@ -4,25 +4,75 @@
 	ViewData["Title"] = "List of Personnel";
 }
 
+<form asp-action="Index" method="get">
+	<div class="form-actions no-color">
+		<p>
+			<div class="form-group row">
+				<div class="col-2">
+					<label class="form-label">Find by name:</label>
+				</div>
+				<div class="col-5">
+					<input type="text" name="name" value="@ViewData["name"]" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label class="form-label">Find by office:</label>
+				</div>
+				<div class="col-5">
+					<select asp-items="ViewBag.OfficeId" name="office" class="form-control">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label class="form-label">Find by position:</label>
+				</div>
+				<div class="col-5">
+					<select asp-items="ViewBag.PositionId" name="position" class="form-control">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label class="form-label">Find by work area:</label>
+				</div>
+				<div class="col-5">
+					<select asp-items="ViewBag.WorkingAreaId" name="workArea" class="form-control">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+			<input type="submit" value="Search" class="btn btn-outline-primary" />
+			<a asp-action="Index">Back to Full List</a>
+		</p>
+	</div>
+</form>
+
 <h1 class="text-center">List of Personnel</h1>
 
 <p>
 	<a class="btn btn-primary" asp-action="Create">Create A New Personnel</a>
 </p>
+
+<h5>@Model.Count() staffs</h5>
+
 <table class="table">
-	<thead>
+	<thead class="bg-light">
 		<tr>
 			<th>
 				@Html.DisplayNameFor(model => model.FirstName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.LastName)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Sex)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.DateOfBirth)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["DateOfBirthParm"]">@Html.DisplayNameFor(model => model.DateOfBirth)</a>
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Phone)
@@ -34,25 +84,25 @@
 				@Html.DisplayNameFor(model => model.PersonnelAddress)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Office)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["OfficeParm"]">@Html.DisplayNameFor(model => model.Office)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Position)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["PositionParm"]">@Html.DisplayNameFor(model => model.Position)</a>
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.SalaryPolicy)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.TypePersonnel)
+				@Html.DisplayNameFor(model => model.TypePersonnelId)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.WorkSchedule)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["workScheduleParm"]">@Html.DisplayNameFor(model => model.WorkScheduleId)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.WorkingArea)
+				@Html.DisplayNameFor(model => model.WorkingAreaId)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Del)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Del)</a>
 			</th>
 			<th></th>
 		</tr>
