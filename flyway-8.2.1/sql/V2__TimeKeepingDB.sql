@@ -1,7 +1,7 @@
 
-CREATE DATABASE TimeKeepingDB3
+CREATE DATABASE TimeKeepingDB
 GO
-USE TimeKeepingDB3
+USE TimeKeepingDB
 GO 
 --  Create all tables in DB
 -- module 1: "human resource management"
@@ -265,6 +265,12 @@ CheckinId varchar(10) not null,
 PersonnelId varchar(10) not null,
 Time datetime not null,
 );
+CREATE TABLE TimeKeepingFeedback(
+TimeKeepingFeedbackId varchar(10) not null,
+CheckinId varchar(10) not null,
+Reason Nvarchar(200) not null,
+Time DateTime not null
+);
 -- Create all Key
 -- Keys for Module 1: 
 --   primary key
@@ -442,11 +448,16 @@ constraint PR_PersonnelApplyTimeOffPolicy_TimeOffPolicy foreign key(TimeOffPolic
 --   Primary key
 alter table Checkin
 add constraint PK_Checkin primary key(CheckinId)
+
+alter table TimeKeepingFeedback
+add constraint PK_TimeKeepingFeedback primary key(TimeKeepingFeedbackId)
 --   Foreign key
 ALTER TABLE Checkin
 add constraint PR_Checkin_Personnel foreign key(PersonnelId) references Personnel(PersonnelId)
 
 
+ALTER TABLE TimeKeepingFeedback
+add constraint PR_TimeKeepingFeedback_Checkin foreign key(CheckinId) references Checkin(CheckinId)
 -- Add Data --------------------------------
 /* ERROR
 -- Office
