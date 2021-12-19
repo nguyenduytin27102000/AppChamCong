@@ -21,7 +21,7 @@ namespace TimeKeeping.Controllers
         // GET: TimeKeepingFeedbacks
         public async Task<IActionResult> Index()
         {
-            var timeKeepingDBContext = _context.TimeKeepingFeedbacks.Include(t => t.Checkin);
+            var timeKeepingDBContext = _context.TimeKeepingFeedbacks.Include(t => t.Checkin).Include(t => t.TimeOffRequestState);
             return View(await timeKeepingDBContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace TimeKeeping.Controllers
 
             var timeKeepingFeedback = await _context.TimeKeepingFeedbacks
                 .Include(t => t.Checkin)
+                .Include(t => t.TimeOffRequestState)
                 .FirstOrDefaultAsync(m => m.TimeKeepingFeedbackId == id);
             if (timeKeepingFeedback == null)
             {
@@ -48,11 +49,12 @@ namespace TimeKeeping.Controllers
         [Route("TimeKeepingFeedbacks/Create/{CheckinId}")]
         public IActionResult Create(string CheckinId)
         {
-           if (CheckinId == null)
+            if (CheckinId == null)
             {
                 return NotFound();
             }
-            ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId== CheckinId), "CheckinId", "CheckinId");
+            ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == CheckinId), "CheckinId", "CheckinId");
+            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId =="001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
             return View();
         }
 
@@ -62,7 +64,7 @@ namespace TimeKeeping.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("TimeKeepingFeedbacks/Create/{CheckinId}")]
-        public async Task<IActionResult> Create([Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time")] TimeKeepingFeedback timeKeepingFeedback)
+        public async Task<IActionResult> Create([Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time,TimeOffRequestStateId,Active")] TimeKeepingFeedback timeKeepingFeedback, string CheckinId)
         {
             timeKeepingFeedback.Time = DateTime.Now;
             if (ModelState.IsValid)
@@ -71,7 +73,8 @@ namespace TimeKeeping.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CheckinId"] = new SelectList(_context.Checkins, "CheckinId", "CheckinId", timeKeepingFeedback.CheckinId);
+            ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == CheckinId), "CheckinId", "CheckinId");
+            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
             return View(timeKeepingFeedback);
         }
 
@@ -89,6 +92,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
             ViewData["CheckinId"] = new SelectList(_context.Checkins, "CheckinId", "CheckinId", timeKeepingFeedback.CheckinId);
+            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates, "TimeOffRequestStateId", "TimeOffRequestStateId", timeKeepingFeedback.TimeOffRequestStateId);
             return View(timeKeepingFeedback);
         }
 
@@ -97,7 +101,7 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time")] TimeKeepingFeedback timeKeepingFeedback)
+        public async Task<IActionResult> Edit(string id, [Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time,TimeOffRequestStateId,Active")] TimeKeepingFeedback timeKeepingFeedback)
         {
             if (id != timeKeepingFeedback.TimeKeepingFeedbackId)
             {
@@ -125,6 +129,7 @@ namespace TimeKeeping.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CheckinId"] = new SelectList(_context.Checkins, "CheckinId", "CheckinId", timeKeepingFeedback.CheckinId);
+            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates, "TimeOffRequestStateId", "TimeOffRequestStateId", timeKeepingFeedback.TimeOffRequestStateId);
             return View(timeKeepingFeedback);
         }
 
@@ -138,6 +143,7 @@ namespace TimeKeeping.Controllers
 
             var timeKeepingFeedback = await _context.TimeKeepingFeedbacks
                 .Include(t => t.Checkin)
+                .Include(t => t.TimeOffRequestState)
                 .FirstOrDefaultAsync(m => m.TimeKeepingFeedbackId == id);
             if (timeKeepingFeedback == null)
             {

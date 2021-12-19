@@ -15,6 +15,7 @@ namespace TimeKeeping.Models
         public string CheckinId { get; set; }
         public string PersonnelId { get; set; }
         public DateTime Time { get; set; }
+        public bool? Active { get; set; }
 
         public virtual Personnel Personnel { get; set; }
         public virtual ICollection<TimeKeepingFeedback> TimeKeepingFeedbacks { get; set; }

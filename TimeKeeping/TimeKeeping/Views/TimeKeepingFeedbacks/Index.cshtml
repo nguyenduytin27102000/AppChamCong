@@ -19,7 +19,13 @@
                 @Html.DisplayNameFor(model => model.Time)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Checkin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOffRequestState)
             </th>
             <th></th>
         </tr>
@@ -34,7 +40,13 @@
                 @Html.DisplayFor(modelItem => item.Time)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Checkin.CheckinId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOffRequestState.TimeOffRequestStateName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TimeKeepingFeedbackId">Edit</a> |

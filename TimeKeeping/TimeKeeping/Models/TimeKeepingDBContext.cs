@@ -111,6 +111,8 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.PersonnelId)
                     .IsRequired()
                     .HasMaxLength(10)
@@ -558,6 +560,8 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CheckinId)
                     .IsRequired()
                     .HasMaxLength(10)
@@ -569,11 +573,22 @@ namespace TimeKeeping.Models
 
                 entity.Property(e => e.Time).HasColumnType("datetime");
 
+                entity.Property(e => e.TimeOffRequestStateId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.Checkin)
                     .WithMany(p => p.TimeKeepingFeedbacks)
                     .HasForeignKey(d => d.CheckinId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PR_TimeKeepingFeedback_Checkin");
+
+                entity.HasOne(d => d.TimeOffRequestState)
+                    .WithMany(p => p.TimeKeepingFeedbacks)
+                    .HasForeignKey(d => d.TimeOffRequestStateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PR_TimeKeepingFeedback_TimeOffRequestState");
             });
 
             modelBuilder.Entity<TimeOffApprover>(entity =>

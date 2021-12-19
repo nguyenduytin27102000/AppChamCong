@@ -24,10 +24,22 @@
             @Html.DisplayFor(model => model.Time)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Checkin)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Checkin.CheckinId)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeOffRequestState)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeOffRequestState.TimeOffRequestStateId)
         </dd class>
     </dl>
     
