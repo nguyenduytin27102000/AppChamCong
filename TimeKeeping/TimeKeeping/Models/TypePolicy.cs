@@ -14,7 +14,7 @@ namespace TimeKeeping.Models
 
         public string TypePolicyId { get; set; }
         public string TypePolicyName { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<TimeOffPolicy> TimeOffPolicies { get; set; }
     }

@@ -14,7 +14,7 @@ namespace TimeKeeping.Models
 
         public string TypeShiftId { get; set; }
         public string TypeShiftName { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<Shift> Shifts { get; set; }
     }

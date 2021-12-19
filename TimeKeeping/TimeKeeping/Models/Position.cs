@@ -18,7 +18,7 @@ namespace TimeKeeping.Models
         public string TypePositionId { get; set; }
         public decimal LowestSalary { get; set; }
         public decimal HighestSalary { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual TypePosition TypePosition { get; set; }
         public virtual WorkingArea WorkingArea { get; set; }

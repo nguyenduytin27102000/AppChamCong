@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TimeKeeping.Models.TimeKeepingFeedback>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Overview Feedback Timekeeping </h1>
+
+<table class="table table-striped table-bordered table-success table-hover table-light">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Reason)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Checkin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOffRequestState)
+            </th>
+            <th> Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Checkin.CheckinId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOffRequestState.TimeOffRequestStateName)
+            </td>
+            <td>               
+                <a asp-controller="Checkins" asp-action="Edit" asp-route-id="@item.CheckinId" class="btn btn-primary">View</a>
+                <a asp-action="Deny" asp-route-id="@item.TimeKeepingFeedbackId" ><button class="btn btn-danger" onclick="window.alert('Done')">Deny</button></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

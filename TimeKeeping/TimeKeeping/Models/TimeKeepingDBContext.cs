@@ -19,6 +19,7 @@ namespace TimeKeeping.Models
 
         public virtual DbSet<ApplySeniorityPolicy> ApplySeniorityPolicies { get; set; }
         public virtual DbSet<ApprovalProcess> ApprovalProcesses { get; set; }
+        public virtual DbSet<Checkin> Checkins { get; set; }
         public virtual DbSet<CheckinPolicy> CheckinPolicies { get; set; }
         public virtual DbSet<DayOff> DayOffs { get; set; }
         public virtual DbSet<DaysOfWeek> DaysOfWeeks { get; set; }
@@ -31,6 +32,7 @@ namespace TimeKeeping.Models
         public virtual DbSet<SalaryPolicy> SalaryPolicies { get; set; }
         public virtual DbSet<SeniorityPolicy> SeniorityPolicies { get; set; }
         public virtual DbSet<Shift> Shifts { get; set; }
+        public virtual DbSet<TimeKeepingFeedback> TimeKeepingFeedbacks { get; set; }
         public virtual DbSet<TimeOffApprover> TimeOffApprovers { get; set; }
         public virtual DbSet<TimeOffFollower> TimeOffFollowers { get; set; }
         public virtual DbSet<TimeOffPolicy> TimeOffPolicies { get; set; }
@@ -51,14 +53,13 @@ namespace TimeKeeping.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.;Database=TimeKeepingDB;Trusted_Connection=True;UID=sa;PWD=123456");
-                optionsBuilder.UseLazyLoadingProxies();
+                optionsBuilder.UseSqlServer("Server=SONIC\\SQLEXPRESS;Database=TimeKeepingDB;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "Vietnamese_CI_AS");
 
             modelBuilder.Entity<ApplySeniorityPolicy>(entity =>
             {
@@ -95,11 +96,35 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ApprovalProcessName)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+            modelBuilder.Entity<Checkin>(entity =>
+            {
+                entity.ToTable("Checkin");
+
+                entity.Property(e => e.CheckinId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.PersonnelId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Time).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Personnel)
+                    .WithMany(p => p.Checkins)
+                    .HasForeignKey(d => d.PersonnelId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PR_Checkin_Personnel");
             });
 
             modelBuilder.Entity<CheckinPolicy>(entity =>
@@ -110,11 +135,11 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CheckinPolicyName)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<DayOff>(entity =>
@@ -125,9 +150,9 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DayOffAt).HasColumnType("datetime");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.DayOffAt).HasColumnType("datetime");
 
                 entity.Property(e => e.FromHour)
                     .IsRequired()
@@ -159,11 +184,11 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.DaysOfWeekName)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<FormTimeOff>(entity =>
@@ -174,12 +199,12 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ApprovalProcessId)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.FormTimeOffName)
                     .IsRequired()
@@ -227,7 +252,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Office>(entity =>
@@ -238,7 +263,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.OfficeAddress)
                     .IsRequired()
@@ -265,13 +290,13 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ActualSalary).HasColumnType("money");
 
                 entity.Property(e => e.BasicSalary).HasColumnType("money");
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -381,7 +406,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
 
@@ -408,7 +433,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.HighestSalary).HasColumnType("money");
 
@@ -449,7 +474,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Describe).HasMaxLength(100);
 
@@ -468,7 +493,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Shift>(entity =>
@@ -479,6 +504,8 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.DayOff)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -487,8 +514,6 @@ namespace TimeKeeping.Models
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
 
@@ -527,6 +552,45 @@ namespace TimeKeeping.Models
                     .HasConstraintName("PR_Shift_WorkSchedule");
             });
 
+            modelBuilder.Entity<TimeKeepingFeedback>(entity =>
+            {
+                entity.ToTable("TimeKeepingFeedback");
+
+                entity.Property(e => e.TimeKeepingFeedbackId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CheckinId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Reason)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Time).HasColumnType("datetime");
+
+                entity.Property(e => e.TimeOffRequestStateId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Checkin)
+                    .WithMany(p => p.TimeKeepingFeedbacks)
+                    .HasForeignKey(d => d.CheckinId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PR_TimeKeepingFeedback_Checkin");
+
+                entity.HasOne(d => d.TimeOffRequestState)
+                    .WithMany(p => p.TimeKeepingFeedbacks)
+                    .HasForeignKey(d => d.TimeOffRequestStateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PR_TimeKeepingFeedback_TimeOffRequestState");
+            });
+
             modelBuilder.Entity<TimeOffApprover>(entity =>
             {
                 entity.HasKey(e => new { e.PersonnelId, e.FormTimeOffId });
@@ -541,7 +605,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.FormTimeOff)
                     .WithMany(p => p.TimeOffApprovers)
@@ -570,7 +634,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.FormTimeOff)
                     .WithMany(p => p.TimeOffFollowers)
@@ -593,7 +657,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Describe).HasMaxLength(100);
 
@@ -621,9 +685,9 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Attachment).HasMaxLength(100);
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Attachment).HasMaxLength(100);
 
                 entity.Property(e => e.Feedback).HasMaxLength(100);
 
@@ -692,7 +756,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TimeOffRequestStateName)
                     .IsRequired()
@@ -705,7 +769,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Describe).HasMaxLength(100);
 
@@ -724,7 +788,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TypePolicyName)
                     .IsRequired()
@@ -739,7 +803,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Describe).HasMaxLength(100);
 
@@ -756,7 +820,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TypeShiftName)
                     .IsRequired()
@@ -771,7 +835,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TypeTimeOffName)
                     .IsRequired()
@@ -786,7 +850,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.TypeWorkScheduleName)
                     .IsRequired()
@@ -801,12 +865,12 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CheckinPolicyId)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.MinutesEarly).HasDefaultValueSql("((15))");
 
@@ -863,7 +927,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Describe).HasMaxLength(100);
 
@@ -888,7 +952,7 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.FormTimeOff)
                     .WithMany(p => p.WorkingAreaApplyFormTimeOffs)

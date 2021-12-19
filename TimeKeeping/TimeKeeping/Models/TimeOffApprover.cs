@@ -9,7 +9,7 @@ namespace TimeKeeping.Models
     {
         public string PersonnelId { get; set; }
         public string FormTimeOffId { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual FormTimeOff FormTimeOff { get; set; }
         public virtual Personnel Personnel { get; set; }
