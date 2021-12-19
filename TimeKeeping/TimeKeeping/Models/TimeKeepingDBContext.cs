@@ -32,6 +32,7 @@ namespace TimeKeeping.Models
         public virtual DbSet<SalaryPolicy> SalaryPolicies { get; set; }
         public virtual DbSet<SeniorityPolicy> SeniorityPolicies { get; set; }
         public virtual DbSet<Shift> Shifts { get; set; }
+        public virtual DbSet<TimeKeepingFeedback> TimeKeepingFeedbacks { get; set; }
         public virtual DbSet<TimeOffApprover> TimeOffApprovers { get; set; }
         public virtual DbSet<TimeOffFollower> TimeOffFollowers { get; set; }
         public virtual DbSet<TimeOffPolicy> TimeOffPolicies { get; set; }
@@ -52,7 +53,7 @@ namespace TimeKeeping.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=SONIC\\SQLExpress;Database=TimeKeepingDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=SONIC\\SQLEXPRESS;Database=TimeKeepingDB;Trusted_Connection=True;");
             }
         }
 
@@ -109,6 +110,8 @@ namespace TimeKeeping.Models
                 entity.Property(e => e.CheckinId)
                     .HasMaxLength(10)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.PersonnelId)
                     .IsRequired()
@@ -547,6 +550,45 @@ namespace TimeKeeping.Models
                     .HasForeignKey(d => d.WorkScheduleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PR_Shift_WorkSchedule");
+            });
+
+            modelBuilder.Entity<TimeKeepingFeedback>(entity =>
+            {
+                entity.ToTable("TimeKeepingFeedback");
+
+                entity.Property(e => e.TimeKeepingFeedbackId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CheckinId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Reason)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Time).HasColumnType("datetime");
+
+                entity.Property(e => e.TimeOffRequestStateId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Checkin)
+                    .WithMany(p => p.TimeKeepingFeedbacks)
+                    .HasForeignKey(d => d.CheckinId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PR_TimeKeepingFeedback_Checkin");
+
+                entity.HasOne(d => d.TimeOffRequestState)
+                    .WithMany(p => p.TimeKeepingFeedbacks)
+                    .HasForeignKey(d => d.TimeOffRequestStateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PR_TimeKeepingFeedback_TimeOffRequestState");
             });
 
             modelBuilder.Entity<TimeOffApprover>(entity =>

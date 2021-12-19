@@ -109,11 +109,15 @@ namespace TimeKeeping.Controllers
             }
 
             var checkin = await _context.Checkins.FindAsync(id);
+                       
             if (checkin == null)
             {
                 return NotFound();
             }
-            ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId", checkin.PersonnelId);
+            var personnel = await _context.Personnel.FindAsync(checkin.PersonnelId);          
+            ViewBag.LastName = personnel.LastName;
+            ViewData["PersonnelId"] = new SelectList(_context.Personnel.Where(p => p.PersonnelId==checkin.PersonnelId), "PersonnelId", "PersonnelId", checkin.PersonnelId);
+            ViewBag.id = id;
             return View(checkin);
         }
 
@@ -128,11 +132,14 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-
+            TimeKeepingFeedback timeKeepingFeedback = await _context.TimeKeepingFeedbacks.FirstOrDefaultAsync(c => c.CheckinId == checkin.CheckinId);
+            
             if (ModelState.IsValid)
             {
                 try
                 {
+                    timeKeepingFeedback.TimeOffRequestStateId ="003";
+                    _context.Update(timeKeepingFeedback);
                     _context.Update(checkin);
                     await _context.SaveChangesAsync();
                 }
@@ -147,9 +154,12 @@ namespace TimeKeeping.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","TimeKeepingFeedbacks");               
             }
-            ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId", checkin.PersonnelId);
+            var personnel = await _context.Personnel.FindAsync(checkin.PersonnelId);
+            ViewBag.LastName = personnel.LastName;
+            ViewData["PersonnelId"] = new SelectList(_context.Personnel.Where(p => p.PersonnelId == checkin.PersonnelId), "PersonnelId", "PersonnelId", checkin.PersonnelId);
+            ViewBag.id = id;
             return View(checkin);
         }
 
