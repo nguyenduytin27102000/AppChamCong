@@ -19,13 +19,20 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: Checkins
-        [Route("Checkins/Index/{id}/{month}/{year}")]
+    
         public async Task<IActionResult> Index(string id,int month,int year)
         {
-            if (id == null || month == null || year == null)
+            if (id == null)
             {
                 return NotFound();
             }
+            if (month == 0)
+                month = DateTime.Now.Month;
+            if( year == 0)
+                year = DateTime.Now.Year;
+            ViewBag.Month = month;
+            ViewBag.Year = year;
+            ViewBag.Id = id;
             var timeKeepingDBContext = _context.Checkins.Include(c => c.Personnel);
             var per = (from c in _context.Checkins
                        join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
@@ -45,41 +52,11 @@ namespace TimeKeeping.Controllers
                            DayOff = s.DayOff,
                            EndTime = s.EndTime,
                        });
+          
             return View(per.ToList());
             
         }
-
-        [HttpPost]
-        [Route("Checkins/Index/{id}/{month}/{year}")]
-        public async Task<IActionResult> Index(string id,DateTime month)
-        {
-            if (id == null || month == null)
-            {
-                return NotFound();
-            }
-            var timeKeepingDBContext = _context.Checkins.Include(c => c.Personnel);
-            var per = (from c in _context.Checkins
-                       join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
-                       join w in _context.WorkSchedules on p.WorkScheduleId equals w.WorkScheduleId
-                       join s in _context.Shifts on w.WorkScheduleId equals s.WorkScheduleId
-                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <= 5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5)) && (c.PersonnelId == id && c.Time.Month == month.Month && c.Time.Year == month.Year)
-                       select new CheckinWithView
-                       {
-                           CheckinId = c.CheckinId,
-                           Time = c.Time,
-                           Personnal = p.LastName,
-                           WorkScheduleName = w.WorkScheduleName,
-                           MinutesLate = w.MinutesLate,
-                           MinutesEarly = w.MinutesEarly,
-                           Regulations = w.Regulations,
-                           StartTime = s.StartTime,
-                           DayOff = s.DayOff,
-                           EndTime = s.EndTime,
-                       });
-            return View(per.ToList());
-
-        }
-
+       
         // GET: Checkins/Details/5
         public async Task<IActionResult> Details(string id)
         {

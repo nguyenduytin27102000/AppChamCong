@@ -4,8 +4,51 @@
     ViewData["Title"] = "Index";
 
 }
-
+<style>
+    #tsTime {
+        color: red;
+        font-size: large;
+    }
+</style>
 <h1>Personal Timesheet</h1>
+<form asp-action="Index" asp-controller="Checkins" method="GET" class="form-inline">
+    <div class="form-group">
+        <label for="month" class="mr-2">Select: Month</label>
+        <select  id="month" name="month" class="form-control mr-2">
+            @{
+                for (int i = 1; i <= 12; i++)
+                {
+                    if(i == ViewBag.Month)
+                    {
+                        <option selected>@i</option>
+                    }
+                    <option>@i</option>
+                }
+            }
+        </select>
+        <label for="year" class="mr-2">Select: Year</label>
+        <select id="year" name="year" class="form-control mr-2">
+            @{
+               
+                for (int i = 1990; i <= 2025; i++)
+                {
+                    if(i == ViewBag.Year)
+                    {
+                        <option selected>@i</option>
+                    }
+                    <option>@i</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="text" id="id" name="id" value="@ViewBag.Id" class="form-control" hidden>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Go" class="btn btn-primary" />
+    </div>
+</form>
+<p id="tsTime">Timesheet of @ViewBag.Month-@ViewBag.Year</p>
 <table class="table table-success table-striped table-bordered">
     <thead>
         <tr>
@@ -78,7 +121,7 @@
                 </td>
 
                 <td>
-                    <a asp-action="#khieunai" asp-route-id="@item.CheckinId">Feedback</a>
+                    <a asp-controller="TimeKeepingFeedbacks" asp-action="Create" asp-route-id="@item.CheckinId">Feedback</a>
                 </td>
             </tr>
             if (@item.DayOff != true)
@@ -86,16 +129,6 @@
         }
         <tr>
             <h2>Your total shifts: <span style="color:red;">@count </span> . Your total minutes late: <span style="color:red;"> @totalMinuteLates </span> </h2>
-            <form asp-action="Index" method="POST">
-
-                <div class="form-group">
-                    <label for="month">Select: Month and year:</label>
-                    <input type="month" id="month" name="month" class="form-control">
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Go" class="btn btn-primary" />
-                </div>
-            </form>
         </tr>
     </tbody>
 </table>
