@@ -22,7 +22,7 @@ namespace TimeKeeping.Controllers
         public async Task<IActionResult> Index()
         {
             var timeKeepingDBContext = _context.TimeKeepingFeedbacks.Include(t => t.Checkin).Include(t => t.TimeOffRequestState);
-            return View(await timeKeepingDBContext.ToListAsync());
+            return View(await timeKeepingDBContext.OrderBy(x => x.TimeOffRequestStateId).ToListAsync());
         }
 
         // GET: TimeKeepingFeedbacks/Details/5
