@@ -132,14 +132,18 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-            TimeKeepingFeedback timeKeepingFeedback = await _context.TimeKeepingFeedbacks.FirstOrDefaultAsync(c => c.CheckinId == checkin.CheckinId);
-            
+            //TimeKeepingFeedback timeKeepingFeedback = await _context.TimeKeepingFeedbacks.FirstOrDefaultAsync(c => c.CheckinId == checkin.CheckinId);	    
+            var timeKeepingFeedbacks = _context.TimeKeepingFeedbacks.Where( t => t.CheckinId == checkin.CheckinId).ToList();          
             if (ModelState.IsValid)
             {
                 try
                 {
-                    timeKeepingFeedback.TimeOffRequestStateId ="003";
-                    _context.Update(timeKeepingFeedback);
+                    
+		foreach (var fb in timeKeepingFeedbacks)
+                    {
+                        fb.TimeOffRequestStateId = "003";
+                        _context.Update(fb);
+                    }
                     _context.Update(checkin);
                     await _context.SaveChangesAsync();
                 }
