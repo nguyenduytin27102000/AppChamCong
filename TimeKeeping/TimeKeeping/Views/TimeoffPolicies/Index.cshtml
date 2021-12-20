@@ -1,19 +1,46 @@
 ﻿@model IEnumerable<TimeKeeping.Models.TimeOffPolicy>
 
 @{
-    ViewData["Title"] = "List of Timeoff Policy";
+	ViewData["Title"] = "List of Timeoff Policy";
 }
 
-<h1 class="text-center">List of Timeoff Policy</h1>
+<form asp-action="Index" method="post">
+	<div class="form-actions no-color">
+		<div class="form-group row">
+			<div class="col-2">
+				<label class="form-label">Find by name:</label>
+			</div>
+			<div class="col-5">
+				<input type="text" name="name" value="@ViewData["name"]" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-2">
+				<label class="form-label">Find by type:</label>
+			</div>
+			<div class="col-5">
+				<select asp-items="ViewBag.TypePolicyId" name="type" class="form-control">
+					<option value=""></option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<input type="submit" value="Search" class="btn btn-outline-primary" />
+	<a asp-action="Index">Back to Full List</a>
+</form>
 
+<h1 class="text-center">List of Timeoff Policy</h1>
 <p>
 	<a class="btn btn-primary" asp-action="Create">Create New Timeoff Policy</a>
 </p>
+
+<h5>@Model.Count() timeoff policies</h5>
+
 <table class="table">
-    <thead>
+	<thead class="bg-light">
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.TimeOffPolicyName)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.TimeOffPolicyName)</a>
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.NumberOfDaysOffStandard)
@@ -28,51 +55,70 @@
 				@Html.DisplayNameFor(model => model.TypePolicy)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Del)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Del)</a>
 			</th>
 			<th></th>
 		</tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model)
-{
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.TimeOffPolicyName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.NumberOfDaysOffStandard)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.NumberOfDaysOffLastYear)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Describe)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.TypePolicy.TypePolicyName)
-			</td>
-			<td>
-				@*@Html.DisplayFor(modelItem => item.Del)*@
-				@{
-					string displayDeleteSate;
-					if (item.Del == true)
-					{
-						displayDeleteSate = "Using";
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.TimeOffPolicyName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NumberOfDaysOffStandard)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NumberOfDaysOffLastYear)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Describe)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TypePolicy.TypePolicyName)
+				</td>
+				<td>
+					@*@Html.DisplayFor(modelItem => item.Del)*@
+					@{
+						string displayDeleteSate;
+						if (item.Del == true)
+						{
+							displayDeleteSate = "Using";
+						}
+						else
+						{
+							displayDeleteSate = "Don't use";
+						}
 					}
-					else
-					{
-						displayDeleteSate = "Don't use";
+					@displayDeleteSate
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId" class="btn btn-warning">Edit</a>
+					<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
+					@{
+						if (item.Del == true)
+						{
+							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
+						}
+						else
+						{
+							<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.TimeOffPolicyId">Restore</a>
+						}
 					}
-				}
-				@displayDeleteSate
-			</td>
-			<td>
-				<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId">Edit</a> |
-				<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId">Details</a> |
-				<a asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
-			</td>
-		</tr>
-}
-    </tbody>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
+
+<script>
+	function deleteAlert() {
+		alert("Delete successful!");
+	}
+
+	function restoreAlert() {
+		alert("Restore successful!");
+	}
+</script>

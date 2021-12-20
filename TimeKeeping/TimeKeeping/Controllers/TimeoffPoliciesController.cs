@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,51 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: TimeOffPolicies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder,
+                                               string name,
+                                               string type)
         {
             // Get list timeoff policy in database for display.
-            var timeKeepingDBContext = _context.TimeOffPolicies.Include(t => t.TypePolicy);
+            var timeOffPolicies = from t in _context.TimeOffPolicies
+                                  select t;
+
+            // Search.
+            ViewData["Name"] = name;
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", type);
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                timeOffPolicies = timeOffPolicies.Where(t => t.TimeOffPolicyName.Contains(name));
+            }
+
+            if (!String.IsNullOrEmpty(type))
+            {
+                timeOffPolicies = timeOffPolicies.Where(t => t.TypePolicyId == type);
+            }
+
+            // Sorted.
+            ViewData["ActiveParm"] = String.IsNullOrEmpty(sortOrder) ? "active" : "";
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            switch (sortOrder)
+            {
+                case "name":
+                    timeOffPolicies = timeOffPolicies.OrderBy(t => t.TimeOffPolicyName);
+                    break;
+                case "name_desc":
+                    timeOffPolicies = timeOffPolicies.OrderByDescending(t => t.TimeOffPolicyName);
+                    break;
+                case "active":
+                    timeOffPolicies = timeOffPolicies.OrderBy(t => t.Del);
+                    break;
+                default:
+                    timeOffPolicies = timeOffPolicies.OrderByDescending(t => t.Del);
+                    break;
+            }
 
             // Pass arguments for index view.
             // After that index will display data.
-            return View(await timeKeepingDBContext.ToListAsync());
+            return View(await timeOffPolicies.ToListAsync());
         }
 
         // GET: TimeOffPolicies/Details/5
@@ -181,8 +219,12 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
+            timeOffPolicy.Del = false;
+            _context.Update(timeOffPolicy);
+            await _context.SaveChangesAsync();
+
             // Pass argument for view to display information of this timeoff policy.
-            return View(timeOffPolicy);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: TimeOffPolicies/Delete/5
@@ -199,6 +241,33 @@ namespace TimeKeeping.Controllers
         private bool TimeOffPolicyExists(string id)
         {
             return _context.TimeOffPolicies.Any(e => e.TimeOffPolicyId == id);
+        }
+
+        // GET: TimeOffPolicies/Retore/5
+        public async Task<IActionResult> Restore(string id)
+        {
+            // If this id doesn't exict, then display not found.
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var timeOffPolicy = await _context.TimeOffPolicies
+                .Include(t => t.TypePolicy)
+                .FirstOrDefaultAsync(m => m.TimeOffPolicyId == id);
+
+            // If this timeoff policy doesn't exict, then display not found.
+            if (timeOffPolicy == null)
+            {
+                return NotFound();
+            }
+
+            timeOffPolicy.Del = true;
+            _context.Update(timeOffPolicy);
+            await _context.SaveChangesAsync();
+
+            // Pass argument for view to display information of this timeoff policy.
+            return RedirectToAction(nameof(Index));
         }
     }
 }
