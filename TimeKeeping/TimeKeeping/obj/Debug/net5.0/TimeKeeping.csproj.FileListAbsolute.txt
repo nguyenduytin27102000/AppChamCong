@@ -331,3 +331,4 @@ C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug
 C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\Shifts\Index.cshtml.g.cs
 C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\_CreateShiftsPartial.cshtml.g.cs
 C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\_ShiftsInWorkSchedulePartial.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\bin\Debug\net5.0\Web.IISProfile.config

@@ -24,7 +24,7 @@
 					<label asp-for="TypeWorkScheduleId" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<select asp-for="TypeWorkScheduleId" class="form-control" asp-items="ViewBag.TypeWorkScheduleId" id="duration">
+					<select asp-for="TypeWorkScheduleId" asp-items="ViewBag.TypeWorkScheduleId" class="form-control" id="duration" name="duration" rules="required">
 						<option value=""></option>
 					</select>
 				</div>
@@ -34,17 +34,19 @@
 				<div class="col-2">
 					<label class="control-label">Work cycle on: </label>
 				</div>
+
 				<div class="col-10">
 					<div class="form-group row">
+						@*Monday*@
 						<div class="col-2">
 							<label class="control-label">Monday</label>
 						</div>
 						<div class="col-1">
-							<input type="checkbox" id="mondayCheck" onclick="mondayFunction()" />
+							<input type="checkbox" id="mondayCheck" onclick="mondayFunction()" name="monday" />
 						</div>
 						<div id="mondayText" style="display:none" class="col-9">
 							<div class="d-none" id="halfday-container-monday">
-								<select class="form-control">
+								<select class="form-control" name="monday-half">
 									<option value="1">morning</option>
 									<option value="2">afternoon</option>
 								</select>
@@ -53,27 +55,30 @@
 							<div class="row justify-content-between d-none" id="specify-container-monday">
 								<span>from</span>
 								<div class="col-md-5">
-									<select id="start-hour" class="form-control">
+									<select id="start-hour-monday" class="form-control" name="start-hour-monday">
 									</select>
 								</div>
 								<span>to</span>
 								<div class="col-md-5">
-									<select id="end-hour" class="form-control">
+									<select id="end-hour-monday" class="form-control" name="end-hour-monday">
 									</select>
 								</div>
 							</div>
 						</div>
 					</div>
+
+
+					@*Tuesday*@
 					<div class="form-group row">
 						<div class="col-2">
 							<label class="control-label">Tuesday</label>
 						</div>
 						<div class="col-1">
-							<input type="checkbox" id="tuesdayCheck" onclick="tuesdayFunction()" />
+							<input type="checkbox" id="tuesdayCheck" onclick="tuesdayFunction()" name="tuesday" />
 						</div>
 						<div id="tuesdayText" style="display:none" class="col-9">
 							<div class="d-none" id="halfday-container-tuesday">
-								<select class="form-control">
+								<select class="form-control" name="tuesday-half">
 									<option value="1">morning</option>
 									<option value="2">afternoon</option>
 								</select>
@@ -82,97 +87,195 @@
 							<div class="row justify-content-between d-none" id="specify-container-tuesday">
 								<span>from</span>
 								<div class="col-md-5">
-									<select id="start-hour" class="form-control">
+									<select id="start-hour-tuesday" class="form-control" name="start-hour-tuesday">
 									</select>
 								</div>
 								<span>to</span>
 								<div class="col-md-5">
-									<select id="end-hour" class="form-control">
+									<select id="end-hour-tuesday" class="form-control" name="end-hour-tuesday">
 									</select>
 								</div>
 							</div>
 						</div>
 					</div>
+
+
+					@* Wednesday *@
 					<div class="form-group row">
 						<div class="col-2">
 							<label class="control-label">Wednesday</label>
 						</div>
-						<div class="col-5">
-							<input type="checkbox" id="wednesdayCheck" onclick="wednesdayFunction()" />
+						<div class="col-1">
+							<input type="checkbox" id="wednesdayCheck" onclick="wednesdayFunction()" name="wednesday" />
 						</div>
 						<div id="wednesdayText" style="display:none" class="col-9">
-							<div class="d-none" id="halfday-container">
-								<select class="form-control">
+							<div class="d-none" id="halfday-container-wednesday">
+								<select class="form-control" name="wednesday-half">
 									<option value="1">morning</option>
 									<option value="2">afternoon</option>
 								</select>
 							</div>
 
-							<div class="row justify-content-between d-none" id="specify-container">
+							<div class="row justify-content-between d-none" id="specify-container-wednesday">
 								<span>from</span>
 								<div class="col-md-5">
-									<select id="start-hour" class="form-control">
+									<select id="start-hour-wednesday" class="form-control" name="start-hour-wednesday">
 									</select>
 								</div>
 								<span>to</span>
 								<div class="col-md-5">
-									<select id="end-hour" class="form-control">
+									<select id="end-hour-wednesday" class="form-control" name="end-hour-wednesday">
 									</select>
 								</div>
 							</div>
 						</div>
 					</div>
+
+					@* Thursday *@
 					<div class="form-group row">
 						<div class="col-2">
 							<label class="control-label">Thursday</label>
 						</div>
-						<div class="col-5">
-							<input type="checkbox" />
+						<div class="col-1">
+							<input type="checkbox" id="thursdayCheck" onclick="thursdayFunction()" name="thursday" />
+						</div>
+						<div id="thursdayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container-thursday">
+								<select class="form-control" name="thursday-half">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container-thursday">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour-thursday" class="form-control" name="start-hour-thursday">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour-thursday" class="form-control" name="end-hour-thursday">
+									</select>
+								</div>
+							</div>
 						</div>
 					</div>
+
+					@* Friday *@
 					<div class="form-group row">
 						<div class="col-2">
 							<label class="control-label">Friday</label>
 						</div>
-						<div class="col-5">
-							<input type="checkbox" />
+						<div class="col-1">
+							<input type="checkbox" id="fridayCheck" onclick="fridayFunction()" name="friday" />
+						</div>
+						<div id="fridayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container-friday">
+								<select class="form-control" name="friday-half">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container-friday">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour-friday" class="form-control" name="start-hour-friday">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour-friday" class="form-control" name="end-hour-friday">
+									</select>
+								</div>
+							</div>
 						</div>
 					</div>
+
+					@* Saturday *@
 					<div class="form-group row">
 						<div class="col-2">
 							<label class="control-label">Saturday</label>
 						</div>
-						<div class="col-5">
-							<input type="checkbox" />
+						<div class="col-1">
+							<input type="checkbox" id="saturdayCheck" onclick="saturdayFunction()" name="saturday" />
+						</div>
+						<div id="saturdayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container-saturday">
+								<select class="form-control" name="saturday-half">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container-saturday">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour-saturday" class="form-control" name="start-hour-saturday">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour-saturday" class="form-control" name="end-hour-saturday">
+									</select>
+								</div>
+							</div>
 						</div>
 					</div>
+
+					@* Sunday *@
 					<div class="form-group row">
 						<div class="col-2">
 							<label class="control-label">Sunday</label>
 						</div>
-						<div class="col-5">
-							<input type="checkbox" />
+						<div class="col-1">
+							<input type="checkbox" id="sundayCheck" onclick="sundayFunction()" name="sunday" />
+						</div>
+						<div id="sundayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container-sunday">
+								<select class="form-control" name="sunday-half">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container-sunday">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour-sunday" class="form-control" name="start-hour-sunday">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour-sunday" class="form-control" name="end-hour-sunday">
+									</select>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<div class="col-2">
-					<label asp-for="StartDay" class="control-label"></label>
+			
+			<div>
+				<div class="form-group row">
+					<div class="col-2">
+						<label asp-for="StartDay" class="control-label"></label>
+					</div>
+					<div class="col-3">
+						<input asp-for="StartDay" class="form-control" />
+						<span asp-validation-for="StartDay" class="text-danger form-message"></span>
+					</div>
 				</div>
-				<div class="col-3">
-					<input asp-for="StartDay" class="form-control" rules="required" />
-					<span asp-validation-for="StartDay" class="text-danger form-message"></span>
-				</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-2">
-					<label asp-for="EndDay" class="control-label"></label>
-				</div>
-				<div class="col-3">
-					<input asp-for="EndDay" class="form-control" rules="required" />
-					<span asp-validation-for="EndDay" class="text-danger form-message"></span>
+				<div class="form-group row">
+					<div class="col-2">
+						<label asp-for="EndDay" class="control-label"></label>
+					</div>
+					<div class="col-3">
+						<input asp-for="EndDay" class="form-control" rules="greaterEqual:#StartDay|required" />
+						<span asp-validation-for="EndDay" class="text-danger form-message"></span>
+					</div>
 				</div>
 			</div>
 
@@ -204,44 +307,188 @@
 			const duration = document.querySelector('#duration');
 
 			// monday
-			const halfdayContainer = document.querySelector('#halfday-container-monday');
-			const specifyContainer = document.querySelector('#specify-container-monday');
-			const sleStartHour = document.querySelector('#start-hour');
-			const sleEndHour = document.querySelector('#end-hour');
+			const halfdayContainerMonday = document.querySelector('#halfday-container-monday');
+			const specifyContainerMonday = document.querySelector('#specify-container-monday');
+			const sleStartHourMonday = document.querySelector('#start-hour-monday');
+			const sleEndHourMonday = document.querySelector('#end-hour-monday');
 
+			// tuesday
+			const halfdayContainerTuesday = document.querySelector('#halfday-container-tuesday');
+			const specifyContainerTuesday = document.querySelector('#specify-container-tuesday');
+			const sleStartHourTuesday = document.querySelector('#start-hour-tuesday');
+			const sleEndHourTuesday = document.querySelector('#end-hour-tuesday');
+
+			// wednesday
+			const halfdayContainerWednesday = document.querySelector('#halfday-container-wednesday');
+			const specifyContainerWednesday = document.querySelector('#specify-container-wednesday');
+			const sleStartHourWednesday = document.querySelector('#start-hour-wednesday');
+			const sleEndHourWednesday = document.querySelector('#end-hour-wednesday');
+
+			// thursday
+			const halfdayContainerThursday = document.querySelector('#halfday-container-thursday');
+			const specifyContainerThursday = document.querySelector('#specify-container-thursday');
+			const sleStartHourThursday = document.querySelector('#start-hour-thursday');
+			const sleEndHourThursday = document.querySelector('#end-hour-thursday');
+
+			// friday
+			const halfdayContainerFriday = document.querySelector('#halfday-container-friday');
+			const specifyContainerFriday = document.querySelector('#specify-container-friday');
+			const sleStartHourFriday = document.querySelector('#start-hour-friday');
+			const sleEndHourFriday = document.querySelector('#end-hour-friday');
+
+			// saturday
+			const halfdayContainerSaturday = document.querySelector('#halfday-container-saturday');
+			const specifyContainerSaturday = document.querySelector('#specify-container-saturday');
+			const sleStartHourSaturday = document.querySelector('#start-hour-saturday');
+			const sleEndHourSaturday = document.querySelector('#end-hour-saturday');
+
+			// sunday
+			const halfdayContainerSunday = document.querySelector('#halfday-container-sunday');
+			const specifyContainerSunday = document.querySelector('#specify-container-sunday');
+			const sleStartHourSunday = document.querySelector('#start-hour-sunday');
+			const sleEndHourSunday = document.querySelector('#end-hour-sunday');
 
 			// event
 			duration.onchange = function (e) {
 				const value = e.target.value;
 				if (value == 1) {
-					specifyContainer.classList.add('d-none');
-					halfdayContainer.classList.add('d-none');
+					// monday
+					specifyContainerMonday.classList.add('d-none');
+					halfdayContainerMonday.classList.add('d-none');
+					// tuesday
+					specifyContainerTuesday.classList.add('d-none');
+					halfdayContainerTuesday.classList.add('d-none');
+					// wednesday
+					specifyContainerWednesday.classList.add('d-none');
+					halfdayContainerWednesday.classList.add('d-none');
+					// thursday
+					specifyContainerThursday.classList.add('d-none');
+					halfdayContainerThursday.classList.add('d-none');
+					// friday
+					specifyContainerFriday.classList.add('d-none');
+					halfdayContainerFriday.classList.add('d-none');
+					// saturday
+					specifyContainerSaturday.classList.add('d-none');
+					halfdayContainerSaturday.classList.add('d-none');
+					// sunday
+					specifyContainerSunday.classList.add('d-none');
+					halfdayContainerSunday.classList.add('d-none');
 				}
 				else if (value == 2) {
-					specifyContainer.classList.add('d-none');
-					halfdayContainer.classList.remove('d-none');
+					// monday
+					specifyContainerMonday.classList.add('d-none');
+					halfdayContainerMonday.classList.remove('d-none');
+					// tuesday
+					specifyContainerTuesday.classList.add('d-none');
+					halfdayContainerTuesday.classList.remove('d-none');
+					// wednesday
+					specifyContainerWednesday.classList.add('d-none');
+					halfdayContainerWednesday.classList.remove('d-none');
+					// thursday
+					specifyContainerThursday.classList.add('d-none');
+					halfdayContainerThursday.classList.remove('d-none');
+					// friday
+					specifyContainerFriday.classList.add('d-none');
+					halfdayContainerFriday.classList.remove('d-none');
+					// saturday
+					specifyContainerSaturday.classList.add('d-none');
+					halfdayContainerSaturday.classList.remove('d-none');
+					// sunday
+					specifyContainerSunday.classList.add('d-none');
+					halfdayContainerSunday.classList.remove('d-none');
 				}
 				else if (value == 3) {
-					specifyContainer.classList.remove('d-none');
-					halfdayContainer.classList.add('d-none');
+					// monday
+					specifyContainerMonday.classList.remove('d-none');
+					halfdayContainerMonday.classList.add('d-none');
+					// tuesday
+					specifyContainerTuesday.classList.remove('d-none');
+					halfdayContainerTuesday.classList.add('d-none');
+					// wednesday
+					specifyContainerWednesday.classList.remove('d-none');
+					halfdayContainerWednesday.classList.add('d-none');
+					// thursday
+					specifyContainerThursday.classList.remove('d-none');
+					halfdayContainerThursday.classList.add('d-none');
+					// friday
+					specifyContainerFriday.classList.remove('d-none');
+					halfdayContainerFriday.classList.add('d-none');
+					// saturday
+					specifyContainerSaturday.classList.remove('d-none');
+					halfdayContainerSaturday.classList.add('d-none');
+					// sunday
+					specifyContainerSunday.classList.remove('d-none');
+					halfdayContainerSunday.classList.add('d-none');
 				}
 			}
 
-			sleStartHour.onchange = function (e) {
+			// monday
+			sleStartHourMonday.onchange = function (e) {
 				let number = convertHourToInt(e.target.value);
 				number = number % 100 == 30 ? number + 70 : number + 30;
-				renderOptions(number, endHour, sleEndHour);
+				renderOptions(number, endHour, sleEndHourMonday);
 			}
-
+			// tuesday
+			sleStartHourTuesday.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHourTuesday);
+			}
+			// wednesday
+			sleStartHourWednesday.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHourWednesday);
+			}
+			// thursday
+			sleStartHourThursday.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHourThursday);
+			}
+			// friday
+			sleStartHourFriday.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHourFriday);
+			}
+			// saturday
+			sleStartHourSaturday.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHourSaturday);
+			}
+			// sunday
+			sleStartHourSunday.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHourSunday);
+			}
 
 
 
 			// init
-			renderOptions(startHour, endHour - 30, sleStartHour);
-			renderOptions(startHour + 30, endHour, sleEndHour);
-
-
-
+			// monday
+			renderOptions(startHour, endHour - 30, sleStartHourMonday);
+			renderOptions(startHour + 30, endHour, sleEndHourMonday);
+			// tuesday
+			renderOptions(startHour, endHour - 30, sleStartHourTuesday);
+			renderOptions(startHour + 30, endHour, sleEndHourTuesday);
+			// wednesday
+			renderOptions(startHour, endHour - 30, sleStartHourWednesday);
+			renderOptions(startHour + 30, endHour, sleEndHourWednesday);
+			// thursday
+			renderOptions(startHour, endHour - 30, sleStartHourThursday);
+			renderOptions(startHour + 30, endHour, sleEndHourThursday);
+			// friday
+			renderOptions(startHour, endHour - 30, sleStartHourFriday);
+			renderOptions(startHour + 30, endHour, sleEndHourFriday);
+			// saturday
+			renderOptions(startHour, endHour - 30, sleStartHourSaturday);
+			renderOptions(startHour + 30, endHour, sleEndHourSaturday);
+			// sunday
+			renderOptions(startHour, endHour - 30, sleStartHourSunday);
+			renderOptions(startHour + 30, endHour, sleEndHourSunday);
 
 
 			// function
@@ -274,20 +521,13 @@
 		})();
 	</script>
 
-	<script>
-		function myFunction(dayOfWeek) {
-
-		}
-	</script>
-
-
 
 
 	<script>
 		function mondayFunction() {
 			var mondayCheckBox = document.getElementById("mondayCheck");
 			var mondayText = document.getElementById("mondayText");
-			if (mondayCheck.checked == true) {
+			if (mondayCheckBox.checked == true) {
 				mondayText.style.display = "block";
 			} else {
 				mondayText.style.display = "none";
@@ -297,7 +537,7 @@
 		function tuesdayFunction() {
 			var tuesdayCheckBox = document.getElementById("tuesdayCheck");
 			var tuesdayText = document.getElementById("tuesdayText");
-			if (tuesdayCheck.checked == true) {
+			if (tuesdayCheckBox.checked == true) {
 				tuesdayText.style.display = "block";
 			} else {
 				tuesdayText.style.display = "none";
@@ -307,10 +547,50 @@
 		function wednesdayFunction() {
 			var wednesdayCheckBox = document.getElementById("wednesdayCheck");
 			var wednesdayText = document.getElementById("wednesdayText");
-			if (tuesdayCheck.checked == true) {
+			if (wednesdayCheckBox.checked == true) {
 				wednesdayText.style.display = "block";
 			} else {
-				tuesdayText.style.display = "none";
+				wednesdayText.style.display = "none";
+			}
+		}
+
+		function thursdayFunction() {
+			var thursdayCheckBox = document.getElementById("thursdayCheck");
+			var thursdayText = document.getElementById("thursdayText");
+			if (thursdayCheckBox.checked == true) {
+				thursdayText.style.display = "block";
+			} else {
+				thursdayText.style.display = "none";
+			}
+		}
+
+		function fridayFunction() {
+			var fridayCheckBox = document.getElementById("fridayCheck");
+			var fridayText = document.getElementById("fridayText");
+			if (fridayCheckBox.checked == true) {
+				fridayText.style.display = "block";
+			} else {
+				fridayText.style.display = "none";
+			}
+		}
+
+		function saturdayFunction() {
+			var saturdayCheckBox = document.getElementById("saturdayCheck");
+			var saturdayText = document.getElementById("saturdayText");
+			if (saturdayCheckBox.checked == true) {
+				saturdayText.style.display = "block";
+			} else {
+				saturdayText.style.display = "none";
+			}
+		}
+
+		function sundayFunction() {
+			var sundayCheckBox = document.getElementById("sundayCheck");
+			var sundayText = document.getElementById("sundayText");
+			if (sundayCheckBox.checked == true) {
+				sundayText.style.display = "block";
+			} else {
+				sundayText.style.display = "none";
 			}
 		}
 	</script>

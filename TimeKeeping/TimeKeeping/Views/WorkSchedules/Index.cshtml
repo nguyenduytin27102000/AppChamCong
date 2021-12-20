@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h4 class="text-center">List of Work Schedule</h4>
+<h4 class="text-center">List of work schedule</h4>
 
 <p>
-	<a asp-action="Create" class="btn btn-primary">Create New Work Schedule</a>
+	<a asp-action="Create" class="btn btn-primary">Create new work schedule</a>
 </p>
 <table class="table">
     <thead>
@@ -40,7 +40,8 @@
 		</tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
 		<tr>
 			<td>
 				@Html.DisplayFor(modelItem => item.WorkScheduleName)
@@ -64,7 +65,18 @@
 				@Html.DisplayFor(modelItem => item.TypeWorkSchedule.TypeWorkScheduleName)
 			</td>
 			<td>
-				@Html.DisplayFor(modelItem => item.Del)
+				@{
+					string deleteSate;
+					if (item.Del == true)
+					{
+						deleteSate = "Using";
+					}
+					else
+					{
+						deleteSate = "Don't use";
+					}
+				}
+				@deleteSate
 			<td>
 				<a asp-action="Edit" asp-route-id="@item.WorkScheduleId" class="btn btn-warning">Edit</a>
 				<a asp-action="Details" asp-route-id="@item.WorkScheduleId" class="btn btn-info">Details</a>
