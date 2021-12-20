@@ -6,33 +6,15 @@
 
 <div id="time-sheet-overview" class="my-3">
     <div class="time-sheet-container row mx-0 justify-content-between">
-        <div class="col-2 p-0 px-2 pb-4">
-            <input type="text" name="key-work" class="form-control mb-3" style="height:3rem;" />
+        <div class="col-3 p-0 px-2 pb-4">
+            <input type="text" name="key-work" id="quick-filter" class="form-control mb-0" placeholder="Quick filter" style="height:3rem;" />
             <div id="employees-container">
-                <div class="row border border-secondary border rounded mx-0 px-2" style="font-size:0.8rem; max-height:3rem;">
-                    <div class="col-8">
-                        <p class="font-weight-bold employee-name mb-1"></p>
-                        <p class="text-muted employee-code mb-1"></p>
-                    </div>
-                    <div class="col-4 px-2" style="border-left: 1px solid #6c757d;">
-                        <p class="mb-1">D: <strong class="days"></strong></p>
-                        <p class="mb-1">H: <strong class="hours"></strong></p>
-                    </div>
-                </div>
+                
             </div>
         </div>
 
-        <div class="col-10" style="overflow-x: scroll; font-size:0.8rem;">
-            <div class="d-flex" id="day-of-week">
-            </div>
-            <div class="d-flex mt-3 text-center">
-                <div class="border border-secondary card bg-white" style="max-height:3rem;min-height:3rem; max-width:5rem; min-width:5rem;">
-                    @* Co the thay doi theo tin trang check in - out *@
-                    <p class="text-muted check-in mb-0">19:00</p>
-                    <div class="d-flex justify-content-center"><div class="w-50"><hr class="m-0" /></div></div>
-                    <p class="text-muted check-out mb-0">20:00</p>
-                </div>
-            </div>
+        <div class="col-9" id="time-info-container" style="overflow-x: scroll; font-size:0.8rem;">
+            <div class="d-flex" id="day-of-week"></div>
         </div>
         
     </div>
@@ -49,12 +31,12 @@
 
 @* template employee *@
 <template id="employee-item">
-    <div class="row border border-secondary mx-0 px-2 card bg-white" style="max-height:4rem;">
-        <div class="col-8">
+    <div class="row border border-secondary mx-0 px-1 mt-1 card bg-white" style="max-height:3rem; min-height:3rem; font-size:0.8rem;">
+        <div class="col-9">
             <p class="font-weight-bold employee-name mb-0"></p>
             <p class="text-muted employee-code mb-0"></p>
         </div>
-        <div class="col-4 px-2" style="border-left: 1px solid #6c757d;">
+        <div class="col-3 px-2" style="border-left: 1px solid #6c757d;">
             <p class="mb-1">D: <strong class="days"></strong></p>
             <p class="mb-1">H: <strong class="hours"></strong></p>
         </div>
@@ -62,11 +44,10 @@
 </template>
 
 @* template work *@
-<template>
-    <div class="row border border-secondary mx-0 px-2 card bg-white" style="max-height:4rem; max-width:5rem; min-width:5rem;">
+<template id="timeinfo-item">
+    <div class="border border-info text-center mx-0 mr-1 px-2 card bg-white" style="max-height:3rem; min-height:3rem; max-width:5rem; min-width:5rem;">
         @* Co the thay doi theo tin trang check in - out *@
         <p class="text-muted check-in mb-0"></p>
-        <div><div class="w-50"><hr /></div></div>
         <p class="text-muted check-out mb-0"></p>
     </div>
 </template>
@@ -74,28 +55,126 @@
 @section Scripts{
     <script>
         (() => {
-            const json = @Html.Raw(ViewData["days"]);
+            const dayOfMonthArray = @Html.Raw(ViewData["days"]);
+            const timeInfoArray = @Html.Raw(ViewData["time-info"]);
             const dayTitleContainer = document.querySelector('#day-of-week');
-            renderDayOfWeekTitle(json, dayTitleContainer);
+            const personContainer = document.querySelector('#employees-container');
+            const timeContainer = document.querySelector('#time-info-container');
+            const quickFilter = document.querySelector('#quick-filter');
+
+            quickFilter.onkeyup = quickFilterHandle;
+
+
+            //renderDayOfWeekTitle(dayOfMonthArray, timeContainer);
+            renderPersonAndTime(timeInfoArray, personContainer, timeContainer, dayOfMonthArray);
+
 
 
             // function
             function renderDayOfWeekTitle(data, container) {
                 const DOW = data;
+                const div = document.createElement('div');
+                div.id = 'day-of-week';
+                div.classList.add('d-flex');
+                timeContainer.appendChild(div);
                 if (Array.isArray(DOW)) {
                     DOW.forEach(e => {
                         const tmp = document.querySelector('#time-sheet-date-title').content.cloneNode(true);
                         tmp.querySelector('.time-sheet-date').innerHTML = `${e.Day} / ${e.Month}`;
                         tmp.querySelector('.date-name').innerHTML = `${e.DayName}`;
-                        container.appendChild(tmp);
+                        div.appendChild(tmp);
                     });
+                }
+                container.appendChild(div);
+            }
+
+            function renderPersonAndTime(data, personContainer, timeContainer, dayOfMonth) {
+                timeContainer.innerHTML = '';
+                personContainer.innerHTML = '';
+                
+
+                renderDayOfWeekTitle(dayOfMonthArray, timeContainer);
+
+
+                renderPersonInfo(data, personContainer);
+                renderTimeInfo(data, timeContainer, dayOfMonth);
+
+            }
+
+            function renderPersonInfo(data, personContainer) {
+                personContainer.innerHTML = '';
+                const tmp = document.querySelector('#employee-item');
+                if (tmp) {
+                    if (Array.isArray(data)) {
+                        data.forEach(e => {
+                            const cloneTmp = tmp.content.cloneNode(true);
+                            cloneTmp.querySelector('.employee-name').innerHTML = e.FullName;
+                            cloneTmp.querySelector('.employee-code').innerHTML = e.PersonnelId;
+                            cloneTmp.querySelector('.days').innerHTML = e.Days;
+                            cloneTmp.querySelector('.hours').innerHTML = e.Hours;
+                            personContainer.appendChild(cloneTmp);
+                        });
+                    }
                 }
             }
 
-            function renderPersonAndWork(data, personContainer, workContainer) {
+            function renderTimeInfo(data, timeContainer, dayOfMonthArray) {
+                const tmp = document.querySelector('#timeinfo-item');
+                if (tmp) {
+                    if (Array.isArray(data)) {
+                        data.forEach(e => {
+                            const timeInfoRow = document.createElement("div");
+                            timeInfoRow.classList.add("d-flex", "mt-1");
+                            for (let i = 0; i < dayOfMonthArray.length; i++) {
+                                const element = dayOfMonthArray[i];
+                                const result = e.Checkin.filter(f => {
+                                    const date = new Date(f.Date);
+                                    return date.getDate() == element.Day && element.Month == date.getMonth() + 1
+                                        && element.Year == date.getFullYear();
+                                });
+                                const tmpClone = tmp.content.cloneNode(true);
 
+                                if (result.length != 0) {
+                                    sortedResult = result.sort(function (a, b) {
+                                        const hm1 = a.Hour.split(':');
+                                        const hm2 = b.Hour.split(':');
+
+                                        const hour1 = parseInt(hm1[0]);
+                                        const minute1 = parseInt(hm1[1]);
+
+                                        const hour2 = parseInt(hm2[0]);
+                                        const minute2 = parseInt(hm2[1]);
+
+                                        if (hour1 == hour2) {
+                                            return minute1 - minute2;
+                                        }
+                                        return hour1 - hour2;
+                                    });
+                                    tmpClone.querySelector('.check-in').innerHTML = sortedResult[0].Hour;
+                                    tmpClone.querySelector('.check-out').innerHTML = sortedResult.length == 1 ? '' : sortedResult[1].Hour;
+                                    timeInfoRow.appendChild(tmpClone);
+                                }
+                                else {
+                                    timeInfoRow.appendChild(tmpClone);
+                                }
+                            }
+                            timeContainer.appendChild(timeInfoRow);
+                        });
+                    }
+                }
             }
 
+            function quickFilterHandle(e) {
+                const keyWord = e.target.value;
+                if (keyWord.trim()) {
+                    const keyLower = keyWord.trim().toLowerCase();
+                    const timeInfoFilter = timeInfoArray.filter(e => e.FullName.toLowerCase().includes(keyLower));
+                    renderPersonAndTime(timeInfoFilter, personContainer, timeContainer, dayOfMonthArray);
+                }
+                else {
+                    renderPersonAndTime(timeInfoArray, personContainer, timeContainer, dayOfMonthArray);
+                }
+            }
         })();
     </script>
 }
