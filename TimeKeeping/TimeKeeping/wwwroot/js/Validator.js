@@ -32,7 +32,7 @@
                 const label = getParentElement(previous, groupSelector).querySelector('label').innerText;
                 return previous.value <= value ? undefined : `Must greater than ${label}`;
             }
-        }
+        },
     }
     const formElement = document.querySelector(formSelector);
     if(formElement){

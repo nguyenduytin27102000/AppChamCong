@@ -9,6 +9,7 @@ namespace TimeKeeping.Services
         public AutoMapperProfile()
         {
             CreateMap<TimeOffRequestModel, TimeOffRequest>();
+            CreateMap<WorkScheduleModel, WorkSchedule>();
         }
     }
 }

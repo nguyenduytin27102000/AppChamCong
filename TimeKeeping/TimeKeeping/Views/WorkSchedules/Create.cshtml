@@ -1,0 +1,328 @@
+﻿@model TimeKeeping.ViewModels.WorkScheduleModel
+
+@{
+	ViewData["Title"] = "Create a new workSchedule";
+}
+
+<h4>Create a new work schedule</h4>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<form asp-action="Create" id="createWorkScheduleForm">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="WorkScheduleName" class="control-label"></label>
+				</div>
+				<div class="col-5">
+					<input asp-for="WorkScheduleName" class="form-control" rules="required" />
+					<span asp-validation-for="WorkScheduleName" class="text-danger form-message"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="TypeWorkScheduleId" class="control-label"></label>
+				</div>
+				<div class="col-5">
+					<select asp-for="TypeWorkScheduleId" class="form-control" asp-items="ViewBag.TypeWorkScheduleId" id="duration">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-2">
+					<label class="control-label">Work cycle on: </label>
+				</div>
+				<div class="col-10">
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Monday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" id="mondayCheck" onclick="mondayFunction()" />
+						</div>
+						<div id="mondayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container-monday">
+								<select class="form-control">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container-monday">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour" class="form-control">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour" class="form-control">
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Tuesday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" id="tuesdayCheck" onclick="tuesdayFunction()" />
+						</div>
+						<div id="tuesdayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container-tuesday">
+								<select class="form-control">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container-tuesday">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour" class="form-control">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour" class="form-control">
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Wednesday</label>
+						</div>
+						<div class="col-5">
+							<input type="checkbox" id="wednesdayCheck" onclick="wednesdayFunction()" />
+						</div>
+						<div id="wednesdayText" style="display:none" class="col-9">
+							<div class="d-none" id="halfday-container">
+								<select class="form-control">
+									<option value="1">morning</option>
+									<option value="2">afternoon</option>
+								</select>
+							</div>
+
+							<div class="row justify-content-between d-none" id="specify-container">
+								<span>from</span>
+								<div class="col-md-5">
+									<select id="start-hour" class="form-control">
+									</select>
+								</div>
+								<span>to</span>
+								<div class="col-md-5">
+									<select id="end-hour" class="form-control">
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Thursday</label>
+						</div>
+						<div class="col-5">
+							<input type="checkbox" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Friday</label>
+						</div>
+						<div class="col-5">
+							<input type="checkbox" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Saturday</label>
+						</div>
+						<div class="col-5">
+							<input type="checkbox" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Sunday</label>
+						</div>
+						<div class="col-5">
+							<input type="checkbox" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="StartDay" class="control-label"></label>
+				</div>
+				<div class="col-3">
+					<input asp-for="StartDay" class="form-control" rules="required" />
+					<span asp-validation-for="StartDay" class="text-danger form-message"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="EndDay" class="control-label"></label>
+				</div>
+				<div class="col-3">
+					<input asp-for="EndDay" class="form-control" rules="required" />
+					<span asp-validation-for="EndDay" class="text-danger form-message"></span>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<a asp-action="Index" class="btn btn-secondary">Back</a>
+				<input type="submit" value="Create" class="btn btn-primary" />
+				<input type="reset" value="Reset" class="btn btn-warning" />
+			</div>
+		</form>
+	</div>
+</div>
+@if (ViewData["Message"] != null)
+{
+	<div class="alert alert-@ViewData["Status"]" role="alert">
+		@ViewData["Message"]
+	</div>
+}
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<script src="~/js/Validator.js"></script>
+	<script>
+		const validator = Validator('#createWorkScheduleForm', '.form-group', '.form-message', 'invalid');
+		(() => {
+			const startHour = 800;
+			const endHour = 1800;
+			const duration = document.querySelector('#duration');
+
+			// monday
+			const halfdayContainer = document.querySelector('#halfday-container-monday');
+			const specifyContainer = document.querySelector('#specify-container-monday');
+			const sleStartHour = document.querySelector('#start-hour');
+			const sleEndHour = document.querySelector('#end-hour');
+
+
+			// event
+			duration.onchange = function (e) {
+				const value = e.target.value;
+				if (value == 1) {
+					specifyContainer.classList.add('d-none');
+					halfdayContainer.classList.add('d-none');
+				}
+				else if (value == 2) {
+					specifyContainer.classList.add('d-none');
+					halfdayContainer.classList.remove('d-none');
+				}
+				else if (value == 3) {
+					specifyContainer.classList.remove('d-none');
+					halfdayContainer.classList.add('d-none');
+				}
+			}
+
+			sleStartHour.onchange = function (e) {
+				let number = convertHourToInt(e.target.value);
+				number = number % 100 == 30 ? number + 70 : number + 30;
+				renderOptions(number, endHour, sleEndHour);
+			}
+
+
+
+
+			// init
+			renderOptions(startHour, endHour - 30, sleStartHour);
+			renderOptions(startHour + 30, endHour, sleEndHour);
+
+
+
+
+
+			// function
+			function renderOptions(startHour, endHour, selector) {
+				selector.innerHTML = '';
+				while (startHour <= endHour) {
+					let option = document.createElement("option");
+					const hour = convertIntToHour(startHour);
+					option.value = hour;
+					option.text = hour;
+					selector.appendChild(option);
+					startHour = startHour % 100 == 30 ? startHour + 70 : startHour + 30;
+				}
+			}
+
+			function convertHourToInt(hour) {
+				const tmp = hour.split(':');
+				if (tmp.length == 2) {
+					let number = tmp[0] + tmp[1];
+					return parseInt(number);
+				}
+			}
+
+			function convertIntToHour(number) {
+				let hour = (number / 100).toFixed(0);
+				let minute = (number % 100) + '';
+				return `${hour}:${minute.padStart(2, '0')}`;
+			}
+
+		})();
+	</script>
+
+	<script>
+		function myFunction(dayOfWeek) {
+
+		}
+	</script>
+
+
+
+
+	<script>
+		function mondayFunction() {
+			var mondayCheckBox = document.getElementById("mondayCheck");
+			var mondayText = document.getElementById("mondayText");
+			if (mondayCheck.checked == true) {
+				mondayText.style.display = "block";
+			} else {
+				mondayText.style.display = "none";
+			}
+		}
+
+		function tuesdayFunction() {
+			var tuesdayCheckBox = document.getElementById("tuesdayCheck");
+			var tuesdayText = document.getElementById("tuesdayText");
+			if (tuesdayCheck.checked == true) {
+				tuesdayText.style.display = "block";
+			} else {
+				tuesdayText.style.display = "none";
+			}
+		}
+
+		function wednesdayFunction() {
+			var wednesdayCheckBox = document.getElementById("wednesdayCheck");
+			var wednesdayText = document.getElementById("wednesdayText");
+			if (tuesdayCheck.checked == true) {
+				wednesdayText.style.display = "block";
+			} else {
+				tuesdayText.style.display = "none";
+			}
+		}
+	</script>
+
+	@* Reload to list (Index) *@
+	@if (ViewData["Message"] != null)
+	{
+		<script>
+		function pageRedirect() {
+			window.location.href = '@Url.Action("Index", "WorkSchedules")';
+		}
+		setTimeout("pageRedirect()", 5000);
+		</script>
+	}
+}

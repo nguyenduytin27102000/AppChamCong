@@ -1,0 +1,55 @@
+﻿<form asp-action="CreateShiftForAWorkSchedule" asp-controller="Shifts" method="post">
+	@{
+		string[] dayOfWeeks = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+		for (int i = 0; i < dayOfWeeks.Length; i++)
+		{
+			<hr />
+			<div class="row">
+				<div class="col-2">
+					<label class="h4">@dayOfWeeks[i]</label>
+				</div>
+				<div class="col-10">
+					@{
+						for (int j = 1; j <= Model.NumberOfShift.Count; j++)
+						{
+							<hr />
+							<div class="form-group row">
+								<div class="col-3">
+									<label class="control-label">Shift Name</label>
+									<input class="form-control" name="@dayOfWeeks[i]-shiftName-@j" />
+								</div>
+								<div class="col-3">
+									<label class="control-label">Type Shift</label>
+									<select name="@dayOfWeeks[i]-typeShift-@j" asp-items="ViewBag.TypeShifts" class="form-control"></select>
+								</div>
+								<div class="col-3">
+									<label class="control-label">Start Time</label>
+									<input class="form-control" name="@dayOfWeeks[i]-startTime-@j" />
+								</div>
+								<div class="col-3">
+									<label class="control-label">End Time</label>
+									<input class="form-control" name="@dayOfWeeks[i]-endTime-@j" />
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<div class="col-6">
+									<label class="control-label">Day Off</label>
+									<input type="checkbox" name="@dayOfWeeks[i]-dayOff-@j" />
+								</div>
+								@*<div class="col-6">
+										<label class="control-label">Del</label>
+										<input type="checkbox" name="@dayOfWeeks[i]-del-@j" />
+									</div>*@
+							</div>
+						}
+					}
+				</div>
+			</div>
+		}
+	}
+	<input type="hidden" name="workScheduleID" value="@Model.WorkScheduleId" />
+	<div class="form-group">
+		<input type="submit" value="Submit" class="btn btn-primary" />
+	</div>
+</form>

@@ -19,11 +19,9 @@ namespace TimeKeeping.Models
 
         public virtual DbSet<ApplySeniorityPolicy> ApplySeniorityPolicies { get; set; }
         public virtual DbSet<ApprovalProcess> ApprovalProcesses { get; set; }
-        public virtual DbSet<CheckinPolicy> CheckinPolicies { get; set; }
         public virtual DbSet<DayOff> DayOffs { get; set; }
         public virtual DbSet<DaysOfWeek> DaysOfWeeks { get; set; }
         public virtual DbSet<FormTimeOff> FormTimeOffs { get; set; }
-        public virtual DbSet<NumberOfShift> NumberOfShifts { get; set; }
         public virtual DbSet<Office> Offices { get; set; }
         public virtual DbSet<Personnel> Personnel { get; set; }
         public virtual DbSet<PersonnelApplyTimeOffPolicy> PersonnelApplyTimeOffPolicies { get; set; }
@@ -39,7 +37,6 @@ namespace TimeKeeping.Models
         public virtual DbSet<TypePersonnel> TypePersonnel { get; set; }
         public virtual DbSet<TypePolicy> TypePolicies { get; set; }
         public virtual DbSet<TypePosition> TypePositions { get; set; }
-        public virtual DbSet<TypeShift> TypeShifts { get; set; }
         public virtual DbSet<TypeTimeOff> TypeTimeOffs { get; set; }
         public virtual DbSet<TypeWorkSchedule> TypeWorkSchedules { get; set; }
         public virtual DbSet<WorkSchedule> WorkSchedules { get; set; }
@@ -52,7 +49,6 @@ namespace TimeKeeping.Models
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=.;Database=TimeKeepingDB;Trusted_Connection=True;UID=sa;PWD=123456");
-                optionsBuilder.UseLazyLoadingProxies();
             }
         }
 
@@ -96,21 +92,6 @@ namespace TimeKeeping.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ApprovalProcessName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
-            });
-
-            modelBuilder.Entity<CheckinPolicy>(entity =>
-            {
-                entity.ToTable("CheckinPolicy");
-
-                entity.Property(e => e.CheckinPolicyId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CheckinPolicyName)
                     .IsRequired()
                     .HasMaxLength(50);
 
@@ -217,17 +198,6 @@ namespace TimeKeeping.Models
                     .HasForeignKey(d => d.TypeTimeOffId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PR_FormTimeOff_TypeTimeOff");
-            });
-
-            modelBuilder.Entity<NumberOfShift>(entity =>
-            {
-                entity.ToTable("NumberOfShift");
-
-                entity.Property(e => e.NumberOfShiftId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Office>(entity =>
@@ -479,10 +449,6 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DayOff)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
-
                 entity.Property(e => e.DaysOfWeekId)
                     .IsRequired()
                     .HasMaxLength(10)
@@ -498,11 +464,6 @@ namespace TimeKeeping.Models
 
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
 
-                entity.Property(e => e.TypeShiftId)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.WorkScheduleId)
                     .IsRequired()
                     .HasMaxLength(10)
@@ -513,12 +474,6 @@ namespace TimeKeeping.Models
                     .HasForeignKey(d => d.DaysOfWeekId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PR_Shift_DaysOfWeek");
-
-                entity.HasOne(d => d.TypeShift)
-                    .WithMany(p => p.Shifts)
-                    .HasForeignKey(d => d.TypeShiftId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PR_Shift_TypeShift");
 
                 entity.HasOne(d => d.WorkSchedule)
                     .WithMany(p => p.Shifts)
@@ -748,21 +703,6 @@ namespace TimeKeeping.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<TypeShift>(entity =>
-            {
-                entity.ToTable("TypeShift");
-
-                entity.Property(e => e.TypeShiftId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Del).HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.TypeShiftName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
             modelBuilder.Entity<TypeTimeOff>(entity =>
             {
                 entity.ToTable("TypeTimeOff");
@@ -801,27 +741,19 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CheckinPolicyId)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Del).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.EndDay).HasColumnType("date");
 
                 entity.Property(e => e.MinutesEarly).HasDefaultValueSql("((15))");
 
                 entity.Property(e => e.MinutesLate).HasDefaultValueSql("((15))");
 
-                entity.Property(e => e.NumberOfShiftId)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Regulations).HasMaxLength(100);
-
                 entity.Property(e => e.RequireCheckout)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.StartDay).HasColumnType("date");
 
                 entity.Property(e => e.States).HasDefaultValueSql("((1))");
 
@@ -835,18 +767,6 @@ namespace TimeKeeping.Models
                     .HasMaxLength(100);
 
                 entity.Property(e => e.WorkingHoursPerDay).HasDefaultValueSql("((8))");
-
-                entity.HasOne(d => d.CheckinPolicy)
-                    .WithMany(p => p.WorkSchedules)
-                    .HasForeignKey(d => d.CheckinPolicyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PR_WorkSchedule_CheckinPolicy");
-
-                entity.HasOne(d => d.NumberOfShift)
-                    .WithMany(p => p.WorkSchedules)
-                    .HasForeignKey(d => d.NumberOfShiftId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PR_WorkSchedule_NumberOfShift");
 
                 entity.HasOne(d => d.TypeWorkSchedule)
                     .WithMany(p => p.WorkSchedules)

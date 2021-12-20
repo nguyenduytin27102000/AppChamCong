@@ -194,6 +194,7 @@
                 number = number % 100 == 30 ? number + 70 : number + 30;
                 renderOptions(number, endHour, sleEndHour);
             }
+
             duration.onchange = function (e) {
                 const value = e.target.value;
                 if (value == 1) {

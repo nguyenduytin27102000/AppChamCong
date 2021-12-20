@@ -1,0 +1,106 @@
+﻿@model IEnumerable<TimeKeeping.Models.Shift>;
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.DaysOfWeek.DaysOfWeekName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ShiftName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.StartTime)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.EndTime)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Del)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+			foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.DaysOfWeek.DaysOfWeekName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.ShiftName)
+					</td>
+					<td>
+						@item.StartTime.ToString("HH:mm")
+					</td>
+					<td>
+						@item.EndTime.ToString("HH:mm")
+					</td>
+					<td>
+						@{
+							string deleteState;
+							if (true)
+							{
+								deleteState = "Using";
+							}
+							else
+							{
+								deleteState = "Don't use";
+							}
+						}
+						@deleteState
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+@*@{
+		foreach (var item in Model)
+		{
+			<dl class="row">
+				<dt class="col-sm-3">
+					@Html.DisplayNameFor(modelItem => item.ShiftName)
+				</dt>
+				<dd class="col-sm-9">
+					@Html.DisplayFor(modelItem => item.ShiftName)
+				</dd>
+				<dt class="col-sm-3">
+					@Html.DisplayNameFor(modelItem => item.StartTime)
+				</dt>
+				<dd class="col-sm-9">
+					@Html.DisplayFor(modelItem => item.StartTime)
+				</dd>
+				<dt class="col-sm-3">
+					@Html.DisplayNameFor(modelItem => item.EndTime)
+				</dt>
+				<dd class="col-sm-9">
+					@Html.DisplayFor(modelItem => item.EndTime)
+				</dd>
+				<dt class="col-sm-3">
+					@Html.DisplayNameFor(modelItem => item.DayOff)
+				</dt>
+				<dd class="col-sm-9">
+					@Html.DisplayFor(modelItem => item.DayOff)
+				</dd>
+				<dt class="col-sm-3">
+					@Html.DisplayNameFor(modelItem => item.Del)
+				</dt>
+				<dd class="col-sm-9">
+					@{
+						string deleteState;
+						if (true)
+						{
+							deleteState = "Using";
+						}
+						else
+						{
+							deleteState = "Don't use";
+						}
+					}
+					@deleteState;
+				</dd>
+			</dl>
+		}
+	}*@

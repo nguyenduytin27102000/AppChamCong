@@ -20,14 +20,13 @@ namespace TimeKeeping.Models
         [DisplayName("Number Of DaysOff Last Year")]
         public byte NumberOfDaysOffLastYear { get; set; }
 
-
         [DisplayName("Number Of DaysOff Standard")]
         public byte NumberOfDaysOffStandard { get; set; }
 
         [DisplayName("Number Of DaysOff Seniority")]
         public byte NumberOfDaysOffSeniority { get; set; }
 
-        [DisplayName("Number O fDaysOff Offset")]
+        [DisplayName("Number Of DaysOff Offset")]
         public byte NumberOfDaysOffOffset { get; set; }
 
         [DisplayName("Note")]
