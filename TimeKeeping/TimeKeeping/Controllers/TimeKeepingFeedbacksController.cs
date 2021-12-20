@@ -46,7 +46,7 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: TimeKeepingFeedbacks/Create
-        
+
         public IActionResult Create(string id)
         {
             if (id == null)
@@ -54,7 +54,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
             ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == id), "CheckinId", "CheckinId");
-            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId =="001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
+            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
             return View();
         }
 
@@ -63,7 +63,7 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+
         public async Task<IActionResult> Create([Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time,TimeOffRequestStateId,Active")] TimeKeepingFeedback timeKeepingFeedback)
         {
             timeKeepingFeedback.Time = DateTime.Now;

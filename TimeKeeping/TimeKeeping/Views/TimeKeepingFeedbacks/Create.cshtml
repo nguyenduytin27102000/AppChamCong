@@ -4,12 +4,12 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Feedback your checkin</h1>
 
-<h4>TimeKeepingFeedback</h4>
+<h4>You should explain the reason for the feedback</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md">
         <form asp-action="Create" asp-controller="TimeKeepingFeedbacks" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -19,11 +19,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="CheckinId" class="control-label"></label>
-                <select asp-for="CheckinId" class ="form-control" asp-items="ViewBag.CheckinId" readonly></select>
+                 <select asp-for="CheckinId" class ="form-control" asp-items="ViewBag.CheckinId" readonly></select> 
+                
             </div>
             <div class="form-group">
                 <label asp-for="Reason" class="control-label"></label>
-                <input asp-for="Reason" class="form-control" />
+                <!--  <input asp-for="Reason" class="form-control" /> -->
+                <textarea asp-for="Reason" class="form-control" rows="10">
+                 </textarea>
+
                 <span asp-validation-for="Reason" class="text-danger"></span>
             </div>
             <!--
@@ -38,14 +42,14 @@
                 <select asp-for="TimeOffRequestStateId" class ="form-control" asp-items="ViewBag.TimeOffRequestStateId" readonly ></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-warning" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>
 
 @section Scripts {
