@@ -355,3 +355,4 @@ D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\W
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\Index.cshtml.g.cs
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\_CreateShiftsPartial.cshtml.g.cs
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\Razor\Views\WorkSchedules\_ShiftsInWorkSchedulePartial.cshtml.g.cs
+C:\Users\DELL\Desktop\Internship\Trainning2021\TimeKeeping\TimeKeeping\bin\Debug\net5.0\Web.IISProfile.config

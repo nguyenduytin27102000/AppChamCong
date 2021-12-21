@@ -4,6 +4,12 @@
 	ViewData["Title"] = "Create a new workSchedule";
 }
 
+<style>
+	.btn {
+		width: 5em;
+	}
+</style>
+
 <h4>Create a new work schedule</h4>
 <hr />
 <div class="row">
@@ -129,8 +135,9 @@
 
 			<div class="form-group">
 				<a asp-action="Index" class="btn btn-secondary">Back</a>
-				<input type="submit" value="Create" class="btn btn-primary" />
-				<input type="reset" value="Reset" class="btn btn-warning" />
+				<input type="submit" value="Create" class="btn btn-secondary" />
+				<input type="reset" value="Reset" class="btn btn-secondary"  />
+
 			</div>
 		</form>
 	</div>
@@ -173,6 +180,11 @@
 			const typeWork = document.querySelector('#duration');
 			const start = 800;
 			const end = 1800;
+
+			document.querySelector('input[type="reset"]').onclick = function (e) {
+				const container = document.querySelectorAll('.time-container');
+				resetFunction(container);
+			}
 
 			typeWork.onchange = typeWorkChangeHandle;
 
@@ -303,6 +315,11 @@
 					}
 					currentElement = currentElement.parentElement;
 				}
+			}
+
+
+			function resetFunction(timeContainer) {
+				timeContainer.forEach(e => e.innerHTML = '');
 			}
 		})();
 	</script>
