@@ -2,18 +2,45 @@
     ViewData["Title"] = "Overview Time Sheet";
 }
 
-<div class="banner"></div>
+<style>
+    #quick-filter {
+        background-image: url('@Url.Content("~/storage/images/search-icon.png")');
+        background-repeat: no-repeat;
+        background-size: 1.5rem 1.5rem;
+        background-position: right center;
+    }
+</style>
+
+<div class="banner row">
+    <div class="col-3 pl-4 pt-3">
+        <a href="/TimeSheet/Export/@ViewData["cur-timesheet"]" data-ajax="true" data-ajax-method="get"
+           class="btn btn-success btn-sm text-uppercase">Export timesheet overview</a>
+    </div>
+    <div class="col-6 text-center">
+        <h3 class="text-uppercase font-weight-bold">timesheet overview</h3>
+        <p class="text-muted">@ViewData["title-time"]</p>
+    </div>
+    <div class="col-3 pt-2">
+        <span class="bg-light p-3">
+            <a href="/TimeSheet/Overview/@ViewData["pre-timesheet"]" class="btn"><i class="fas fa-angle-left"></i></a>
+            <span>@ViewData["label-time"]</span>
+            <a href="/TimeSheet/Overview/@ViewData["next-timesheet"]" class="btn"><i class="fas fa-angle-right"></i></a>
+        </span>
+    </div>
+</div>
 
 <div id="time-sheet-overview" class="my-3">
     <div class="time-sheet-container row mx-0 justify-content-between">
-        <div class="col-3 p-0 px-2 pb-4">
-            <input type="text" name="key-work" id="quick-filter" class="form-control mb-0" placeholder="Quick filter" style="height:3rem;" />
+        <div class="col-2 p-0 px-2 pb-4">
+            <div style="height:3rem;">
+                <input type="text" name="key-work" id="quick-filter" class="form-control mb-0 pr-4"  />
+            </div>
             <div id="employees-container">
                 
             </div>
         </div>
 
-        <div class="col-9" id="time-info-container" style="overflow-x: scroll; font-size:0.8rem;">
+        <div class="col-10" id="time-info-container" style="overflow-x: scroll; font-size:0.8rem;">
             <div class="d-flex" id="day-of-week"></div>
         </div>
         
@@ -32,13 +59,13 @@
 @* template employee *@
 <template id="employee-item">
     <div class="row border border-secondary mx-0 px-1 mt-1 card bg-white" style="max-height:3rem; min-height:3rem; font-size:0.8rem;">
-        <div class="col-9">
+        <div class="col-9 px-1">
             <p class="font-weight-bold employee-name mb-0"></p>
             <p class="text-muted employee-code mb-0"></p>
         </div>
-        <div class="col-3 px-2" style="border-left: 1px solid #6c757d;">
-            <p class="mb-1">D: <strong class="days"></strong></p>
-            <p class="mb-1">H: <strong class="hours"></strong></p>
+        <div class="col-3 px-1" style="border-left: 1px solid #6c757d;">
+            <p class="mb-1">DAY: <strong class="days"></strong></p>
+            <p class="mb-1">OFF: <strong class="hours"></strong></p>
         </div>
     </div>
 </template>
@@ -111,7 +138,7 @@
                             cloneTmp.querySelector('.employee-name').innerHTML = e.FullName;
                             cloneTmp.querySelector('.employee-code').innerHTML = e.PersonnelId;
                             cloneTmp.querySelector('.days').innerHTML = e.Days;
-                            cloneTmp.querySelector('.hours').innerHTML = e.Hours;
+                            cloneTmp.querySelector('.hours').innerHTML = e.Off;
                             personContainer.appendChild(cloneTmp);
                         });
                     }
