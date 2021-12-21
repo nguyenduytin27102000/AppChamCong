@@ -7,11 +7,6 @@ namespace TimeKeeping.Models
 {
     public partial class Shift
     {
-        public Shift()
-        {
-            TimeOffShifts = new HashSet<TimeOffShift>();
-        }
-
         public string WorkScheduleId { get; set; }
         public string DaysOfWeekId { get; set; }
         public string ShiftId { get; set; }
@@ -20,11 +15,10 @@ namespace TimeKeeping.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public bool? DayOff { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual DaysOfWeek DaysOfWeek { get; set; }
         public virtual TypeShift TypeShift { get; set; }
         public virtual WorkSchedule WorkSchedule { get; set; }
-        public virtual ICollection<TimeOffShift> TimeOffShifts { get; set; }
     }
 }

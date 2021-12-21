@@ -19,7 +19,7 @@ namespace TimeKeeping.Models
         public byte NumberOfDaysOffStandard { get; set; }
         public byte NumberOfDaysOffLastYear { get; set; }
         public string Describe { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual TypePolicy TypePolicy { get; set; }
         public virtual ICollection<ApplySeniorityPolicy> ApplySeniorityPolicies { get; set; }

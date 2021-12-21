@@ -9,6 +9,7 @@ namespace TimeKeeping.Models
     {
         public Personnel()
         {
+            Checkins = new HashSet<Checkin>();
             PersonnelApplyTimeOffPolicies = new HashSet<PersonnelApplyTimeOffPolicy>();
             TimeOffApprovers = new HashSet<TimeOffApprover>();
             TimeOffFollowers = new HashSet<TimeOffFollower>();
@@ -35,7 +36,7 @@ namespace TimeKeeping.Models
         public string Phone { get; set; }
         public bool Sex { get; set; }
         public string PersonnelAddress { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual Office Office { get; set; }
         public virtual Position Position { get; set; }
@@ -43,6 +44,7 @@ namespace TimeKeeping.Models
         public virtual TypePersonnel TypePersonnel { get; set; }
         public virtual WorkSchedule WorkSchedule { get; set; }
         public virtual WorkingArea WorkingArea { get; set; }
+        public virtual ICollection<Checkin> Checkins { get; set; }
         public virtual ICollection<PersonnelApplyTimeOffPolicy> PersonnelApplyTimeOffPolicies { get; set; }
         public virtual ICollection<TimeOffApprover> TimeOffApprovers { get; set; }
         public virtual ICollection<TimeOffFollower> TimeOffFollowers { get; set; }

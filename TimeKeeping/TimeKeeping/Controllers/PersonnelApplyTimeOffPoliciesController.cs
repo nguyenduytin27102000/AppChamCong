@@ -17,7 +17,6 @@ namespace TimeKeeping.Controllers
         {
             _context = context;
         }
-
         public async Task UpdateDayPolicy()
         {
             if (DateTime.Now.Day == 1 && DateTime.Now.Month == 1)
@@ -45,24 +44,22 @@ namespace TimeKeeping.Controllers
                 }
             }
         }
-
         // GET: PersonnelApplyTimeOffPolicies
         public async Task<IActionResult> Index()
         {
-            
             await UpdateDayPolicy();
             var timeKeepingDBContext = _context.PersonnelApplyTimeOffPolicies.Include(p => p.Personnel).Include(p => p.TimeOffPolicy);
             return View(await timeKeepingDBContext.ToListAsync());
         }
 
         // GET: PersonnelApplyTimeOffPolicies/Details/5
-        [Route("[controller]/[action]/{personnalId}/{policyId}")]
         public async Task<IActionResult> Details(string personnalId, string policyId)
         {
             if (personnalId == null || policyId == null)
             {
                 return NotFound();
             }
+
 
             var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies
                 .Include(p => p.Personnel)
@@ -79,8 +76,10 @@ namespace TimeKeeping.Controllers
         // GET: PersonnelApplyTimeOffPolicies/Create
         public IActionResult Create()
         {
-            ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId");
-            ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId");
+           // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId");
+            ViewData["LastName"] = _context.Personnel.ToList();
+            // ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId");
+            ViewData["TimeOffPolicyName"] = _context.TimeOffPolicies.ToList();
             return View();
         }
 
@@ -89,29 +88,41 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Del")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
+        public async Task<IActionResult> Create([Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Active")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy, string LastName, string TimeOffPolicyName)
         {
+            if(TimeOffPolicyName == null && LastName == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                personnelApplyTimeOffPolicy.PersonnelId = LastName.Substring(0, 3);
+                personnelApplyTimeOffPolicy.TimeOffPolicyId = TimeOffPolicyName.Substring(0, 3);
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(personnelApplyTimeOffPolicy);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId", personnelApplyTimeOffPolicy.PersonnelId);
-            ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId", personnelApplyTimeOffPolicy.TimeOffPolicyId);
+           // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId", personnelApplyTimeOffPolicy.PersonnelId);
+            ViewData["LastName"] = _context.Personnel.ToList();
+           // ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId", personnelApplyTimeOffPolicy.TimeOffPolicyId);
+            ViewData["TimeOffPolicyName"] = _context.TimeOffPolicies.ToList();
             return View(personnelApplyTimeOffPolicy);
         }
 
         // GET: PersonnelApplyTimeOffPolicies/Edit/5
-        [Route("[controller]/[action]/{personnalId}/{policyId}")]
         public async Task<IActionResult> Edit(string personnalId, string policyId)
         {
+
             if (personnalId == null || policyId == null)
             {
                 return NotFound();
             }
 
             var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies.FindAsync(personnalId, policyId);
+
             if (personnelApplyTimeOffPolicy == null)
             {
                 return NotFound();
@@ -126,13 +137,12 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("[controller]/[action]/{personnalId}/{policyId}")]
-        public async Task<IActionResult> Edit(string personnalId, string policyId, [Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Del")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
+        public async Task<IActionResult> Edit( [Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Del")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
         {
-            if (personnalId != personnelApplyTimeOffPolicy.PersonnelId || policyId != personnelApplyTimeOffPolicy.TimeOffPolicyId)
+            /*if (personnalId != personnelApplyTimeOffPolicy.PersonnelId || policyId != personnelApplyTimeOffPolicy.TimeOffPolicyId)
             {
                 return NotFound();
-            }
+            }*/
 
             if (ModelState.IsValid)
             {
@@ -160,7 +170,6 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: PersonnelApplyTimeOffPolicies/Delete/5
-        [Route("[controller]/[action]/{personnalId}/{policyId}")]
         public async Task<IActionResult> Delete(string personnalId, string policyId)
         {
             if (personnalId == null || policyId == null)
@@ -183,15 +192,18 @@ namespace TimeKeeping.Controllers
         // POST: PersonnelApplyTimeOffPolicies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Route("[controller]/[action]/{personnalId}/{policyId}")]
-        public async Task<IActionResult> DeleteConfirmed(string personnalId, string policyId)
+        public async Task<IActionResult> DeleteConfirmed(string PersonnelId, string TimeOffPolicyId)
         {
-            var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies.FindAsync(personnalId, policyId);
+            if (PersonnelId == null || TimeOffPolicyId == null)
+            {
+                return NotFound();
+            }    
+            var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies.FindAsync(PersonnelId, TimeOffPolicyId);
             _context.PersonnelApplyTimeOffPolicies.Remove(personnelApplyTimeOffPolicy);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        [Route("[controller]/[action]/{personnalId}/{policyId}")]
+
         private bool PersonnelApplyTimeOffPolicyExists(string personnalId, string policyId)
         {
             return _context.PersonnelApplyTimeOffPolicies.Any(e => e.PersonnelId == personnalId && e.TimeOffPolicyId == policyId);

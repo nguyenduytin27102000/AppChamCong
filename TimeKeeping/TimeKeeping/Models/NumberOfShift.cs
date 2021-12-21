@@ -13,8 +13,8 @@ namespace TimeKeeping.Models
         }
 
         public string NumberOfShiftId { get; set; }
-        public byte NumberOfShift1 { get; set; }
-        public bool? Del { get; set; }
+        public byte Count { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<WorkSchedule> WorkSchedules { get; set; }
     }
