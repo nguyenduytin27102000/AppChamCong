@@ -143,6 +143,15 @@
 	</select>
 </template>
 
+<template id="specify-item">
+    <div class="col-5">
+        <span>from</span>
+        <select class="form-control"></select>
+        <span>to</span>
+        <select class="form-control"></select>
+    </div>
+</template>
+
 
 @if (ViewData["Message"] != null)
 {
@@ -186,8 +195,14 @@
 								renderHalfDayOptions(name, f);
 								break;
 							case '3':
-								renderSpecifyTimeOptions(start, end - 30, name + 'Start', f);
-								renderSpecifyTimeOptions(start + 30, end, name + 'End', f);
+                                const fromLabel = document.createElement('span');
+                                const toLabel = document.createElement('span');
+                                fromLabel.innerHTML = 'from';
+								toLabel.innerHTML = 'to';
+								f.appendChild(fromLabel);
+								renderSpecifyTimeOptions(start, end - 30, 'start-hour-' + name, f);
+								f.appendChild(toLabel);
+                                renderSpecifyTimeOptions(start + 30, end, 'end-hour-' + name, f);
 								break;
 							default:
 								timeContainer.innerHTML = '';
@@ -211,7 +226,13 @@
 								renderHalfDayOptions(name, timeContainer);
 								break;
 							case '3':
+								const fromLabel = document.createElement('span');
+								const toLabel = document.createElement('span');
+								fromLabel.innerHTML = 'from';
+								toLabel.innerHTML = 'to';
+								timeContainer.appendChild(fromLabel);
 								renderSpecifyTimeOptions(start, end - 30, 'start-hour-' + name, timeContainer);
+								timeContainer.appendChild(toLabel);
 								renderSpecifyTimeOptions(start + 30, end, 'end-hour-' + name, timeContainer);
 								break;
 							default:
@@ -231,8 +252,13 @@
 			// function
 			// start hour must to integer
 			function renderSpecifyTimeOptions(start, end, name, container) {
+				container.classList.add('row');
+				const div = document.createElement('div');
+				div.classList.add('col-5');
+
 				const select = document.createElement('select');
-				select.classList.add("form-control")
+				select.classList.add("form-control");
+
 				select.name = name;
 				while (start <= end) {
 					let option = document.createElement("option");
@@ -242,10 +268,12 @@
 					select.appendChild(option);
 					start = start % 100 == 30 ? start + 70 : start + 30;
 				}
-				container.appendChild(select);
+				div.appendChild(select);
+				container.appendChild(div);
 			}
 
 			function renderHalfDayOptions(name, container) {
+				container.classList.remove('row');
 				const tmp = document.querySelector('#half-day-item');
 				if (tmp) {
 					const cloneTmp = tmp.content.cloneNode(true);
