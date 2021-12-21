@@ -32,11 +32,11 @@ namespace TimeKeeping.ViewModels
         [Display(Name = "Minutes early")]
         public byte MinutesEarly { get; set; }
 
-        [Display(Name = "Start day")]
+        [Display(Name = "Start date")]
         [DataType(DataType.Date)]
         public DateTime? StartDay { get; set; }
 
-        [Display(Name = "End day")]
+        [Display(Name = "End date")]
         [DataType(DataType.Date)]
         public DateTime? EndDay { get; set; }
         public bool? States { get; set; }

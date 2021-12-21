@@ -88,12 +88,6 @@
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["PositionParm"]">@Html.DisplayNameFor(model => model.Position)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.SalaryPolicy)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.TypePersonnelId)
-			</th>
-			<th>
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["workScheduleParm"]">@Html.DisplayNameFor(model => model.WorkScheduleId)</a>
 			</th>
 			<th>
@@ -148,12 +142,6 @@
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Position.PositionName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.SalaryPolicy.SalaryPolicyName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TypePersonnel.TypePersonnelName)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.WorkSchedule.WorkScheduleName)

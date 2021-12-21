@@ -743,7 +743,7 @@ namespace TimeKeeping.Models
 
                 entity.Property(e => e.Del).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.EndDay).HasColumnType("date");
+                entity.Property(e => e.EndDate).HasColumnType("date");
 
                 entity.Property(e => e.MinutesEarly).HasDefaultValueSql("((15))");
 
@@ -753,7 +753,7 @@ namespace TimeKeeping.Models
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.StartDay).HasColumnType("date");
+                entity.Property(e => e.StartDate).HasColumnType("date");
 
                 entity.Property(e => e.States).HasDefaultValueSql("((1))");
 

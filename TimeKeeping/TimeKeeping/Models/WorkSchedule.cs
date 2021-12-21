@@ -35,8 +35,13 @@ namespace TimeKeeping.Models
         [Display(Name = "Minutes early")]
         public byte MinutesEarly { get; set; }
 
-        public DateTime? StartDay { get; set; }
-        public DateTime? EndDay { get; set; }
+        [Display(Name = "Start date")]
+        [DataType(DataType.Date)]
+        public DateTime? StartDate { get; set; }
+
+        [Display(Name = "End date")]
+        [DataType(DataType.Date)]
+        public DateTime? EndDate { get; set; }
         public bool? States { get; set; }
         public bool? Del { get; set; }
 

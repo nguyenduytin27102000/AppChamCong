@@ -28,6 +28,8 @@ namespace TimeKeeping.Controllers
             var personnels = from p in _context.Personnel
                              select p;
 
+            personnels = personnels.Include(p => p.WorkSchedule);
+
             // Searching.
             ViewData["Name"] = name;
             ViewData["OfficeId"] = new SelectList(_context.Offices, "OfficeId", "OfficeName", office);

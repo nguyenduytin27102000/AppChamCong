@@ -81,9 +81,9 @@ namespace TimeKeeping.Controllers
             workSchedule.TypeWorkScheduleId = fields["duration"];
 
 
-            if (workSchedule.StartDay == null && workSchedule.EndDay == null)
+            if (workSchedule.StartDate == null && workSchedule.EndDate == null)
             {
-                workSchedule.StartDay = DateTime.Now;
+                workSchedule.StartDate = DateTime.Now;
             }
 
             // Id auto.
