@@ -45,7 +45,9 @@ namespace TimeKeeping.Controllers
                 };
                 dateInfos.Add(dateInfo);
             }
+
             // get personnel and time
+            #region get personnel and time
             var employees = _context.Personnel.Select(p => new {
                 FullName = $"{p.FirstName} {p.LastName}",
                 PersonnelId = p.PersonnelId,
@@ -55,27 +57,54 @@ namespace TimeKeeping.Controllers
                 Days = p.Checkins.Where(c => c.Time.Month == month && c.Time.Year == year).Select(c => c.Time.Date).Distinct().Count(),
 
                 // còn cái này chưa tính
-                Off = p.TimeOffRequestPersonnel.Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year 
+                Off = p.TimeOffRequestPersonnel.Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year
                         && t.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals("accepted")).Count(),
 
-                Checkin = p.Checkins.OrderBy(c => c.Time).Where(c => c.Time.Month == month && c.Time.Year == year).Select(c => 
+                Checkin = p.Checkins.OrderBy(c => c.Time).Where(c => c.Time.Month == month && c.Time.Year == year).Select(c =>
                 new
                 {
                     Hour = $"{c.Time.Hour}:{c.Time.Minute.ToString().PadLeft(2, '0')}",
                     Date = c.Time.Date,
+                    DayName = c.Time.DayOfWeek.ToString().Substring(0, 3)
+                }),
+                DayOff = p.TimeOffRequestPersonnel.Select(p1 => new {
+                    DateTime = p1.DayOffs.Where(d => d.DayOffAt.Month == month && d.DayOffAt.Year 
+                        == year && d.TimeOffRequest.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals("accepted"))
+                    .Select(d => new { 
+                        Date = d.DayOffAt,
+                        To = d.ToHour,
+                        From = d.FromHour
+                    }),
                 })
             }).ToList();
+            #endregion
 
+            // get shift time
+            var morning = _context.Shifts.Where(s => s.StartTime.Hour <= 9)
+                .Select(s => new { Start = s.StartTime, End = s.EndTime })
+                .FirstOrDefault();
+            var afternoon = _context.Shifts.Where(s => s.StartTime.Hour >= 12)
+                .Select(s => new { Start = s.StartTime, End = s.EndTime })
+                .FirstOrDefault();
+            var fullday = new { Start = morning.Start, End = afternoon.End };
+            var shift = new { Morning = morning, Afternoon = afternoon, Fullday = fullday };
+
+            // convert object to json
+            string shiftsJson = JsonConvert.SerializeObject(shift);
             string timeInfoJson = JsonConvert.SerializeObject(employees);
-
             string dateInfoJson = JsonConvert.SerializeObject(dateInfos);
 
+            // binding data to view
             ViewData["time-info"] = timeInfoJson;
-
             ViewData["days"] = dateInfoJson;
+            ViewData["shifts"] = shiftsJson;
+
+            ViewData["month"] = month;
+            ViewData["year"] = year;
+
             ViewData["title-time"] = $"1/{month} - {days}/{month}";
-            ViewData["label-time"] = $"{month}/{year}";
-            ViewData["cur-timesheet"] = $"{year}-{month}";
+            ViewData["label-time"] = $"{month.ToString().PadLeft(2, '0')}/{year}";
+            ViewData["cur-timesheet"] = $"{year}-{month.ToString().PadLeft(2, '0')}";
             ViewData["pre-timesheet"] = PreMonthYear(month, year);
             ViewData["next-timesheet"] = NextMonthYear(month, year);
             return View();
@@ -108,7 +137,7 @@ namespace TimeKeeping.Controllers
                     year++;
                 }
             }
-            return $"{year}-{month}";
+            return $"{year}-{month.ToString().PadLeft(2, '0')}";
         }
 
         private string PreMonthYear(int month, int year)
@@ -131,7 +160,7 @@ namespace TimeKeeping.Controllers
                     year--;
                 }
             }
-            return $"{year}-{month}";
+            return $"{year}-{month.ToString().PadLeft(2, '0')}";
         }
 
         [HttpGet("/Timesheet/Export/{year:int:maxlength(4)}-{month:int:maxlength(2)}")]
@@ -226,6 +255,11 @@ namespace TimeKeeping.Controllers
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"TIMESHEETOVERVIEW--{year}-{month}.xlsx");
                 }
             }
+        }
+
+        public IActionResult ChangeTimeSheetOverview(int month, int year)
+        {
+            return Redirect($"/Timesheet/Overview/{year}-{month}");
         }
     }
 }

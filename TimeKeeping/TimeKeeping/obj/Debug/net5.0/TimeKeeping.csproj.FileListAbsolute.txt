@@ -324,7 +324,6 @@ D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\TimeKeeping.d
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\ref\TimeKeeping.dll
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\TimeKeeping.pdb
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\obj\Debug\net5.0\TimeKeeping.genruntimeconfig.cache
-D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\bin\Debug\net5.0\Web.IISProfile.config
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\bin\Debug\net5.0\ClosedXML.dll
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\bin\Debug\net5.0\DocumentFormat.OpenXml.dll
 D:\Internship\CloneBaseVN\TimeKeeping\TimeKeeping\bin\Debug\net5.0\ExcelNumberFormat.dll
