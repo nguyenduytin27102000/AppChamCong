@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
-#nullable disable
 
 namespace TimeKeeping.Models
 {
-    public partial class TimeKeepingFeedback
+    public class TimeKeepingFeedbackWithView
     {
         public string TimeKeepingFeedbackId { get; set; }
         public string CheckinId { get; set; }
@@ -16,9 +13,13 @@ namespace TimeKeeping.Models
         public DateTime Time { get; set; }
         public string TimeOffRequestStateId { get; set; }
         public bool? Active { get; set; }
-
-        public virtual Checkin Checkin { get; set; }
+      
         [Display(Name = "Status")]
-        public virtual TimeOffRequestState TimeOffRequestState { get; set; }
+        public  string TimeOffRequestStateName { get; set; }
+        
+        public string PersonnelId { get; set; }
+
+        [Display(Name = "Employee Name")]
+        public string LastName { get; set; }
     }
 }
