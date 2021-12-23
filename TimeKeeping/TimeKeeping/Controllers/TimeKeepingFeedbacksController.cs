@@ -26,6 +26,7 @@ namespace TimeKeeping.Controllers
                              join c in _context.Checkins on f.CheckinId equals c.CheckinId
                          join s in _context.TimeOffRequestStates on f.TimeOffRequestStateId equals s.TimeOffRequestStateId
                          join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
+                         where f.Active == true 
                          select new TimeKeepingFeedbackWithView
                          {
                              TimeKeepingFeedbackId = f.TimeKeepingFeedbackId,
