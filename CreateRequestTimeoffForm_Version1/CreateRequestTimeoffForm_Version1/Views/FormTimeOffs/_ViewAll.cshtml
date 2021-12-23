@@ -1,0 +1,84 @@
+﻿@model IEnumerable<CreateRequestTimeoffForm_Version1.Models.FormTimeOff>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FormTimeOffName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequireApproval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequireLimitedDaysOff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProcessingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfDaysBeforeTimeOff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LimitedDaysOff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Regulations)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Del)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalProcess)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeTimeOff)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Del != false)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FormTimeOffName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequireApproval)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequireLimitedDaysOff)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProcessingTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberOfDaysBeforeTimeOff)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LimitedDaysOff)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Regulations)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Del)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApprovalProcess.ApprovalProcessId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TypeTimeOff.TypeTimeOffId)
+                    </td>
+                    <td>
+                        <a onclick="showInPopup('@Url.Action("AddOrEdit","FormTimeOffs",new { id=item.FormTimeOffId },Context.Request.Scheme)','Chỉnh Sữa')" class="btn btn-success">Edit</a> |
+                        <form asp-action="Delete" asp-route-id="@item.FormTimeOffId" onsubmit="return jQueryAjaxDelete(this);" class="d-inline">
+                            <input type="submit" value="Xóa" class="btn btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

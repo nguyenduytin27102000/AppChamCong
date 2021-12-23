@@ -24,7 +24,7 @@ namespace TimeKeeping.Models
         public byte MinutesEarly { get; set; }
         public string Regulations { get; set; }
         public bool? States { get; set; }
-        public bool? Active { get; set; }
+        public bool? Del { get; set; }
 
         public virtual CheckinPolicy CheckinPolicy { get; set; }
         public virtual NumberOfShift NumberOfShift { get; set; }

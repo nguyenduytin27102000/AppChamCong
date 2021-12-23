@@ -15,7 +15,7 @@ namespace TimeKeeping.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public bool? DayOff { get; set; }
-        public bool? Active { get; set; }
+        public bool? Del { get; set; }
 
         public virtual DaysOfWeek DaysOfWeek { get; set; }
         public virtual TypeShift TypeShift { get; set; }

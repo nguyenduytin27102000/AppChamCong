@@ -14,7 +14,7 @@ namespace TimeKeeping.Models
 
         public string TypeTimeOffId { get; set; }
         public string TypeTimeOffName { get; set; }
-        public bool? Active { get; set; }
+        public bool? Del { get; set; }
 
         public virtual ICollection<FormTimeOff> FormTimeOffs { get; set; }
     }

@@ -1,0 +1,54 @@
+﻿@model TimeKeeping.Models.TimeOffPolicy
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TimeOffPolicy</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeOffPolicyName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeOffPolicyName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfDaysOffStandard)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfDaysOffStandard)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfDaysOffLastYear)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfDaysOffLastYear)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Describe)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Describe)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Del)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Del)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TypePolicy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TypePolicy.TypePolicyId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.TimeOffPolicyId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

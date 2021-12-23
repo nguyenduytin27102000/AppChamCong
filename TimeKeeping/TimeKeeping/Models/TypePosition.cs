@@ -15,7 +15,7 @@ namespace TimeKeeping.Models
         public string TypePositionId { get; set; }
         public string TypePositionName { get; set; }
         public string Describe { get; set; }
-        public bool? Active { get; set; }
+        public bool? Del { get; set; }
 
         public virtual ICollection<Position> Positions { get; set; }
     }
