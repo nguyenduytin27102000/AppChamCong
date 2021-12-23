@@ -48,7 +48,7 @@ namespace TimeKeeping.Controllers
         public async Task<IActionResult> Index()
         {
             await UpdateDayPolicy();
-            var timeKeepingDBContext = _context.PersonnelApplyTimeOffPolicies.Include(p => p.Personnel).Include(p => p.TimeOffPolicy);
+            var timeKeepingDBContext = _context.PersonnelApplyTimeOffPolicies.Where(p => p.Active==true).Include(p => p.Personnel).Include(p => p.TimeOffPolicy);
             return View(await timeKeepingDBContext.ToListAsync());
         }
 
@@ -137,7 +137,7 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( [Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Del")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
+        public async Task<IActionResult> Edit( [Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Active")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
         {
             /*if (personnalId != personnelApplyTimeOffPolicy.PersonnelId || policyId != personnelApplyTimeOffPolicy.TimeOffPolicyId)
             {
@@ -191,15 +191,18 @@ namespace TimeKeeping.Controllers
 
         // POST: PersonnelApplyTimeOffPolicies/Delete/5
         [HttpPost, ActionName("Delete")]
+       
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string PersonnelId, string TimeOffPolicyId)
         {
             if (PersonnelId == null || TimeOffPolicyId == null)
             {
-                return NotFound();
+              //  return NotFound();
+                return RedirectToAction(nameof(Index));
             }    
             var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies.FindAsync(PersonnelId, TimeOffPolicyId);
-            _context.PersonnelApplyTimeOffPolicies.Remove(personnelApplyTimeOffPolicy);
+            personnelApplyTimeOffPolicy.Active = false;
+            _context.PersonnelApplyTimeOffPolicies.Update(personnelApplyTimeOffPolicy);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

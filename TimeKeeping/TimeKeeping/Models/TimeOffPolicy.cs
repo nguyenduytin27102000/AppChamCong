@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace TimeKeeping.Models
         }
 
         public string TimeOffPolicyId { get; set; }
+        [DisplayName("Time Off Policy Name")]
         public string TimeOffPolicyName { get; set; }
         public string TypePolicyId { get; set; }
         public byte NumberOfDaysOffStandard { get; set; }
