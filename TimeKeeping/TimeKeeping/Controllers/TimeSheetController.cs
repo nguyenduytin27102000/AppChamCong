@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -164,7 +165,7 @@ namespace TimeKeeping.Controllers
         }
 
         [HttpGet("/Timesheet/Export/{year:int:maxlength(4)}-{month:int:maxlength(2)}")]
-        public IActionResult OverviewExportExcelFile(int month, int year)
+        public IActionResult OverviewExportExcelFile(int month, int year, string idFilter)
         {
             int daysInMonth = DateTime.DaysInMonth(year, month);
             DataTable dt = new DataTable("TimesheetOverview");
@@ -181,13 +182,16 @@ namespace TimeKeeping.Controllers
             {
                 dt.Columns.Add(new DataColumn($"{i}/{month}"));
             }
-            var employees = _context.Personnel.Select(p => new {
-                FullName = $"{p.FirstName} {p.LastName}",
-                PersonnelId = p.PersonnelId,
-                DOB = p.DateOfBirth.Date.ToString("dd/MM/yyyy"),
-                Office = p.Office.OfficeName,
-                Gender = p.Sex ? "Male" : "Female",
-                Days = p.Checkins.Where(c => c.Time.Month == month && c.Time.Year == year).Select(c => c.Time.Date).Distinct().Count(),
+            var employees = _context.Personnel
+                .Where(p => string.IsNullOrEmpty(idFilter) ? true : idFilter.Contains(p.PersonnelId))
+                .Select(p => new {
+                    FullName = $"{p.FirstName} {p.LastName}",
+                    PersonnelId = p.PersonnelId,
+                    DOB = p.DateOfBirth.Date.ToString("dd/MM/yyyy"),
+                    Office = p.Office.OfficeName,
+                    Gender = p.Sex ? "Male" : "Female",
+                    Days = p.Checkins.Where(c => c.Time.Month == month && c.Time.Year == year)
+                    .Select(c => c.Time.Date).Distinct().Count(),
 
                 // còn cái này chưa tính
                 Off = p.TimeOffRequestPersonnel.Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year
