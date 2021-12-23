@@ -19,8 +19,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="CheckinId" class="control-label"></label>
-                 <select asp-for="CheckinId" class ="form-control" asp-items="ViewBag.CheckinId" readonly></select> 
-                
+                 <select asp-for="CheckinId" class ="form-control" asp-items="ViewBag.CheckinId" readonly></select>             
+            </div>
+            <div class="form-group" hidden>            
+               <input asp-for="Active" value="true" class="form-control" />               
             </div>
             <div class="form-group">
                 <label asp-for="Reason" class="control-label"></label>
