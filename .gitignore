@@ -1,12 +1,3 @@
-# Pulish folders and files
-*.[Pp]ublish.xml
-*.azurePubxml
-*.pubxml
-*.publishproj
-PublishProfiles/
-Web.IISProfile.config
-
-
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
@@ -129,8 +120,3 @@ src/.vs/config/applicationhost.config
 /TimeKeeping/TimeKeeping/bin
 /TimeKeeping/TimeKeeping/obj
 /TimeKeeping/.vs
-/TimeKeeping/TimeKeeping/bin
-/TimeKeeping/TimeKeeping/bin
-/TimeKeeping/TimeKeeping/obj
-/TimeKeeping/.vs
-/TimeKeeping/*.sln

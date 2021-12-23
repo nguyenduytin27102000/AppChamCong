@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using TimeKeeping.Models;
 using TimeKeeping.ViewModels;
-using TimeKeeping.ViewModels.Personnels;
 
 namespace TimeKeeping.Services
 {
@@ -9,12 +8,7 @@ namespace TimeKeeping.Services
     {
         public AutoMapperProfile()
         {
-            // area for time off requests
             CreateMap<TimeOffRequestModel, TimeOffRequest>();
-
-
-            // area for personnels
-            CreateMap<Personnel, PersonnelDetailModel>();
         }
     }
 }
