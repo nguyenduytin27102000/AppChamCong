@@ -14,7 +14,7 @@ namespace TimeKeeping.Models
 
         public string CheckinPolicyId { get; set; }
         public string CheckinPolicyName { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<WorkSchedule> WorkSchedules { get; set; }
     }

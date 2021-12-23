@@ -15,7 +15,7 @@ namespace TimeKeeping.Models
         public string SeniorityPolicyId { get; set; }
         public int SeniorityMonth { get; set; }
         public byte PolicyDay { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<ApplySeniorityPolicy> ApplySeniorityPolicies { get; set; }
     }

@@ -5,13 +5,12 @@ using System.Collections.Generic;
 
 namespace TimeKeeping.Models
 {
-    public partial class TimeOffFollower
+    public partial class Checkin
     {
+        public string CheckinId { get; set; }
         public string PersonnelId { get; set; }
-        public string FormTimeOffId { get; set; }
-        public bool? Active { get; set; }
+        public DateTime Time { get; set; }
 
-        public virtual FormTimeOff FormTimeOff { get; set; }
         public virtual Personnel Personnel { get; set; }
     }
 }

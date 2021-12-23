@@ -10,9 +10,9 @@ namespace TimeKeeping.Models
         public string DayOffId { get; set; }
         public string TimeOffRequestId { get; set; }
         public DateTime DayOffAt { get; set; }
-        public bool? Del { get; set; }
         public string FromHour { get; set; }
         public string ToHour { get; set; }
+        public bool? Active { get; set; }
 
         public virtual TimeOffRequest TimeOffRequest { get; set; }
     }
