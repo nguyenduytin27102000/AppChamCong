@@ -129,3 +129,8 @@ src/.vs/config/applicationhost.config
 /TimeKeeping/TimeKeeping/bin
 /TimeKeeping/TimeKeeping/obj
 /TimeKeeping/.vs
+/TimeKeeping/TimeKeeping/bin
+/TimeKeeping/TimeKeeping/bin
+/TimeKeeping/TimeKeeping/obj
+/TimeKeeping/.vs
+/TimeKeeping/*.sln

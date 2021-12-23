@@ -20,14 +20,19 @@ namespace TimeKeeping.Controllers
         {
             _context = context;
         }
-
-        [HttpGet("/Timesheet/Overview/{year:int:maxlength(4)}-{month:int:maxlength(2)}")]
+        
+        // go to overview timesheet, there are all employees's timesheet
+        [HttpGet]
         public IActionResult Overview(int month, int year)
         {
-            if(!IsValidateMonthAndYear(month, year))
+            if(month == 0 || year == 0)
             {
                 month = DateTime.Now.Month;
-                year = DateTime.Now.Year; 
+                year = DateTime.Now.Year;
+            }
+            else if(!IsValidateMonthAndYear(month, year))
+            {
+                return NotFound();
             }
             var days = DateTime.DaysInMonth(year, month);
             var dateInfos = new List<DateInfo>();
@@ -100,25 +105,32 @@ namespace TimeKeeping.Controllers
             ViewData["days"] = dateInfoJson;
             ViewData["shifts"] = shiftsJson;
 
-            ViewData["month"] = month;
-            ViewData["year"] = year;
-
-            ViewData["title-time"] = $"1/{month} - {days}/{month}";
             ViewData["label-time"] = $"{month.ToString().PadLeft(2, '0')}/{year}";
-            ViewData["cur-timesheet"] = $"{year}-{month.ToString().PadLeft(2, '0')}";
-            ViewData["pre-timesheet"] = PreMonthYear(month, year);
-            ViewData["next-timesheet"] = NextMonthYear(month, year);
+
+            // using Tuple get current month and year
+            (ViewData["current-month"], ViewData["current-year"]) = (month, year);
+
+            // using Tuple get previous month and year 
+            (ViewData["previous-month"], ViewData["previous-year"]) = PreMonthYear(month, year);
+
+            // using Tuple get next month and year 
+            (ViewData["next-month"], ViewData["next-year"]) = NextMonthYear(month, year);
+
+            // go to View
             return View();
         }
 
+        // check validity of month and year 
         private bool IsValidateMonthAndYear(int month, int year)
         {
+            // The year's value is between 2018 and 2050
             if (month > 12 || month < 1) return false;
-            if (year < 2000 || year > 2100) return false;
+            if (year < 2018 || year > 2050) return false;
             return true;
         }
 
-        private string NextMonthYear(int month, int year)
+        // get next month and year from input
+        private (int, int) NextMonthYear(int month, int year)
         {
             if(month < 0 || month > 12)
             {
@@ -138,16 +150,16 @@ namespace TimeKeeping.Controllers
                     year++;
                 }
             }
-            return $"{year}-{month.ToString().PadLeft(2, '0')}";
+            return (month, year);
         }
 
-        private string PreMonthYear(int month, int year)
+        // get previous month, year from input
+        private (int, int) PreMonthYear(int month, int year)
         {
             if (month < 0 || month > 12)
             {
                 month = DateTime.Now.Month;
                 year = DateTime.Now.Year;
-
             }
             else
             {
@@ -161,12 +173,17 @@ namespace TimeKeeping.Controllers
                     year--;
                 }
             }
-            return $"{year}-{month.ToString().PadLeft(2, '0')}";
+            return (month, year);
         }
 
-        [HttpGet("/Timesheet/Export/{year:int:maxlength(4)}-{month:int:maxlength(2)}")]
+        // export excel file
+        [HttpGet]
         public IActionResult OverviewExportExcelFile(int month, int year, string idFilter)
         {
+            if(month == 0 && year == 0 || !IsValidateMonthAndYear(month, year))
+            {
+                return NotFound();
+            }
             int daysInMonth = DateTime.DaysInMonth(year, month);
             DataTable dt = new DataTable("TimesheetOverview");
             dt.Columns.AddRange(new DataColumn[] {
@@ -263,7 +280,8 @@ namespace TimeKeeping.Controllers
 
         public IActionResult ChangeTimeSheetOverview(int month, int year)
         {
-            return Redirect($"/Timesheet/Overview/{year}-{month}");
+            //return Redirect($"/Timesheet/Overview?month={year}&{month}");
+            return RedirectToAction(nameof(Overview), new { month = month, year = year });
         }
     }
 }

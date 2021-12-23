@@ -42,22 +42,32 @@
 
 <div class="banner row mx-0">
     <div class="col-3 pl-5 pt-4">
-        @*<div class="rounded shadow-sm p-2 d-inline bg-light">
-            <a href="/TimeSheet/Overview/@ViewData["pre-timesheet"]" class="btn border p-2"><i class="fas fa-angle-left"></i></a>
-            <span class="p-2">@ViewData["label-time"]</span>
-            <a href="/TimeSheet/Overview/@ViewData["next-timesheet"]" class="btn border p-2"><i class="fas fa-angle-right"></i></a>
-        </div>*@
         <nav aria-label="timesheet-pagination">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href="/TimeSheet/Overview/@ViewData["pre-timesheet"]"><i class="fas fa-angle-left"></i></a>
+                    <a class="page-link"
+                       asp-action="Overview"
+                       asp-controller="TimeSheet"
+                       asp-route-month="@ViewData["previous-month"]"
+                       asp-route-year="@ViewData["previous-year"]">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
                 </li>
+
                 <li class="page-item"><span class="page-link font-weight-bold px-3" id="time-modal-button">
                     <i class="fas fa-calendar-alt"></i> @ViewData["label-time"]</span>
                 </li>
+
                 <li class="page-item">
-                    <a class="page-link" href="/TimeSheet/Overview/@ViewData["next-timesheet"]"><i class="fas fa-angle-right"></i></a>
+                    <a class="page-link" 
+                       asp-action="Overview"
+                       asp-controller="TimeSheet"
+                       asp-route-month="@ViewData["next-month"]"
+                       asp-route-year="@ViewData["next-year"]">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
                 </li>
+
             </ul>
             <div id="time-modal"></div>
         </nav>
@@ -68,8 +78,12 @@
     </div>
 
     <div class="col-3 pl-4 pt-3">
-        <form action="/TimeSheet/Export/@ViewData["cur-timesheet"]" method="get" id="export">
+        <form asp-action="OverviewExportExcelFile"
+              asp-controller="TimeSheet"
+              method="get" id="export">
             <input type="hidden" name="idFilter" />
+            <input type="hidden" name="month" value="@ViewData["current-month"]" />
+            <input type="hidden" name="year" value="@ViewData["current-year"]" />
             <button type="submit" class="btn px-3 btn-sm btn-info"><i class="fas fa-file-export"></i> <b>EXPORT</b></button>
         </form>
     </div>
@@ -119,7 +133,6 @@
 @* template work *@
 <template id="timeinfo-item">
     <div class="border border-info text-center mx-0 mr-1 px-2 card" style="max-height:3rem; min-height:3rem; max-width:5rem; min-width:5rem;">
-        @* Co the thay doi theo tin trang check in - out *@
         <p class="check-in mb-0"></p>
         <p class="check-out mb-0"></p>
     </div>
@@ -172,8 +185,8 @@
             const personContainer = document.querySelector('#employees-container');
             const timeContainer = document.querySelector('#time-info-container');
             const quickFilter = document.querySelector('#quick-filter');
-            const currentMonth = @Html.Raw(ViewData["month"]);
-            const currentYear = @Html.Raw(ViewData["year"]);
+            const currentMonth = @Html.Raw(ViewData["current-month"]);
+            const currentYear = @Html.Raw(ViewData["current-year"]);
             const shifts = @Html.Raw(ViewData["shifts"]);
             const inputForId = document.querySelector('#export input[name="idFilter"]');
 
@@ -201,14 +214,13 @@
                     const tmp = document.querySelector('#modal-time-container');
                     const cloneTmp = tmp.content.cloneNode(true);
                     const yearItem = cloneTmp.querySelector('select[name="year"]');
-                    renderYear(2018, 2030, yearItem);
+                    renderYear(2018, 2050, yearItem);
                     cloneTmp.querySelector('#closebtn').onclick = closeModalHandle;
                     modal.appendChild(cloneTmp);
                 }
                 else {
                     modal.innerHTML = '';
                 }
-                
             }
 
             function closeModalHandle(e) {
