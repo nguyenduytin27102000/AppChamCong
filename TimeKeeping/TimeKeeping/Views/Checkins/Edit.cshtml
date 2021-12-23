@@ -22,6 +22,7 @@
                 <label for="LastName"  class="control-label">Personnal</label>
                 <input type="text" id="LastName" class="form-control" value="@ViewBag.LastName" readonly></input>           
             </div>
+            <input type="text" value="true" asp-for="Active" hidden/>
             <div class="form-group">
                 <label asp-for="Time" class="control-label"></label>
                 <input asp-for="Time" class="form-control" />
