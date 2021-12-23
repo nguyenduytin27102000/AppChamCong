@@ -38,7 +38,7 @@ namespace TimeKeeping.Controllers
                        join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
                        join w in _context.WorkSchedules on p.WorkScheduleId equals w.WorkScheduleId
                        join s in _context.Shifts on w.WorkScheduleId equals s.WorkScheduleId
-                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <=5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5))  && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year)
+                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <=5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5))  && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year && c.Active == true)
                        select new CheckinWithView
                        {
                            CheckinId = c.CheckinId,
