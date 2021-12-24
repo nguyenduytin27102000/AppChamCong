@@ -264,6 +264,15 @@ CREATE TABLE Checkin (
 CheckinId varchar(10) not null,    
 PersonnelId varchar(10) not null,
 Time datetime not null,
+Active bit default(1)
+);
+CREATE TABLE TimeKeepingFeedback(
+TimeKeepingFeedbackId varchar(10) not null,
+CheckinId varchar(10) not null,
+Reason Nvarchar(200) not null,
+Time DateTime not null,
+TimeOffRequestStateId varchar(10) not null,
+Active bit default(1)
 );
 -- Create all Key
 -- Keys for Module 1: 
@@ -442,10 +451,18 @@ constraint PR_PersonnelApplyTimeOffPolicy_TimeOffPolicy foreign key(TimeOffPolic
 --   Primary key
 alter table Checkin
 add constraint PK_Checkin primary key(CheckinId)
+
+alter table TimeKeepingFeedback
+add constraint PK_TimeKeepingFeedback primary key(TimeKeepingFeedbackId)
+
 --   Foreign key
 ALTER TABLE Checkin
 add constraint PR_Checkin_Personnel foreign key(PersonnelId) references Personnel(PersonnelId)
 
+
+ALTER TABLE TimeKeepingFeedback
+add constraint PR_TimeKeepingFeedback_Checkin foreign key(CheckinId) references Checkin(CheckinId),
+constraint PR_TimeKeepingFeedback_TimeOffRequestState foreign key(TimeOffRequestStateId) references TimeOffRequestState(TimeOffRequestStateId)
 
 -- Add Data --------------------------------
 /* ERROR

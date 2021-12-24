@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TimeKeeping.Models;
-using TimeKeeping.Services;
 
 namespace TimeKeeping
 {
@@ -23,9 +22,9 @@ namespace TimeKeeping
         {
             services.AddControllersWithViews();
 
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            
             services.AddDbContext<TimeKeepingDBContext>();
-            services.AddScoped<IdentityFactory>();
+            
 
         }
 

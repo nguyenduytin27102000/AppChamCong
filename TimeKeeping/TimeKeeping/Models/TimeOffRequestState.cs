@@ -9,6 +9,7 @@ namespace TimeKeeping.Models
     {
         public TimeOffRequestState()
         {
+            TimeKeepingFeedbacks = new HashSet<TimeKeepingFeedback>();
             TimeOffRequests = new HashSet<TimeOffRequest>();
         }
 
@@ -16,6 +17,7 @@ namespace TimeKeeping.Models
         public string TimeOffRequestStateName { get; set; }
         public bool? Active { get; set; }
 
+        public virtual ICollection<TimeKeepingFeedback> TimeKeepingFeedbacks { get; set; }
         public virtual ICollection<TimeOffRequest> TimeOffRequests { get; set; }
     }
 }
