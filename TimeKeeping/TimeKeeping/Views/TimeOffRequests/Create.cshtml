@@ -1,0 +1,343 @@
+﻿@model TimeKeeping.ViewModels.TimeOffRequestModel
+
+@{
+    ViewData["Title"] = "Create Time Off Request";
+}
+
+<style>
+    label {
+        margin-bottom: 0;
+    }
+</style>
+
+<h4 class="font-weight-bold">Create Time Off Request</h4>
+<hr />
+<section class="container-fluid">
+    <div class="border-1">
+        @if (ViewData["message"] != null)
+        {
+            <div class="alert alert-@ViewData["status"]" role="alert">
+                @ViewData["message"]
+            </div>
+        }
+        <form asp-action="Create" asp-controller="TimeOffRequests" id="createRequestTimeoffForm"
+              method="post" enctype="multipart/form-data">
+            <div class="form-group row">
+                <div class="col-sm-3 col-form-label">
+                    <label asp-for="Title" class="font-weight-bold"></label>
+                    <br />
+                    <small class="text-muted">Title</small>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="Title" class="form-control" rules="required" />
+                    <span class="text-danger form-message"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3 col-form-label">
+                    <label asp-for="FormTimeOffId" class="font-weight-bold"></label>
+                    <br />
+                    <small class="text-muted">Select time off form</small>
+                </div>
+                <div class="col-sm-9">
+                    <select asp-for="FormTimeOffId" class="form-control" asp-items="ViewBag.FormTimeOffId"></select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3 col-form-label">
+                    <label asp-for="Reason" class="font-weight-bold"></label>
+                    <br />
+                    <small class="text-muted">Your reason</small>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="Reason" class="form-control" rules="required" />
+                    <span class="text-danger form-message"></span>
+                </div>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label font-weight-bold">
+                    <input id="cbx-ban-giao" class="form-check-input" asp-for="RequireHandOver" /> @Html.DisplayNameFor(model => model.RequireHandOver)
+                </label>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3 col-form-label">
+                    <label asp-for="HandOverWorks" class="font-weight-bold"></label>
+                    <br />
+                    <small class="text-muted">Overhand works detail</small>
+                </div>
+                <div class="col-sm-9">
+                    <textarea asp-for="HandOverWorks" class="form-control"></textarea>
+                    <br />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="ManagerId" class="col-sm-3 col-form-label font-weight-bold"></label>
+                <div class="col-sm-9">
+                    <select asp-for="ManagerId" class="form-control" asp-items="ViewBag.ManagerId"></select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3 col-form-label">
+                    <label asp-for="Attachment" class="font-weight-bold"></label>
+                    <br />
+                    <small class="text-muted">You can upload a attachment</small>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="Attachment" type="file" class="form-control" />
+                    <br />
+                    <span class="text-danger form-message"></span>
+                </div>
+            </div>
+
+            <p class="text-muted">Setting dayofff *</p>
+
+            <div id="shifts" class="mb-3">
+                <div class="form-group row">
+                    <div class="col-sm-3 col-form-label">
+                        <label asp-for="FromDate" class="font-weight-bold"></label>
+                        <br />
+                        <small class="text-muted">from day off</small>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="FromDate" class="form-control" rules="required" />
+                        <span class="text-danger form-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-3 col-form-label">
+                        <label asp-for="ToDate" class="font-weight-bold"></label>
+                        <br />
+                        <small class="text-muted">to day off</small>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="ToDate" class="form-control" rules="greaterEqual:#FromDate|required" />
+                        <span class="text-danger form-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-3 col-form-label">
+                        <label asp-for="Duration" class="font-weight-bold"></label>
+                        <br />
+                        <small class="text-muted">to day off</small>
+                    </div>
+                    <div class="col-sm-9 row justify-content-between">
+                        <div class="col-md-5">
+                            <select asp-for="Duration" class="form-control" id="duration">
+                                <option value="1">full day</option>
+                                <option value="2">half day</option>
+                                <option value="3">specify time</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 d-none" id="halfday-container">
+                            
+                            <select asp-for="HalfDay" class="form-control">
+                                <option value="1">morning</option>
+                                <option value="2">afternoon</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-5 row justify-content-between d-none" id="specify-container">
+                            <span>from</span>
+                            <div class="col-md-5">
+                                <select asp-for="FromHour" id="start-hour" class="form-control">
+                                </select>
+                            </div>
+                            <span>to</span>
+                            <div class="col-md-5">
+                                <select asp-for="ToHour" id="end-hour" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <span class="text-danger form-message"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center my-3">
+                <div class="col-3">
+                    <a asp-action="Create" class="btn btn-block btn-secondary">Reset</a>
+                </div>
+                <div class="col-3">
+                    <input type="submit" class="btn btn-success btn-block" value="Send" />
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Validator.js"></script>
+    <script>
+        const validator = Validator('#createRequestTimeoffForm', '.form-group', '.form-message', 'invalid');
+        (() => {
+            const startHour = 800;
+            const endHour = 1800;
+            const sleStartHour = document.querySelector('#start-hour');
+            const sleEndHour = document.querySelector('#end-hour');
+            const duration = document.querySelector('#duration');
+            const specifyContainer = document.querySelector('#specify-container');
+            const halfdayContainer = document.querySelector('#halfday-container');
+
+            // event
+            sleStartHour.onchange = function (e) {
+                let number = convertHourToInt(e.target.value);
+                number = number % 100 == 30 ? number + 70 : number + 30;
+                renderOptions(number, endHour, sleEndHour);
+            }
+
+            duration.onchange = function (e) {
+                const value = e.target.value;
+                if (value == 1) {
+                    specifyContainer.classList.add('d-none');
+                    halfdayContainer.classList.add('d-none');
+                }
+                else if (value == 2) {
+                    specifyContainer.classList.add('d-none');
+                    halfdayContainer.classList.remove('d-none');
+                }
+                else if (value == 3) {
+                    specifyContainer.classList.remove('d-none');
+                    halfdayContainer.classList.add('d-none');
+                }
+            }
+
+
+            // init
+            renderOptions(startHour, endHour - 30, sleStartHour);
+            renderOptions(startHour + 30, endHour, sleEndHour);
+
+
+            // function
+            function renderOptions(startHour, endHour, selector) {
+                selector.innerHTML = '';
+                while (startHour <= endHour) {
+                    let option = document.createElement("option");
+                    const hour = convertIntToHour(startHour);
+                    option.value = hour;
+                    option.text = hour;
+                    selector.appendChild(option);
+                    startHour = startHour % 100 == 30 ? startHour + 70 : startHour + 30;
+                }
+            }
+
+            function convertHourToInt(hour) {
+                const tmp = hour.split(':');
+                if (tmp.length == 2) {
+                    let number = tmp[0] + tmp[1];
+                    return parseInt(number);
+                }               
+            }
+
+            function convertIntToHour(number) {
+                let hour = (number / 100).toFixed(0);
+                let minute = (number % 100) + '';
+                return `${hour}:${minute.padStart(2,'0')}`;
+            }
+
+            
+            
+        })();
+    </script>
+    @*<script>
+            const ckb_ban_giao = document.querySelector('#cbx-ban-giao');
+            const cv_ban_gian = document.querySelector('#cv-ban-giao');
+            const insertDateOffBtn = document.querySelector('#insert-date-off');
+            const removeDateOffBtn = document.querySelector('#remove-date-off');
+            const shiftsObjects = @Html.Raw(ViewData["Shifts"]);
+            let shiftJson = '';
+            let count = 0;
+            ckb_ban_giao.onclick = (e) => {
+                if (ckb_ban_giao.checked == true) {
+                    cv_ban_gian.readOnly = false;
+                }
+                else {
+                    cv_ban_gian.readOnly = true;
+                    cv_ban_gian.value = '';
+                }
+            }
+
+            insertDateOffBtn.onclick = function (e) {
+                e.preventDefault();
+                if (count <= 4) {
+                    if (count == 4)
+                        this.classList.add('d-none');
+                    RenderShifts();
+                    SaveCount();
+                    removeDateOffBtn.classList.remove('d-none');
+                }
+            }
+
+            removeDateOffBtn.onclick = function (e) {
+                e.preventDefault();
+                insertDateOffBtn.classList.contains('d-none') ? insertDateOffBtn.classList.remove('d-none') : undefined;
+                const dateoffCards = document.querySelectorAll('.date-off');
+                dateoffCards[dateoffCards.length - 1].remove();
+                count--;
+                SaveCount();
+                if (count == 1) removeDateOffBtn.classList.add('d-none');
+            }
+
+            function SaveCount() {
+                document.querySelector('#count').value = count;
+                validator.update();
+            }
+
+            (() => {
+                RenderShifts();
+                SaveCount();
+                insertDateOffBtn.classList.remove('d-none');
+            })();
+
+            function RenderShifts() {
+                const shiftsContainer = document.querySelector('#shifts');
+                let temp = `
+                        <div class="form-group row">
+                            <div class="col-sm-3 col-form-label">
+                                <label class="font-weight-bold">Day ${++count}</label>
+                                <br />
+                                <small class="text-muted">Day off</small>
+                            </div>
+                            <div class="col-sm-9">
+                                <input name="Date${count}" type="date" class="form-control" rules="required|uniqueDate" />
+                                <span class="text-danger form-message"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-3 point"></div>
+                            <div class="col-sm-9">
+                                {{body}}
+                            </div>
+                            <div class="col-sm-3 point"></div>
+                            <div class="col-sm-9">
+                                <span class="form-message"></span>
+                            </div>
+                        </div>
+                    `;
+                let html = '';
+                shiftsObjects.map((e, index) => {
+                    return html += `
+                            <div class="form-check form-check-inline bg-white p-2">
+                                <input class="form-check-input" type="checkbox" id="shift-${count}-${e.Id}"
+                                    name="DateShitfId${count}" value="${e.Id}" ${index == 0 ? 'rules="boxChecked"' : ''} >
+                                <label class="form-check-label" for="shift-${count}-${e.Id}" >${e.Start} - ${e.End}</label>
+                             </div>
+                    `;
+                });
+                const cardNode = document.createElement("div");
+                cardNode.classList.add("card", "date-off", "p-3", "mb-3", "bg-light");
+                cardNode.innerHTML = temp.replace("{{body}}", html);
+                shiftsContainer.appendChild(cardNode);
+            }
+    </script>*@
+}

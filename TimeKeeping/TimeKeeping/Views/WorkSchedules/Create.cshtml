@@ -1,0 +1,337 @@
+﻿@model TimeKeeping.ViewModels.WorkScheduleModel
+
+@{
+	ViewData["Title"] = "Create a new workSchedule";
+}
+
+<style>
+	.btn {
+		width: 5em;
+	}
+</style>
+
+<h4>Create a new work schedule</h4>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<form asp-action="Create" id="createWorkScheduleForm">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="WorkScheduleName" class="control-label"></label>
+				</div>
+				<div class="col-5">
+					<input asp-for="WorkScheduleName" class="form-control" rules="required" />
+					<span asp-validation-for="WorkScheduleName" class="text-danger form-message"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="TypeWorkScheduleId" class="control-label"></label>
+				</div>
+				<div class="col-5">
+					<select asp-for="TypeWorkScheduleId" class="form-control" asp-items="ViewBag.TypeWorkScheduleId" id="duration" name="duration">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-2">
+					<label class="control-label">Work cycle on: </label>
+				</div>
+				<div class="col-10">
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Monday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="monday" name="monday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Tuesday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="tuesday" name="tuesday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Webnesday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="wednesday" name="wednesday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Thursday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="thursday" name="thursday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Friday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="friday" name="friday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Saturday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="saturday" name="saturday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-2">
+							<label class="control-label">Sunday</label>
+						</div>
+						<div class="col-1">
+							<input type="checkbox" class="day-of-week-check" data-name="sunday" name="sunday" />
+						</div>
+						<div class="col-9 time-container"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="StartDay" class="control-label"></label>
+				</div>
+				<div class="col-3">
+					<input asp-for="StartDay" class="form-control" />
+					<span asp-validation-for="StartDay" class="text-danger form-message"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<label asp-for="EndDay" class="control-label"></label>
+				</div>
+				<div class="col-3">
+					<input asp-for="EndDay" class="form-control" rules="greaterEqual:#StartDay" />
+					<span asp-validation-for="EndDay" class="text-danger form-message"></span>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<a asp-action="Index" class="btn btn-secondary">Back</a>
+				<input type="submit" value="Create" class="btn btn-secondary" />
+				<input type="reset" value="Reset" class="btn btn-secondary"  />
+
+			</div>
+		</form>
+	</div>
+</div>
+
+<template id="half-day-item">
+	<select class="form-control">
+		<option value="1">morning</option>
+		<option value="2">afternoon</option>
+	</select>
+</template>
+
+<template id="specify-item">
+    <div class="col-5">
+        <span>from</span>
+        <select class="form-control"></select>
+        <span>to</span>
+        <select class="form-control"></select>
+    </div>
+</template>
+
+
+@if (ViewData["Message"] != null)
+{
+	<div class="alert alert-@ViewData["Status"]" role="alert">
+		@ViewData["Message"]
+	</div>
+}
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<script src="~/js/Validator.js"></script>
+	<script>
+		const validator = Validator('#createWorkScheduleForm', '.form-group', '.form-message', 'invalid');
+
+		(() => {
+
+			const dayOfWeekChecks = document.querySelectorAll('.day-of-week-check');
+			const typeWork = document.querySelector('#duration');
+			const start = 800;
+			const end = 1800;
+
+			document.querySelector('input[type="reset"]').onclick = function (e) {
+				const container = document.querySelectorAll('.time-container');
+				resetFunction(container);
+			}
+
+			typeWork.onchange = typeWorkChangeHandle;
+
+			dayOfWeekChecks.forEach(e => {
+				e.onclick = checkedHandle;
+			});
+
+			// event
+			function typeWorkChangeHandle(e) {
+				const timeContainer = document.querySelectorAll('.time-container');
+				const type = e.target.value;
+				timeContainer.forEach(f => {
+					f.innerHTML = '';
+					const parent = getParentElement(f, '.form-group');
+					const input = parent.querySelector('input[type="checkbox"]');
+					const name = input.dataset.name;
+					if (input.checked) {
+						switch (type) {
+							case '2':
+								renderHalfDayOptions(name, f);
+								break;
+							case '3':
+                                const fromLabel = document.createElement('span');
+                                const toLabel = document.createElement('span');
+                                fromLabel.innerHTML = 'from';
+								toLabel.innerHTML = 'to';
+								f.appendChild(fromLabel);
+								renderSpecifyTimeOptions(start, end - 30, 'start-hour-' + name, f);
+								f.appendChild(toLabel);
+                                renderSpecifyTimeOptions(start + 30, end, 'end-hour-' + name, f);
+								break;
+							default:
+								timeContainer.innerHTML = '';
+								break;
+						}
+					}
+				});
+			}
+
+
+			function checkedHandle(e) {
+				const type = typeWork.value;
+				const parent = getParentElement(e.target, '.form-group');
+				const timeContainer = parent ? parent.querySelector('.time-container') : undefined;
+				const name = e.target.dataset.name;
+
+				if (e.target.checked) {
+					if (timeContainer) {
+						switch (type) {
+							case '2':
+								renderHalfDayOptions(name, timeContainer);
+								break;
+							case '3':
+								const fromLabel = document.createElement('span');
+								const toLabel = document.createElement('span');
+								fromLabel.innerHTML = 'from';
+								toLabel.innerHTML = 'to';
+								timeContainer.appendChild(fromLabel);
+								renderSpecifyTimeOptions(start, end - 30, 'start-hour-' + name, timeContainer);
+								timeContainer.appendChild(toLabel);
+								renderSpecifyTimeOptions(start + 30, end, 'end-hour-' + name, timeContainer);
+								break;
+							default:
+								timeContainer.innerHTML = '';
+								break;
+						}
+					}
+				}
+				else {
+					if (timeContainer) {
+						timeContainer.innerHTML = '';
+					}
+				}
+			}
+
+
+			// function
+			// start hour must to integer
+			function renderSpecifyTimeOptions(start, end, name, container) {
+				container.classList.add('row');
+				const div = document.createElement('div');
+				div.classList.add('col-5');
+
+				const select = document.createElement('select');
+				select.classList.add("form-control");
+
+				select.name = name;
+				while (start <= end) {
+					let option = document.createElement("option");
+					const hour = convertIntToHour(start);
+					option.value = hour;
+					option.text = hour;
+					select.appendChild(option);
+					start = start % 100 == 30 ? start + 70 : start + 30;
+				}
+				div.appendChild(select);
+				container.appendChild(div);
+			}
+
+			function renderHalfDayOptions(name, container) {
+				container.classList.remove('row');
+				const tmp = document.querySelector('#half-day-item');
+				if (tmp) {
+					const cloneTmp = tmp.content.cloneNode(true);
+					cloneTmp.querySelector('select').setAttribute('name', name + '-half');
+					container.appendChild(cloneTmp);
+				}
+			}
+
+			function convertHourToInt(hour) {
+				const tmp = hour.split(':');
+				if (tmp.length == 2) {
+					let number = tmp[0] + tmp[1];
+					return parseInt(number);
+				}
+			}
+
+			function convertIntToHour(number) {
+				let hour = (number / 100).toFixed(0);
+				let minute = (number % 100) + '';
+				return `${hour}:${minute.padStart(2, '0')}`;
+			}
+
+			function getParentElement(currentElement, selector) {
+				while (currentElement.parentElement) {
+					if (currentElement.parentElement.matches(selector)) {
+						return currentElement.parentElement;
+					}
+					currentElement = currentElement.parentElement;
+				}
+			}
+
+
+			function resetFunction(timeContainer) {
+				timeContainer.forEach(e => e.innerHTML = '');
+			}
+		})();
+	</script>
+
+	@* Reload to list (Index) *@
+	@if (ViewData["Message"] != null)
+	{
+		<script>
+		function pageRedirect() {
+			window.location.href = '@Url.Action("Index", "WorkSchedules")';
+		}
+		setTimeout("pageRedirect()", 5000);
+		</script>
+	}
+}

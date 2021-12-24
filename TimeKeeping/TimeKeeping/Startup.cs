@@ -53,7 +53,7 @@ namespace TimeKeeping
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=PersonnelApplyTimeOffPolicies}/{action=Index}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

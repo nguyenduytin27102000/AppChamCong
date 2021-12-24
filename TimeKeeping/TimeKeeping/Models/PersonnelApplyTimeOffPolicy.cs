@@ -15,10 +15,12 @@ namespace TimeKeeping.Models
         public DateTime EffectiveDate { get; set; }
         [DisplayName("Days of Last year ")]
         public byte NumberOfDaysOffLastYear { get; set; }
+
         [DisplayName("Days of Standard ")]
         public byte NumberOfDaysOffStandard { get; set; }
         [DisplayName("Days of seniority ")]
         public byte NumberOfDaysOffSeniority { get; set; }
+
         [DisplayName("Days of Offset ")]
         public byte NumberOfDaysOffOffset { get; set; }
         public string Note { get; set; }

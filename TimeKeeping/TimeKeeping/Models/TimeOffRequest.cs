@@ -24,6 +24,7 @@ namespace TimeKeeping.Models
         public DateTime TimeOffDate { get; set; }
         public string TimeOffRequestStateId { get; set; }
         public string Feedback { get; set; }
+
         public bool? Active { get; set; }
 
         public virtual FormTimeOff FormTimeOff { get; set; }
