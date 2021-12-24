@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeKeeping.Models;
+using TimeKeeping.ViewModels.Personnels;
 
 namespace TimeKeeping.Controllers
 {
     public class PersonnelsController : Controller
     {
         private readonly TimeKeepingDBContext _context;
+        private readonly IMapper _mapper;
 
-        public PersonnelsController(TimeKeepingDBContext context)
+        public PersonnelsController(TimeKeepingDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Personnels
@@ -117,21 +121,16 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-
             var personnel = await _context.Personnel
-                .Include(p => p.Office)
-                .Include(p => p.Position)
-                .Include(p => p.SalaryPolicy)
-                .Include(p => p.TypePersonnel)
-                .Include(p => p.WorkSchedule)
-                .Include(p => p.WorkingArea)
                 .FirstOrDefaultAsync(m => m.PersonnelId == id);
+
+            var personnelDetailModel = _mapper.Map<PersonnelDetailModel>(personnel);
             if (personnel == null)
             {
                 return NotFound();
             }
 
-            return View(personnel);
+            return View(personnelDetailModel);
         }
 
         // GET: Personnels/Create
