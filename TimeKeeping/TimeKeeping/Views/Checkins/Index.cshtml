@@ -28,6 +28,7 @@
         </select>
         <label for="year" class="mr-2">Select: Year</label>
         <select id="year" name="year" class="form-control mr-2">
+            <!--Year range between 1990 2025.-->
             @{
                
                 for (int i = 1990; i <= 2025; i++)
@@ -93,6 +94,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.WorkScheduleName)
                 </td>
+                <!--we only need time so we format time -->
                 @{
                     String tc = @item.Time.ToString("hh:mm tt");
                     String ts = @item.StartTime.ToString("hh:mm tt");

@@ -19,7 +19,9 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: Checkins
-    
+    // view checkin (same meaning personnal timesheet) but it hasn't check user and role yet.
+    // i mean identity. account user role.
+    // id is a id an employee
         public async Task<IActionResult> Index(string id,int month,int year)
         {
             if (id == null)
@@ -38,6 +40,7 @@ namespace TimeKeeping.Controllers
                        join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
                        join w in _context.WorkSchedules on p.WorkScheduleId equals w.WorkScheduleId
                        join s in _context.Shifts on w.WorkScheduleId equals s.WorkScheduleId
+                       // 6 is 6:00 AM. It is used to determine Morning or Evening 
                        where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <=5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5))  && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year && c.Active == true)
                        select new CheckinWithView
                        {
