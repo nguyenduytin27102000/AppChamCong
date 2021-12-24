@@ -1,3 +1,5 @@
+Main  database in flyway/sql
+
 -- Tin.Nguyen --
 1. You need download flyway
 2. You need config TCP

@@ -1,7 +1,7 @@
 
-CREATE DATABASE TimeKeepingDB3
+CREATE DATABASE TimeKeepingDB
 GO
-USE TimeKeepingDB3
+USE TimeKeepingDB
 GO 
 --  Create all tables in DB
 -- module 1: "human resource management"

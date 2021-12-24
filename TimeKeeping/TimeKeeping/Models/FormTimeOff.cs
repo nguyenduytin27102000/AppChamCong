@@ -25,7 +25,7 @@ namespace TimeKeeping.Models
         public byte? NumberOfDaysBeforeTimeOff { get; set; }
         public byte? LimitedDaysOff { get; set; }
         public string Regulations { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ApprovalProcess ApprovalProcess { get; set; }
         public virtual TypeTimeOff TypeTimeOff { get; set; }

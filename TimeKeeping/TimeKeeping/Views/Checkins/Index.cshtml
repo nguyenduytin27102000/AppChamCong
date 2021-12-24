@@ -1,0 +1,136 @@
+﻿@model IEnumerable<TimeKeeping.Models.CheckinWithView>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+<style>
+    #tsTime {
+        color: red;
+        font-size: large;
+    }
+</style>
+<h1>Personal Timesheet</h1>
+<form asp-action="Index" asp-controller="Checkins" method="GET" class="form-inline">
+    <div class="form-group">
+        <label for="month" class="mr-2">Select: Month</label>
+        <select  id="month" name="month" class="form-control mr-2">
+            @{
+                for (int i = 1; i <= 12; i++)
+                {
+                    if(i == ViewBag.Month)
+                    {
+                        <option selected>@i</option>
+                    }
+                    <option>@i</option>
+                }
+            }
+        </select>
+        <label for="year" class="mr-2">Select: Year</label>
+        <select id="year" name="year" class="form-control mr-2">
+            <!--Year range between 1990 2025.-->
+            @{
+               
+                for (int i = 1990; i <= 2025; i++)
+                {
+                    if(i == ViewBag.Year)
+                    {
+                        <option selected>@i</option>
+                    }
+                    <option>@i</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="text" id="id" name="id" value="@ViewBag.Id" class="form-control" hidden>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Go" class="btn btn-primary" />
+    </div>
+</form>
+<p id="tsTime">Timesheet of @ViewBag.Month-@ViewBag.Year</p>
+<table class="table table-success table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Personnal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkScheduleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinutesLate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Regulations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DayOff)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var count = 0;
+            double totalMinuteLates = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Personnal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkScheduleName)
+                </td>
+                <!--we only need time so we format time -->
+                @{
+                    String tc = @item.Time.ToString("hh:mm tt");
+                    String ts = @item.StartTime.ToString("hh:mm tt");
+                    DateTime timeCheckin = DateTime.Parse(tc, System.Globalization.CultureInfo.CurrentCulture);
+                    DateTime timeStart = DateTime.Parse(ts, System.Globalization.CultureInfo.CurrentCulture);
+                    double minutesLate = (timeCheckin.Subtract(timeStart).TotalMinutes);
+                    if (minutesLate > @item.MinutesLate)
+                    {
+
+                        <td>You late: @minutesLate</td>
+                        if (@item.DayOff != true)
+                            totalMinuteLates = totalMinuteLates + minutesLate;
+                    }
+                    else
+                    {
+                        <td>You not late</td>
+                    }
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Regulations)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DayOff)
+                </td>
+
+                <td>
+                    <a asp-controller="TimeKeepingFeedbacks" asp-action="Create" asp-route-id="@item.CheckinId">Feedback</a>
+                </td>
+            </tr>
+            if (@item.DayOff != true)
+                count = count + 1;
+        }
+        <tr>
+            <h2>Your total shifts: <span style="color:red;">@count </span> . Your total minutes late: <span style="color:red;"> @totalMinuteLates </span> </h2>
+        </tr>
+    </tbody>
+</table>

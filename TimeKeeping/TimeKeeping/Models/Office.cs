@@ -17,7 +17,7 @@ namespace TimeKeeping.Models
         public string OfficeAddress { get; set; }
         public string OfficePhone { get; set; }
         public string OfficeEmail { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual ICollection<Personnel> Personnel { get; set; }
     }
