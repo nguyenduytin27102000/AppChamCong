@@ -54,10 +54,10 @@ namespace TimeKeeping.Controllers
                     timeOffPolicies = timeOffPolicies.OrderByDescending(t => t.TimeOffPolicyName);
                     break;
                 case "active":
-                    timeOffPolicies = timeOffPolicies.OrderBy(t => t.Del);
+                    timeOffPolicies = timeOffPolicies.OrderBy(t => t.Active);
                     break;
                 default:
-                    timeOffPolicies = timeOffPolicies.OrderByDescending(t => t.Del);
+                    timeOffPolicies = timeOffPolicies.OrderByDescending(t => t.Active);
                     break;
             }
 
@@ -219,7 +219,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            timeOffPolicy.Del = false;
+            timeOffPolicy.Active = false;
             _context.Update(timeOffPolicy);
             await _context.SaveChangesAsync();
 
@@ -262,7 +262,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            timeOffPolicy.Del = true;
+            timeOffPolicy.Active = true;
             _context.Update(timeOffPolicy);
             await _context.SaveChangesAsync();
 

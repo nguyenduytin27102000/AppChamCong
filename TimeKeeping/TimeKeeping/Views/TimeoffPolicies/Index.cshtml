@@ -55,7 +55,7 @@
 				@Html.DisplayNameFor(model => model.TypePolicy)
 			</th>
 			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Del)</a>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
 			<th></th>
 		</tr>
@@ -83,7 +83,7 @@
 					@*@Html.DisplayFor(modelItem => item.Del)*@
 					@{
 						string displayDeleteSate;
-						if (item.Del == true)
+						if (item.Active == true)
 						{
 							displayDeleteSate = "Using";
 						}
@@ -98,7 +98,7 @@
 					<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId" class="btn btn-warning">Edit</a>
 					<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
 					@{
-						if (item.Del == true)
+						if (item.Active == true)
 						{
 							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
 						}

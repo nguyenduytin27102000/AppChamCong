@@ -31,14 +31,20 @@ namespace TimeKeeping.Controllers
         {
             //var workSchedules = _context.WorkSchedules.Include(w => w.TypeWorkSchedule);
 
-            var workSchedules = from w in _context.WorkSchedules
-                                select w;
-
-            workSchedules = workSchedules.Include(w => w.TypeWorkSchedule);
-            workSchedules = workSchedules.OrderByDescending(w => w.Del);
+            //var workSchedules = from w in _context.WorkSchedules
+            //                    select w;
 
 
-            return View(await workSchedules.ToListAsync());
+            //workSchedules = workSchedules.Include(w => w.TypeWorkSchedule);
+            //workSchedules = workSchedules.OrderByDescending(w => w.Active);
+
+            //return View(await workSchedules.ToListAsync());
+
+            var workSchedules = _context.WorkSchedules
+                                          .Include(w => w.TypeWorkSchedule)
+                                          .OrderByDescending(w => w.Active)
+                                          .ToList();
+            return View(workSchedules);
         }
 
         // GET: WorkSchedules/Details/5
@@ -287,7 +293,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            workSchedule.Del = false;
+            workSchedule.Active = false;
             _context.Update(workSchedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -325,7 +331,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            workSchedule.Del = true;
+            workSchedule.Active = true;
             _context.Update(workSchedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

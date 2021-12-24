@@ -16,7 +16,7 @@
 				@Html.DisplayNameFor(model => model.EndTime)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Del)
+				@Html.DisplayNameFor(model => model.Active)
 			</th>
 		</tr>
 	</thead>
@@ -40,7 +40,7 @@
 					<td>
 						@{
 							string deleteState;
-							if (true)
+							if (item.Active == true)
 							{
 								deleteState = "Using";
 							}

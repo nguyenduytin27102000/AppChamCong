@@ -98,10 +98,10 @@ namespace TimeKeeping.Controllers
                     personnels = personnels.OrderBy(p => p.WorkSchedule.WorkScheduleName);
                     break;
                 case "active":
-                    personnels = personnels.OrderBy(p => p.Del);
+                    personnels = personnels.OrderBy(p => p.Active);
                     break;
                 default:
-                    personnels = personnels.OrderByDescending(p => p.Del);
+                    personnels = personnels.OrderByDescending(p => p.Active);
                     break;
             }
 
@@ -281,7 +281,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            personnel.Del = false;
+            personnel.Active = false;
             _context.Update(personnel);
             UpdateDeleteStateFromOtherTable(id, false);
             await _context.SaveChangesAsync();
@@ -325,7 +325,7 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
 
-            personnel.Del = true;
+            personnel.Active = true;
             _context.Update(personnel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -340,7 +340,7 @@ namespace TimeKeeping.Controllers
             var applyTimeOffPolicys = _context.PersonnelApplyTimeOffPolicies.Where(a => a.PersonnelId == id).ToList();
             foreach (var applyTimeOffPolicy in applyTimeOffPolicys)
             {
-                applyTimeOffPolicy.Del = deleteSateOfPersonnel;
+                applyTimeOffPolicy.Active = deleteSateOfPersonnel;
                 _context.Update(applyTimeOffPolicy);
             }
 
@@ -348,7 +348,7 @@ namespace TimeKeeping.Controllers
             var timeOffApprovers = _context.TimeOffApprovers.Where(toa => toa.PersonnelId == id).ToList();
             foreach (var timeOffApprover in timeOffApprovers)
             {
-                timeOffApprover.Del = deleteSateOfPersonnel;
+                timeOffApprover.Active = deleteSateOfPersonnel;
                 _context.Update(timeOffApprover);
             }
 
@@ -356,7 +356,7 @@ namespace TimeKeeping.Controllers
             var timeOffFollowers = _context.TimeOffFollowers.Where(tof => tof.PersonnelId == id).ToList();
             foreach (var timeOffFollower in timeOffFollowers)
             {
-                timeOffFollower.Del = deleteSateOfPersonnel;
+                timeOffFollower.Active = deleteSateOfPersonnel;
                 _context.Update(timeOffFollower);
             }
 
@@ -364,7 +364,7 @@ namespace TimeKeeping.Controllers
             var timeOffRequestPersonnels = _context.TimeOffRequests.Where(tofp => tofp.PersonnelId == id).ToList();
             foreach (var timeOffRequestPersonnel in timeOffRequestPersonnels)
             {
-                timeOffRequestPersonnel.Del = deleteSateOfPersonnel;
+                timeOffRequestPersonnel.Active = deleteSateOfPersonnel;
                 _context.Update(timeOffRequestPersonnel);
             }
         }

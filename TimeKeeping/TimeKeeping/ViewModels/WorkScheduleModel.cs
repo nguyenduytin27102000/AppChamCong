@@ -32,6 +32,8 @@ namespace TimeKeeping.ViewModels
         [Display(Name = "Minutes early")]
         public byte MinutesEarly { get; set; }
 
+        public string Regulations { get; set; }
+
         [Display(Name = "Start date")]
         [DataType(DataType.Date)]
         public DateTime? StartDay { get; set; }

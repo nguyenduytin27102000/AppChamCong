@@ -51,12 +51,12 @@
 			@Html.DisplayFor(model => model.States)
 		</dd>
 		<dt class="col-sm-3">
-			@Html.DisplayNameFor(model => model.Del)
+			@Html.DisplayNameFor(model => model.Active)
 		</dt>
 		<dd class="col-sm-9">
 			@{
 				string displayDeleteState;
-				if (Model.Del == true)
+				if (Model.Active == true)
 				{
 					displayDeleteState = "Using";
 				}

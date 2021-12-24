@@ -94,7 +94,7 @@
 				@Html.DisplayNameFor(model => model.WorkingAreaId)
 			</th>
 			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Del)</a>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
 			<th></th>
 		</tr>
@@ -150,10 +150,10 @@
 					@Html.DisplayFor(modelItem => item.WorkingArea.WorkingAreaName)
 				</td>
 				<td>
-					@*@Html.DisplayFor(modelItem => item.Del)*@
+					@*@Html.DisplayFor(modelItem => item.Active)*@
 					@{
 						string displayDeleteState;
-						if (item.Del == true)
+						if (item.Active == true)
 						{
 							displayDeleteState = "Using";
 						}
@@ -169,7 +169,7 @@
 					<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.PersonnelId">Edit</a>
 					<a class="btn btn-info" asp-action="Details" asp-route-id="@item.PersonnelId">Details</a>
 					@{
-						if (item.Del == true)
+						if (item.Active == true)
 						{
 							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.PersonnelId">Delete</a>
 						}
