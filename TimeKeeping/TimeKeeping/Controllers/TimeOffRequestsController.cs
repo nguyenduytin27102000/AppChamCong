@@ -48,7 +48,7 @@ namespace TimeKeeping.Controllers
 
             // set timeoff request
             timeOffRequest.TimeOffRequestId = _identityFactory
-                .GenerateId(_context.TimeOffRequests.Max(m => m.TimeOffRequestId), "TOR");
+                .GenerateId2(_context.TimeOffRequests.Max(m => m.TimeOffRequestId), "TOR");
             timeOffRequest.PersonnelId = _context.Personnel
                 .FirstOrDefault().PersonnelId; // lấy thông tin bằng Session (tạm thời là lấy thằng đầu tiên)
             timeOffRequest.TimeOffRequestStateId = _context
@@ -122,11 +122,11 @@ namespace TimeKeeping.Controllers
             }
             var dayoffCurrentId = _context.DayOffs.Max(m => m.DayOffId);
 
-            for (int i = 0; i < dayOffCount; i++)
+            for (int i = 0; i <= dayOffCount; i++)
             {
                 DayOff dayOff = new DayOff()
                 {
-                    DayOffId = _identityFactory.GenerateId(dayoffCurrentId, "DOF"),
+                    DayOffId = _identityFactory.GenerateId2(dayoffCurrentId, "DOF"),
                     TimeOffRequestId = timeOffRequest.TimeOffRequestId,
                     DayOffAt = fromDate.AddDays(i),
                     FromHour = startOffHour,
@@ -137,13 +137,15 @@ namespace TimeKeeping.Controllers
                 offDays.Add(dayOff);
             }
 
+            using var transaction = _context.Database.BeginTransaction();
 
-            var t1 = _context.TimeOffRequests.AddRangeAsync(timeOffRequest);
-            var t2 = _context.DayOffs.AddRangeAsync(offDays);
             try
             {
-                await Task.WhenAll(t1, t2);
+                await _context.TimeOffRequests.AddAsync(timeOffRequest);
                 _context.SaveChanges(true);
+                await _context.DayOffs.AddRangeAsync(offDays);
+                _context.SaveChanges(true);
+                transaction.Commit();
                 ViewBag.message = "You have successfully sent time off request";
                 ViewBag.status = "success";
             }

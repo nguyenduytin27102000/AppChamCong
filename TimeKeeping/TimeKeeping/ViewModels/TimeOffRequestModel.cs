@@ -34,5 +34,9 @@ namespace TimeKeeping.ViewModels
         public string ToHour { get; set; }
         public string HalfDay { get; set; }
 
+        public DateTime TimeOffDate { get; set; } = DateTime.Now;
+        public string TimeOffRequestStateId { get; set; }
+        public string Feedback { get; set; } = string.Empty;
+        public bool? Active { get; set; } = true;
     }
 }
