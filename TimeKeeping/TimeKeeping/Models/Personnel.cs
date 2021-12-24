@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -20,6 +21,8 @@ namespace TimeKeeping.Models
         public string PersonnelId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [NotMapped]
+        public string FullName { get => $"{FirstName} {LastName}"; }
         public string Email { get; set; }
         public string OfficeId { get; set; }
         public string WorkScheduleId { get; set; }

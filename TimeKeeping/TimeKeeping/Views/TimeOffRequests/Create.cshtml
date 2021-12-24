@@ -9,10 +9,9 @@
         margin-bottom: 0;
     }
 </style>
-
-<h4 class="font-weight-bold">Create Time Off Request</h4>
-<hr />
-<section class="container-fluid">
+<section class="container">
+    <h4 class="font-weight-bold">Create Time Off Request</h4>
+    <hr />
     <div class="border-1">
         @if (ViewData["message"] != null)
         {
@@ -137,7 +136,7 @@
                             </select>
                         </div>
                         <div class="col-md-5 d-none" id="halfday-container">
-                            
+
                             <select asp-for="HalfDay" class="form-control">
                                 <option value="1">morning</option>
                                 <option value="2">afternoon</option>
@@ -242,102 +241,7 @@
                 let hour = (number / 100).toFixed(0);
                 let minute = (number % 100) + '';
                 return `${hour}:${minute.padStart(2,'0')}`;
-            }
-
-            
-            
+            }          
         })();
     </script>
-    @*<script>
-            const ckb_ban_giao = document.querySelector('#cbx-ban-giao');
-            const cv_ban_gian = document.querySelector('#cv-ban-giao');
-            const insertDateOffBtn = document.querySelector('#insert-date-off');
-            const removeDateOffBtn = document.querySelector('#remove-date-off');
-            const shiftsObjects = @Html.Raw(ViewData["Shifts"]);
-            let shiftJson = '';
-            let count = 0;
-            ckb_ban_giao.onclick = (e) => {
-                if (ckb_ban_giao.checked == true) {
-                    cv_ban_gian.readOnly = false;
-                }
-                else {
-                    cv_ban_gian.readOnly = true;
-                    cv_ban_gian.value = '';
-                }
-            }
-
-            insertDateOffBtn.onclick = function (e) {
-                e.preventDefault();
-                if (count <= 4) {
-                    if (count == 4)
-                        this.classList.add('d-none');
-                    RenderShifts();
-                    SaveCount();
-                    removeDateOffBtn.classList.remove('d-none');
-                }
-            }
-
-            removeDateOffBtn.onclick = function (e) {
-                e.preventDefault();
-                insertDateOffBtn.classList.contains('d-none') ? insertDateOffBtn.classList.remove('d-none') : undefined;
-                const dateoffCards = document.querySelectorAll('.date-off');
-                dateoffCards[dateoffCards.length - 1].remove();
-                count--;
-                SaveCount();
-                if (count == 1) removeDateOffBtn.classList.add('d-none');
-            }
-
-            function SaveCount() {
-                document.querySelector('#count').value = count;
-                validator.update();
-            }
-
-            (() => {
-                RenderShifts();
-                SaveCount();
-                insertDateOffBtn.classList.remove('d-none');
-            })();
-
-            function RenderShifts() {
-                const shiftsContainer = document.querySelector('#shifts');
-                let temp = `
-                        <div class="form-group row">
-                            <div class="col-sm-3 col-form-label">
-                                <label class="font-weight-bold">Day ${++count}</label>
-                                <br />
-                                <small class="text-muted">Day off</small>
-                            </div>
-                            <div class="col-sm-9">
-                                <input name="Date${count}" type="date" class="form-control" rules="required|uniqueDate" />
-                                <span class="text-danger form-message"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-3 point"></div>
-                            <div class="col-sm-9">
-                                {{body}}
-                            </div>
-                            <div class="col-sm-3 point"></div>
-                            <div class="col-sm-9">
-                                <span class="form-message"></span>
-                            </div>
-                        </div>
-                    `;
-                let html = '';
-                shiftsObjects.map((e, index) => {
-                    return html += `
-                            <div class="form-check form-check-inline bg-white p-2">
-                                <input class="form-check-input" type="checkbox" id="shift-${count}-${e.Id}"
-                                    name="DateShitfId${count}" value="${e.Id}" ${index == 0 ? 'rules="boxChecked"' : ''} >
-                                <label class="form-check-label" for="shift-${count}-${e.Id}" >${e.Start} - ${e.End}</label>
-                             </div>
-                    `;
-                });
-                const cardNode = document.createElement("div");
-                cardNode.classList.add("card", "date-off", "p-3", "mb-3", "bg-light");
-                cardNode.innerHTML = temp.replace("{{body}}", html);
-                shiftsContainer.appendChild(cardNode);
-            }
-    </script>*@
 }

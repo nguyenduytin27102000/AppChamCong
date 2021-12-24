@@ -1,132 +1,154 @@
-﻿@model TimeKeeping.Models.Personnel
+﻿@model TimeKeeping.ViewModels.Personnels.PersonnelDetailModel
 
 @{
-	ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style>
+    body {
+        background-color: #f9f9f9;
+    }
 
-<div>
-	<h4>Personnel</h4>
-	<hr />
-	<dl class="row">
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.FirstName)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.FirstName)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.LastName)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.LastName)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Email)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Email)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Title)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Title)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.ActualSalary)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.ActualSalary)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.BasicSalary)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.BasicSalary)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.StartDate)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.StartDate)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.OfficialDate)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.OfficialDate)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.DateOfBirth)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.DateOfBirth)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Phone)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Phone)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Sex)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Sex)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.PersonnelAddress)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.PersonnelAddress)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Active)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Active)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Office)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Office.OfficeId)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Position)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Position.PositionId)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.SalaryPolicy)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.SalaryPolicy.SalaryPolicyId)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.TypePersonnel)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.TypePersonnel.TypePersonnelId)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.WorkSchedule)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.WorkSchedule.WorkScheduleId)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.WorkingArea)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.WorkingArea.WorkingAreaId)
-		</dd>
-	</dl>
-</div>
-<div>
-	<a asp-action="Edit" asp-route-id="@Model.PersonnelId">Edit</a> |
-	<a asp-action="Index">Back to List</a>
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #fdfeff;
+        opacity: 1;
+    }
+</style>
+
+<h1 class="text-center mb-3">Personnel Information</h1>
+
+<div class="row justify-content-md-between">
+    <div class="col-md-3 bg-white py-3 rounded">
+        <div class="text-center mb-3">
+            <img src="~/storage/images/ava.jpg" class="w-100" alt="avatar" />
+        </div>
+        <p class="font-weight-bold text-center">@Model.Position.PositionName</p>
+    </div>
+    <div class="col-md-9 row bg-white py-3 rounded">
+        <div class="col-12">
+            <p class="font-weight-bold text-primary">Personal Infformation</p>
+        </div>
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input type="text" class="form-control" value="@Model.LastName" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input type="text" class="form-control" value="@Model.FirstName" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="Sex"></label>
+                <input type="text" class="form-control" value="@(Model.Sex ? "Male" : "Female")" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="DateOfBirth"></label>
+                <input type="text" class="form-control" value="@Model.DateOfBirth.Date" readonly>
+            </div>
+        </div>
+
+        <div class="col-12 px-3">
+            <div class="form-group">
+                <label asp-for="PersonnelAddress"></label>
+                <input type="text" class="form-control" value="@Model.PersonnelAddress" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input type="text" class="form-control" value="@Model.Title" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="Phone"></label>
+                <input type="text" class="form-control" value="@Model.Phone" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input type="text" class="form-control" value="@Model.Email" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="Office"></label>
+                <input type="text" class="form-control" value="@Model.Office.OfficeName" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="BasicSalary"></label>
+                <input type="text" class="form-control" value="@Model.BasicSalary" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="ActualSalary"></label>
+                <input type="text" class="form-control" value="@Model.ActualSalary" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="StartDate"></label>
+                <input type="text" class="form-control" value="@Model.StartDate.Date" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="OfficialDate"></label>
+                <input type="text" class="form-control" value="@(Model.OfficialDate.HasValue ? Model.OfficialDate.Value.Date : "")" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="SalaryPolicy"></label>
+                <input type="text" class="form-control" value="@Model.SalaryPolicy.SalaryPolicyName" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="TypePersonnel"></label>
+                <input type="text" class="form-control" value="@Model.TypePersonnel.TypePersonnelName" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="WorkSchedule"></label>
+                <input type="text" class="form-control" value="@Model.WorkSchedule.WorkScheduleName" readonly>
+            </div>
+        </div>
+
+        <div class="col-6 px-3">
+            <div class="form-group">
+                <label asp-for="WorkingArea"></label>
+                <input type="text" class="form-control" value="@Model.WorkingArea.WorkingAreaName" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="text-right mt-2 col-12">
+        <a asp-action="Edit" asp-route-id="@Model.PersonnelId" class="btn btn-success">Edit</a> |
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
 </div>
