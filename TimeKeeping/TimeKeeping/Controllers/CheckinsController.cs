@@ -19,16 +19,19 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: Checkins
-    
-        public async Task<IActionResult> Index(string id,int month,int year)
+        // view checkin (same meaning Timesheet)
+        // this is view checkin for a employee. id is a employee id. and month-year to view.
+        // but it hasn't checked Author yet. I mean Identity user and role. We will to add user if possiable 
+        public async Task<IActionResult> Index(string id, int month, int year)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            // by default month and year is datetime now
             if (month == 0)
                 month = DateTime.Now.Month;
-            if( year == 0)
+            if (year == 0)
                 year = DateTime.Now.Year;
             ViewBag.Month = month;
             ViewBag.Year = year;
@@ -38,7 +41,8 @@ namespace TimeKeeping.Controllers
                        join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
                        join w in _context.WorkSchedules on p.WorkScheduleId equals w.WorkScheduleId
                        join s in _context.Shifts on w.WorkScheduleId equals s.WorkScheduleId
-                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <=5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5))  && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year)
+                       // why <= 5 ??. The purpose is determinate Morning or Evening ?. 6:00 AM is a milestone
+                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <= 5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5)) && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year)
                        select new CheckinWithView
                        {
                            CheckinId = c.CheckinId,
@@ -52,11 +56,11 @@ namespace TimeKeeping.Controllers
                            DayOff = s.DayOff,
                            EndTime = s.EndTime,
                        });
-          
+
             return View(per.ToList());
-            
+
         }
-       
+
         // GET: Checkins/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -109,14 +113,14 @@ namespace TimeKeeping.Controllers
             }
 
             var checkin = await _context.Checkins.FindAsync(id);
-                       
+
             if (checkin == null)
             {
                 return NotFound();
             }
-            var personnel = await _context.Personnel.FindAsync(checkin.PersonnelId);          
+            var personnel = await _context.Personnel.FindAsync(checkin.PersonnelId);
             ViewBag.LastName = personnel.LastName;
-            ViewData["PersonnelId"] = new SelectList(_context.Personnel.Where(p => p.PersonnelId==checkin.PersonnelId), "PersonnelId", "PersonnelId", checkin.PersonnelId);
+            ViewData["PersonnelId"] = new SelectList(_context.Personnel.Where(p => p.PersonnelId == checkin.PersonnelId), "PersonnelId", "PersonnelId", checkin.PersonnelId);
             ViewBag.id = id;
             return View(checkin);
         }
@@ -133,15 +137,15 @@ namespace TimeKeeping.Controllers
                 return NotFound();
             }
             //TimeKeepingFeedback timeKeepingFeedback = await _context.TimeKeepingFeedbacks.FirstOrDefaultAsync(c => c.CheckinId == checkin.CheckinId);	    
-            var timeKeepingFeedbacks = _context.TimeKeepingFeedbacks.Where( t => t.CheckinId == checkin.CheckinId).ToList();          
+            var timeKeepingFeedbacks = _context.TimeKeepingFeedbacks.Where(t => t.CheckinId == checkin.CheckinId).ToList();
             if (ModelState.IsValid)
             {
                 try
                 {
-                    
-		foreach (var fb in timeKeepingFeedbacks)
+
+                    foreach (var fb in timeKeepingFeedbacks)
                     {
-                        fb.TimeOffRequestStateId = "003";
+                        fb.TimeOffRequestStateId = "003"; // why 003 ?? 003 is id state name "Approved". You need to change if database is changed
                         _context.Update(fb);
                     }
                     _context.Update(checkin);
@@ -158,7 +162,7 @@ namespace TimeKeeping.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index","TimeKeepingFeedbacks");               
+                return RedirectToAction("Index", "TimeKeepingFeedbacks");
             }
             var personnel = await _context.Personnel.FindAsync(checkin.PersonnelId);
             ViewBag.LastName = personnel.LastName;
