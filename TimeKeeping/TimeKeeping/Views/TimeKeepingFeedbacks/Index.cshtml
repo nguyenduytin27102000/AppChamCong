@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<!--This is create a loading icon-->
 <style>
     #loader {
         position: absolute;
@@ -123,7 +123,7 @@
                 <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.TimeOffRequestStateName)
                 </td>
-                <td class="align-middle">
+                <td class="align-middle"> <!--002 or 003 is state id of request such as Approved, Denied. Must format it again if data in table state is changed-->
                     @{
                         if (@item.TimeOffRequestStateId=="002" || @item.TimeOffRequestStateId=="003")
                         {
@@ -144,7 +144,7 @@
         }
     </tbody>
 </table>
-
+<!--Loading icon, confirm when click-->
 <script>
     var myVar;
 

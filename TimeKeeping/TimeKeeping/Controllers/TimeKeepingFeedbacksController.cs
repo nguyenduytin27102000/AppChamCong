@@ -19,6 +19,7 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: TimeKeepingFeedbacks
+        // View FeedBack Timekeeping. Just LINQ from TimeKeepingFeedbacks table and join table related
         public async Task<IActionResult> Index()
         {
             //var timeKeepingDBContext = _context.TimeKeepingFeedbacks.Include(t => t.Checkin).Include(t => t.TimeOffRequestState);
