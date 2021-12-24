@@ -17,6 +17,8 @@ namespace TimeKeeping.Controllers
         {
             _context = context;
         }
+        // this function update day off for employee on 01/01 every year. but it is not  update automatically.
+        // When action index is call. this function is called. we need it update automatically by another way
         public async Task UpdateDayPolicy()
         {
             if (DateTime.Now.Day == 1 && DateTime.Now.Month == 1)
@@ -45,6 +47,7 @@ namespace TimeKeeping.Controllers
             }
         }
         // GET: PersonnelApplyTimeOffPolicies
+       //View Employee's days off. 
         public async Task<IActionResult> Index()
         {
             await UpdateDayPolicy();
@@ -74,6 +77,7 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: PersonnelApplyTimeOffPolicies/Create
+        // This function apply Timeoff policy for emloyee
         public IActionResult Create()
         {
            // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId");
@@ -86,6 +90,7 @@ namespace TimeKeeping.Controllers
         // POST: PersonnelApplyTimeOffPolicies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // This function apply Timeoff policy for emloyee
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Active")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy, string LastName, string TimeOffPolicyName)
@@ -96,6 +101,8 @@ namespace TimeKeeping.Controllers
             }
             else
             {
+                // substring 3 ?? because when show interface. name and id is shown like 001-Tuan.
+                // so we cat id with length 3. but you need change when id in database is change format
                 personnelApplyTimeOffPolicy.PersonnelId = LastName.Substring(0, 3);
                 personnelApplyTimeOffPolicy.TimeOffPolicyId = TimeOffPolicyName.Substring(0, 3);
             }
@@ -201,7 +208,7 @@ namespace TimeKeeping.Controllers
                 return RedirectToAction(nameof(Index));
             }    
             var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies.FindAsync(PersonnelId, TimeOffPolicyId);
-            personnelApplyTimeOffPolicy.Active = false;
+            personnelApplyTimeOffPolicy.Active = false; // why i need this ?? because Active is not default in database. so for sure. i insert it
             _context.PersonnelApplyTimeOffPolicies.Update(personnelApplyTimeOffPolicy);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
