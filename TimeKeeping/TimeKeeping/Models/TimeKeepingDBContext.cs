@@ -111,7 +111,6 @@ namespace TimeKeeping.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.PersonnelId)

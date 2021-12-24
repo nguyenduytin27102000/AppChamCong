@@ -1,0 +1,207 @@
+﻿@model IEnumerable<TimeKeeping.Models.PersonnelApplyTimeOffPolicy>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Overview Timeoff policy of employee</h1>
+<!--create a loading icon-->
+<style>
+    #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 120px;
+        margin: -76px 0 0 -76px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        display: none;
+    }
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@-webkit-keyframes animatebottom {
+        from {
+            bottom: -100px;
+            opacity: 0
+        }
+
+        to {
+            bottom: 0px;
+            opacity: 1
+        }
+    }
+
+    @@keyframes animatebottom {
+        from {
+            bottom: -100px;
+            opacity: 0
+        }
+
+        to {
+            bottom: 0;
+            opacity: 1
+        }
+    }
+
+    .bt {
+        width: 100px;
+    }
+
+    a.disable {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.5;
+    }
+</style>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Apply Timeoff Policy for employee</a>
+</p>
+<div id="loader"></div>
+<div class="table-responsive" id="conTent">
+    <table class="table table-bordered table-info table-hover table-striped">
+        <thead>
+            <tr>
+                <th class="align-middle">
+                    <div style="width:150px;">
+                        @Html.DisplayNameFor(model => model.Personnel)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:200px;">
+                        @Html.DisplayNameFor(model => model.TimeOffPolicy)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:200px;">
+                        @Html.DisplayNameFor(model => model.EffectiveDate)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:200px;">
+                        @Html.DisplayNameFor(model => model.NumberOfDaysOffLastYear)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:200px;">
+                        @Html.DisplayNameFor(model => model.NumberOfDaysOffStandard)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:200px;">
+                        @Html.DisplayNameFor(model => model.NumberOfDaysOffSeniority)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:200px;">
+                        @Html.DisplayNameFor(model => model.NumberOfDaysOffOffset)
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width:150px;">
+                        Total
+                    </div>
+                </th>
+                <th class="align-middle">
+                    <div style="width: 200px;" class="container"> @Html.DisplayNameFor(model => model.Note) </div>
+                </th>
+                <th colspan="2" class="align-middle">
+                    <div style="width:200px;">
+                        Action
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Personnel.LastName)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.TimeOffPolicy.TimeOffPolicyName)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.EffectiveDate)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.NumberOfDaysOffLastYear)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.NumberOfDaysOffStandard)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.NumberOfDaysOffSeniority)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.NumberOfDaysOffOffset)
+                    </td>
+                    @{
+                        var total = item.NumberOfDaysOffLastYear + item.NumberOfDaysOffStandard + item.NumberOfDaysOffSeniority + item.NumberOfDaysOffOffset;
+                        <td class="align-middle">
+                            @total
+                        </td>
+                    }
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+
+                    <td class="align-middle">
+                        @Html.ActionLink("Edit", "Edit", new { personnalId=item.PersonnelId,policyId=item.TimeOffPolicyId}, new {@class="btn btn-primary bt"}  )
+                    </td>
+                    <td class="align-middle">
+                        <form asp-controller="PersonnelApplyTimeOffPolicies" asp-action="Delete">
+                            <input type="text" hidden name="PersonnelId" asp-for="@item.PersonnelId" />
+                            <input type="text" hidden name="TimeOffPolicyId" asp-for="@item.TimeOffPolicyId" />
+                            <input type="submit" value="Delete" class="btn btn-primary bt" onclick="loading(event)" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!--loading and comfirm alert-->
+<script>
+    var myVar;
+    function loading(e) {
+      if(confirm("Are you sure?"))
+      {
+      document.getElementById("loader").style.display = "block";
+      document.getElementById("conTent").hidden = true;
+      myVar = setTimeout(showContent, 1000);
+      }
+      else
+      {
+          e.preventDefault();
+      }
+    }
+    function showContent() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("conTent").hidden = false;
+    }
+</script>

@@ -1,3 +1,4 @@
+
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
@@ -120,3 +121,10 @@ src/.vs/config/applicationhost.config
 /TimeKeeping/TimeKeeping/bin
 /TimeKeeping/TimeKeeping/obj
 /TimeKeeping/.vs
+TimeKeeping/.vs/TimeKeeping/DesignTimeBuild/.dtbcache.v2
+TimeKeeping/TimeKeeping/bin/Debug/net5.0/AutoMapper.dll
+TimeKeeping/TimeKeeping/bin/
+TimeKeeping/TimeKeeping/obj/
+*.user
+TimeKeeping/.vs/TimeKeeping/v17/.futdcache.v1
+TimeKeeping/.vs/TimeKeeping/v17/.suo
