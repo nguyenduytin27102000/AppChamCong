@@ -100,10 +100,10 @@ namespace TimeKeeping.Controllers
             }
             else
             {
-                // substring 3 ?? because when show interface. name and id is shown like 001-Tuan.
+                // substring 3 ?? because when show interface. name and id is shown like PS001-Tuan.
                 // so we cat id with length 3. but you need change when id in database is change format
-                personnelApplyTimeOffPolicy.PersonnelId = LastName.Substring(0, 3);
-                personnelApplyTimeOffPolicy.TimeOffPolicyId = TimeOffPolicyName.Substring(0, 3);
+                personnelApplyTimeOffPolicy.PersonnelId = LastName.Substring(2, 3);
+                personnelApplyTimeOffPolicy.TimeOffPolicyId = TimeOffPolicyName.Substring(2, 3);
             }
             if (ModelState.IsValid)
             {
