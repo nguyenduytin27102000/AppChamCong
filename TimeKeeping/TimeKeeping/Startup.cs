@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TimeKeeping.Models;
+//using TimeKeeping.Services;
 
 namespace TimeKeeping
 {
@@ -22,10 +23,10 @@ namespace TimeKeeping
         {
             services.AddControllersWithViews();
 
-            
-            services.AddDbContext<TimeKeepingDBContext>();
-            
 
+           
+            services.AddDbContext<TimeKeepingDBContext>();
+       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace TimeKeeping.Models
 {
     public partial class PersonnelApplyTimeOffPolicy
+
     {      
         public string PersonnelId { get; set; }
         public string TimeOffPolicyId { get; set; }
@@ -24,6 +25,7 @@ namespace TimeKeeping.Models
         [DisplayName("Employee")]
         public virtual Personnel Personnel { get; set; }
         [DisplayName("Timeoff Policy")]
+
         public virtual TimeOffPolicy TimeOffPolicy { get; set; }
     }
 }

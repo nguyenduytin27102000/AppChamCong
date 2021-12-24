@@ -19,10 +19,31 @@ namespace TimeKeeping.Controllers
         }
 
         // GET: TimeKeepingFeedbacks
+
+        // View FeedBack Timekeeping. Just LINQ from TimeKeepingFeedbacks table and join table related
         public async Task<IActionResult> Index()
         {
-            var timeKeepingDBContext = _context.TimeKeepingFeedbacks.Include(t => t.Checkin).Include(t => t.TimeOffRequestState);
-            return View(await timeKeepingDBContext.ToListAsync());
+            //var timeKeepingDBContext = _context.TimeKeepingFeedbacks.Include(t => t.Checkin).Include(t => t.TimeOffRequestState);
+            var feedBacks = (from f in _context.TimeKeepingFeedbacks
+                             join c in _context.Checkins on f.CheckinId equals c.CheckinId
+                         join s in _context.TimeOffRequestStates on f.TimeOffRequestStateId equals s.TimeOffRequestStateId
+                         join p in _context.Personnel on c.PersonnelId equals p.PersonnelId
+                         where f.Active == true 
+                         select new TimeKeepingFeedbackWithView
+                         {
+                             TimeKeepingFeedbackId = f.TimeKeepingFeedbackId,
+                             PersonnelId = p.PersonnelId,
+                             CheckinId = c.CheckinId,
+                             TimeOffRequestStateName = s.TimeOffRequestStateName,
+                             LastName = p.LastName,
+                             Time = f.Time,
+                             Reason = f.Reason,
+                             TimeOffRequestStateId = s.TimeOffRequestStateId
+                         }).OrderBy(x => x.TimeOffRequestStateId);
+
+
+
+            return View(feedBacks);
         }
 
         // GET: TimeKeepingFeedbacks/Details/5
@@ -47,6 +68,7 @@ namespace TimeKeeping.Controllers
 
         // GET: TimeKeepingFeedbacks/Create
 
+
         public IActionResult Create(string id)
         {
             if (id == null)
@@ -55,6 +77,7 @@ namespace TimeKeeping.Controllers
             }
             ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == id), "CheckinId", "CheckinId");
             ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
+
             return View();
         }
 
@@ -64,20 +87,61 @@ namespace TimeKeeping.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
+
         public async Task<IActionResult> Create([Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time,TimeOffRequestStateId,Active")] TimeKeepingFeedback timeKeepingFeedback)
         {
             timeKeepingFeedback.Time = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 _context.Add(timeKeepingFeedback);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == timeKeepingFeedback.CheckinId), "CheckinId", "CheckinId");
             ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
             return View(timeKeepingFeedback);
         }
+        
+        public async Task<IActionResult> Approval(string id) { //id is a CheckinId 
+           if (id == null)
+            {
+                return NotFound();
+            }
+            var timeKeepingFeedback = _context.TimeKeepingFeedbacks.Where(f => f.CheckinId == id);
+            if (timeKeepingFeedback == null)
+            {
+                return NotFound();
+            }
+            foreach (var f in timeKeepingFeedback)
+            {
+                f.TimeOffRequestStateId = "003";
+                _context.Update(f);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Deny(string id) // //id is a CheckinId 
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var timeKeepingFeedback = _context.TimeKeepingFeedbacks.Where(f => f.CheckinId == id);
+            if (timeKeepingFeedback == null)
+            {
+                return NotFound();
+            }
+            foreach (var f in timeKeepingFeedback)
+            {
+                f.TimeOffRequestStateId = "002";
+                _context.Update(f);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
         // GET: TimeKeepingFeedbacks/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
