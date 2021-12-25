@@ -1,0 +1,94 @@
+﻿@model TimeKeeping.Models.TimeOffRequest
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1>Approve Timeoff Reqest</h1>
+
+<div>
+    @Html.ActionLink("Pending Approval", "UpdateStatus", "ApproveTimeoff",
+        new {
+            id = @Model.TimeOffRequestId,
+            status="Pending Approval"
+        },
+        new{
+            @class="btn btn-outline-primary",
+            style="width:200",
+            onclick="return confirm('Are you sure?');"
+        }
+    )
+    @Html.ActionLink("Cancelled", "UpdateStatus", "ApproveTimeoff",
+        new {
+            id = @Model.TimeOffRequestId,
+            status="Cancelled"
+        },
+        new{
+            @class="btn btn-outline-primary",
+            style="width:200",
+            onclick="return confirm('Are you sure?');"
+        }
+    )
+    @Html.ActionLink("Approved", "UpdateStatus", "ApproveTimeoff",
+        new {
+            id = @Model.TimeOffRequestId,
+            status="Approved"
+        },
+        new{
+            @class="btn btn-outline-primary",
+            style="width:200",
+            onclick="return confirm('Are you sure?');"
+        }
+    )
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Title
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            Personnel Name
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.PersonName
+        </dd>
+        <dt class = "col-sm-2">
+            Form Timeoff
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.FormTimeOffName
+        </dd>
+        <dt class = "col-sm-2">
+            Reason
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Reason)
+        </dd>
+        <dt class = "col-sm-2">
+            Handing over Works
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HandOverWorks)
+        </dd>
+        <dt class = "col-sm-2">
+            Create Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.TimeOffDate.ToShortDateString()
+        </dd>
+        <dt class = "col-sm-2">
+            Status
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model=>model.States)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
