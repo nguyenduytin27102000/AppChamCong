@@ -1,0 +1,59 @@
+﻿@using TimeKeeping.Models
+@model IEnumerable<TimeKeeping.Models.TimeOffRequest>
+
+@{
+    ViewData["Title"] = "Index";
+    TimeKeepingDBContext context = new TimeKeepingDBContext();
+}
+
+<h1>List Timeoff request</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Personnel Name
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Create Date
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr>
+                <td>
+                    @{
+                    var pers = context.Personnel.SingleOrDefault(p => p.PersonnelId == item.PersonnelId);
+                        var name = pers.LastName + " " + pers.FirstName;
+                    }
+                @name
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @{
+                        var date = item.TimeOffDate.ToShortDateString();
+                }
+                @date
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.States)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
