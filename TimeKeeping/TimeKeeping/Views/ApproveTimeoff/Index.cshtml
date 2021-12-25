@@ -47,7 +47,10 @@
                 @date
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.States)
+                @{
+                    var status = context.TimeOffRequestStates.SingleOrDefault(p => p.TimeOffRequestStateId == item.TimeOffRequestStateId).TimeOffRequestStateName;
+                  }
+                @status
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a>
