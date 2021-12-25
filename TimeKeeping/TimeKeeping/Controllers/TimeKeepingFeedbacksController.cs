@@ -17,6 +17,14 @@ namespace TimeKeeping.Controllers
         {
             _context = context;
         }
+        public string GetTimeKeepingFeedbackId()
+        {
+            TimeKeepingFeedback tk = _context.TimeKeepingFeedbacks.ToList().Last();
+            //KhachHang kh = db.KhachHangs.ToList().Last();
+            int id = Convert.ToInt32(tk.TimeKeepingFeedbackId) + 1;
+            string nextid = id.ToString();
+            return nextid;
+        }
 
         // GET: TimeKeepingFeedbacks
 
@@ -90,17 +98,26 @@ namespace TimeKeeping.Controllers
 
         public async Task<IActionResult> Create([Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time,TimeOffRequestStateId,Active")] TimeKeepingFeedback timeKeepingFeedback)
         {
+            if(timeKeepingFeedback.Reason == null)
+            {
+                ViewBag.Notify = "Error: You have not entered comments!";
+                return View(timeKeepingFeedback);
+            }
+            timeKeepingFeedback.TimeKeepingFeedbackId = GetTimeKeepingFeedbackId();
+            timeKeepingFeedback.CheckinId = "CK1";
             timeKeepingFeedback.Time = DateTime.Now;
-
+            //timeKeepingFeedback.TimeOffRequestStateId = "TOR1";
             if (ModelState.IsValid)
             {
                 _context.Add(timeKeepingFeedback);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Notify = "Successful";
+                return View(timeKeepingFeedback); ;
             }
 
             ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == timeKeepingFeedback.CheckinId), "CheckinId", "CheckinId");
             ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
+            ViewBag.Notify = "Error";
             return View(timeKeepingFeedback);
         }
         
