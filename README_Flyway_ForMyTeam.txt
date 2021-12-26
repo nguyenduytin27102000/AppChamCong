@@ -8,3 +8,4 @@ Main  database in flyway/sql
 5. Before migrate. run this command "flyway baseline"
 6. then command "flyway migrate"
 Inbox to me if you get troubles.
+7.
