@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,19 +14,40 @@ namespace TimeKeeping.Models
             Shifts = new HashSet<Shift>();
         }
 
+        [Display(Name = "Work schedule id")]
         public string WorkScheduleId { get; set; }
+
+        [Display(Name = "Work schedule name")]
         public string WorkScheduleName { get; set; }
+
+        [Display(Name = "Type work schedule")]
         public string TypeWorkScheduleId { get; set; }
+
         public string CheckinPolicyId { get; set; }
+
         public string NumberOfShiftId { get; set; }
+
+        [Display(Name = "Require checkout")]
         public bool? RequireCheckout { get; set; }
+
+        [Display(Name = "Working hours per day")]
         public byte WorkingHoursPerDay { get; set; }
+
+        [Display(Name = "Minutes late")]
         public byte MinutesLate { get; set; }
+
+        [Display(Name = "Minutes early")]
         public byte MinutesEarly { get; set; }
         public string Regulations { get; set; }
         public bool? States { get; set; }
         public bool? Active { get; set; }
+
+        [Display(Name = "Start date")]
+        [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
+
+        [Display(Name = "End date")]
+        [DataType(DataType.Date)]
         public DateTime? EndDate { get; set; }
 
         public virtual CheckinPolicy CheckinPolicy { get; set; }
