@@ -19,8 +19,6 @@ namespace TimeKeeping.Models
             TimeOffRequestPersonnel = new HashSet<TimeOffRequest>();
         }
 
-        [Display(Name = "Personnel id")]
-        [Required(ErrorMessage = "Please enter Personnel ID!")]
         public string PersonnelId { get; set; }
 
         [Display(Name = "First name")]

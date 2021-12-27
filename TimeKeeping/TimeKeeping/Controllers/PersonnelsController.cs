@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeKeeping.Models;
+using TimeKeeping.Services;
 using TimeKeeping.ViewModels.Personnels;
 
 namespace TimeKeeping.Controllers
@@ -15,11 +16,13 @@ namespace TimeKeeping.Controllers
     {
         private readonly TimeKeepingDBContext _context;
         private readonly IMapper _mapper;
+        private readonly IdentityFactory _identityFactory;
 
-        public PersonnelsController(TimeKeepingDBContext context, IMapper mapper)
+        public PersonnelsController(TimeKeepingDBContext context, IMapper mapper, IdentityFactory identityFactory)
         {
             _context = context;
             _mapper = mapper;
+            _identityFactory = identityFactory;
         }
 
         // GET: Personnels
@@ -155,14 +158,17 @@ namespace TimeKeeping.Controllers
             var listPersonnel = _context.Personnel.ToList();
 
             // If Id is exict in database, then alert.
-            foreach (var oldPersonnel in listPersonnel)
-            {
-                if (personnel.PersonnelId == oldPersonnel.PersonnelId)
-                {
-                    ModelState.AddModelError("", "This ID is exict in list!");
-                    break;
-                }
-            }
+            //foreach (var oldPersonnel in listPersonnel)
+            //{
+            //    if (personnel.PersonnelId == oldPersonnel.PersonnelId)
+            //    {
+            //        ModelState.AddModelError("", "This ID is exict in list!");
+            //        break;
+            //    }
+            //}
+
+            // Id auto
+            personnel.PersonnelId = _identityFactory.GenerateId(_context.Personnel.Max(w => w.PersonnelId), "PS");
 
             if (ModelState.IsValid)
             {
