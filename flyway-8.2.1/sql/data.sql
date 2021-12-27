@@ -57,6 +57,18 @@ INSERT INTO TypePolicy VALUES
 ('TP002',N'Flex',1),
 ('TP003',N'Temp',1)
 
+INSERT INTO TypeShift VALUES
+('TS001',N'Fixed',1),
+('TS002',N'Flex',1)
+
+INSERT INTO DaysOfWeek VALUES
+('DW001',N'Monday',1),
+('DW002',N'Tuesday',1),
+('DW003',N'Wednesday',1),
+('DW004',N'Thurday',1),
+('DW005',N'Friday',1),
+('DW006',N'Saturday',1),
+('DW007',N'Sunday',1)
 -- Level 2:-------------------------------------------------
 
 INSERT INTO WorkSchedule VALUES
@@ -84,4 +96,10 @@ INSERT INTO TimeOffPolicy VALUES
 ('OP002','Time Off Policy 2 ','TP002',4,4,'Sai Gon',1),
 ('OP003','Time Off Policy 3','TP002',4,4,'Sai Gon',1)
 
+INSERT INTO Shift VALUES
+('WS001','DW001','SH001','TS001', N'Morning','2021-01-01 8:00:00 AM','2021-01-01 11:30:00 AM',0,1),
+('WS002','DW001','SH002','TS001', N'Evening','2021-01-01 13:00:00 PM','2021-01-01 17:30:00 PM',0,1)
+
+INSERT INTO TimeKeepingFeedback VALUES
+('FB001','CK001', N'Đi gặp gỡ khách hàng nên đến muộn','2021-01-01 11:00:00 AM','001',1)
 -- End:---------------------------------

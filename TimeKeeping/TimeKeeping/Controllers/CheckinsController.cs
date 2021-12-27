@@ -43,7 +43,7 @@ namespace TimeKeeping.Controllers
                        join w in _context.WorkSchedules on p.WorkScheduleId equals w.WorkScheduleId
                        join s in _context.Shifts on w.WorkScheduleId equals s.WorkScheduleId
                        // 6 is 6:00 AM. It is used to determine Morning or Evening 6:00 AM is a milestone
-                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <=5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5))  && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year && c.Active == true)
+                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <= 5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5)) && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year && c.Active == true)
 
                        select new CheckinWithView
                        {
@@ -134,9 +134,15 @@ namespace TimeKeeping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("CheckinId,PersonnelId,Time")] Checkin checkin)
         {
+
             if (id != checkin.CheckinId)
             {
                 return NotFound();
+            }
+            //because "active" column not default true. so i have to add this
+            if (checkin.Active == null)
+            {
+                checkin.Active = true;
             }
             //TimeKeepingFeedback timeKeepingFeedback = await _context.TimeKeepingFeedbacks.FirstOrDefaultAsync(c => c.CheckinId == checkin.CheckinId);	    
             var timeKeepingFeedbacks = _context.TimeKeepingFeedbacks.Where(t => t.CheckinId == checkin.CheckinId).ToList();
