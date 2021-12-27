@@ -16,6 +16,8 @@ namespace TimeKeeping.Controllers
     public class TimeSheetController : Controller
     {
         private readonly TimeKeepingDBContext _context;
+        private const string ACCEPT_STATUS = "accepted";
+        private const string PENDING_STATUS = "pending";
         public TimeSheetController(TimeKeepingDBContext context)
         {
             _context = context;
@@ -59,12 +61,21 @@ namespace TimeKeeping.Controllers
                 PersonnelId = p.PersonnelId,
 
 
-                // còn tính lại cái này
+                // tính sô ngày đi làm (tính dựa trên thời điểm checkin)
                 Days = p.Checkins.Where(c => c.Time.Month == month && c.Time.Year == year).Select(c => c.Time.Date).Distinct().Count(),
 
-                // còn cái này chưa tính
-                Off = p.TimeOffRequestPersonnel.Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year
-                        && t.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals("accepted")).Count(),
+                
+                //Off = p.TimeOffRequestPersonnel
+                //        .Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year
+                //            && t.TimeOffRequestState.TimeOffRequestStateName.ToLower()
+                //        .Equals("accepted")).Count(),
+                
+                // tính số ngày xin off (xin off nhưng phải được duyệt)
+                Off = _context.DayOffs
+                    .Where(d => p.PersonnelId == d.TimeOffRequest.PersonnelId 
+                            && d.DayOffAt.Month == month && d.DayOffAt.Year == year
+                            && d.TimeOffRequest.TimeOffRequestState.TimeOffRequestStateName.ToLower() == ACCEPT_STATUS)
+                    .Count(),
 
                 Checkin = p.Checkins.OrderBy(c => c.Time).Where(c => c.Time.Month == month && c.Time.Year == year).Select(c =>
                 new
@@ -74,9 +85,9 @@ namespace TimeKeeping.Controllers
                     DayName = c.Time.DayOfWeek.ToString().Substring(0, 3)
                 }),
                 DayOff = p.TimeOffRequestPersonnel.Select(p1 => new {
-                    DateTime = p1.DayOffs.Where(d => d.DayOffAt.Month == month && d.DayOffAt.Year 
-                        == year && d.TimeOffRequest.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals("accepted"))
-                    .Select(d => new { 
+                    DateTime = p1.DayOffs.Where(d => d.DayOffAt.Month == month && d.DayOffAt.Year
+                        == year && d.TimeOffRequest.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals(ACCEPT_STATUS))
+                    .Select(d => new {
                         Date = d.DayOffAt,
                         To = d.ToHour,
                         From = d.FromHour
@@ -212,7 +223,7 @@ namespace TimeKeeping.Controllers
 
                 // còn cái này chưa tính
                 Off = p.TimeOffRequestPersonnel.Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year
-                        && t.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals("accepted")).Count(),
+                        && t.TimeOffRequestState.TimeOffRequestStateName.ToLower().Equals(ACCEPT_STATUS)).Count(),
 
                 Checkin = p.Checkins.OrderBy(c => c.Time).Where(c => c.Time.Month == month && c.Time.Year == year).Select(c =>
                 new

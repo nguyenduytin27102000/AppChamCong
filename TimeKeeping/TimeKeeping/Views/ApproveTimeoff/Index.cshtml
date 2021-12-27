@@ -47,7 +47,7 @@
                 @date
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.States)
+                @Html.DisplayFor(modelItem => item.TimeOffRequestState.TimeOffRequestStateName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a>

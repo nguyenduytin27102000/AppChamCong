@@ -56,7 +56,7 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-            timeOffRequest.States = status;
+            timeOffRequest.TimeOffRequestState.TimeOffRequestStateName = status;
             if (status == "Approved")
             {
                 //Update remaining days off of employee in personnelApplyTimeOffPolicy table
