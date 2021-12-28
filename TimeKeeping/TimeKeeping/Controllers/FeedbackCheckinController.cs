@@ -17,6 +17,7 @@ namespace TimeKeeping.Controllers
         {
             _context = context;
         }
+        /*
         public string GetTimeKeepingFeedbackId()
         {
             TimeKeepingFeedback tk = _context.TimeKeepingFeedbacks.ToList().Last();
@@ -24,6 +25,24 @@ namespace TimeKeeping.Controllers
             int id = Convert.ToInt32(tk.TimeKeepingFeedbackId) + 1;
             string nextid = id.ToString();
             return nextid;
+        }*/
+        public string GetTimeKeepingFeedbackId(string f) // f is firt in char id. vd: FB001. 'FB' is f 
+        {
+            string nextId;
+            int temp;
+            // which table ??
+            TimeKeepingFeedback tk = _context.TimeKeepingFeedbacks.ToList().Last();
+            //
+            nextId = tk.TimeKeepingFeedbackId.Substring(2, 3);
+            temp = Int32.Parse(nextId);
+            temp = temp + 1;
+            nextId = temp.ToString();
+            if (nextId.Length == 2)
+                nextId = "0" + nextId;
+            else if (nextId.Length == 1)
+                nextId = "00" + nextId;
+            nextId = f + nextId;
+            return nextId;
         }
         public IActionResult Index()
         {
@@ -56,10 +75,10 @@ namespace TimeKeeping.Controllers
 
         public async Task<IActionResult> Feedback([Bind("TimeKeepingFeedbackId,CheckinId,Reason,Time,TimeOffRequestStateId,Active")] TimeKeepingFeedback timeKeepingFeedback)
         {
-            timeKeepingFeedback.TimeKeepingFeedbackId = GetTimeKeepingFeedbackId();
+            timeKeepingFeedback.TimeKeepingFeedbackId = GetTimeKeepingFeedbackId("FB");
             timeKeepingFeedback.Time = DateTime.Now;
             ViewBag.checkinId = timeKeepingFeedback.CheckinId;
-            timeKeepingFeedback.TimeOffRequestStateId = "TORS1";//Pending approve
+            timeKeepingFeedback.TimeOffRequestStateId = "001";//Pending approve
             if (timeKeepingFeedback.Reason == null)
             {
                 ViewBag.Notify = "Error: You have not entered comments!";
