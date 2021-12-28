@@ -25,6 +25,25 @@ namespace TimeKeeping.Controllers
             _identityFactory = identityFactory;
         }
 
+        public string GetPersonnelId(string f) // f is firt in char id. vd: FB001. 'FB' is f 
+        {
+            string nextId;
+            int temp;
+            // which table ??
+            Personnel personnel   = _context.Personnel.ToList().Last();
+            //
+            nextId = personnel.PersonnelId.Substring(2, 3);
+            temp = Int32.Parse(nextId);
+            temp = temp + 1;
+            nextId = temp.ToString();
+            if (nextId.Length == 2)
+                nextId = "0" + nextId;
+            else if (nextId.Length == 1)
+                nextId = "00" + nextId;
+            nextId = f + nextId;
+            return nextId;
+        }
+
         // GET: Personnels
         public async Task<IActionResult> Index(string sortOrder,
                                                string name,
@@ -168,7 +187,17 @@ namespace TimeKeeping.Controllers
             //}
 
             // Id auto
-            personnel.PersonnelId = _identityFactory.GenerateId(_context.Personnel.Max(w => w.PersonnelId), "PS");
+            //personnel.PersonnelId = _identityFactory.GenerateId(_context.Personnel.Max(w => w.PersonnelId), "PS");
+            
+
+            if (_context.Personnel.ToList().Count() == 0)
+            {
+                personnel.PersonnelId = "PS001";
+            }
+            else
+            {
+                personnel.PersonnelId = GetPersonnelId("PS");
+            }
 
             if (ModelState.IsValid)
             {
