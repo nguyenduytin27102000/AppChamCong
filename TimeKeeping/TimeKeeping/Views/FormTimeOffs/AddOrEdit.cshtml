@@ -1,0 +1,108 @@
+﻿@model TimeKeeping.Models.FormTimeOff
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="AddOrEdit" asp-route-id="@Model.FormTimeOffId" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <label asp-for="FormTimeOffId" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                <input asp-for="FormTimeOffId" class="form-control" />
+                <span asp-validation-for="FormTimeOffId" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="FormTimeOffName" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        <input asp-for="FormTimeOffName" class="form-control" />
+                        <span asp-validation-for="FormTimeOffName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="TypeTimeOffId" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        <select asp-for="TypeTimeOffId" class="form-control" asp-items="ViewBag.TypeTimeOffName"></select>
+                        <span asp-validation-for="TypeTimeOffId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="RequireApproval" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        Yes:     <input asp-for="RequireApproval" type="radio" id="btn1" value="true" />
+                        No: <input asp-for="RequireApproval" type="radio" id="btn2" value="false" />
+
+                        <span asp-validation-for="RequireApproval" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ApprovalProcessId" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        <div class="input-group">
+                            <select asp-for="ApprovalProcessId" class="form-control" asp-items="ViewBag.ApprovalProcessName"></select>
+
+                        </div>
+                        <span asp-validation-for="ApprovalProcessId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="RequireLimitedDaysOff" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        Yes:     <input asp-for="RequireLimitedDaysOff" type="radio" id="btn11" value="true" />
+                        No: <input asp-for="RequireLimitedDaysOff" type="radio" id="btn21" value="false" />
+                        <span asp-validation-for="RequireLimitedDaysOff" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="LimitedDaysOff" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        <input asp-for="LimitedDaysOff" class="form-control" />
+                        <span asp-validation-for="LimitedDaysOff" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProcessingTime" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        <input asp-for="ProcessingTime" class="form-control" />
+                        <span asp-validation-for="ProcessingTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="NumberOfDaysBeforeTimeOff" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                        <input asp-for="NumberOfDaysBeforeTimeOff" class="form-control" />
+                        <span asp-validation-for="NumberOfDaysBeforeTimeOff" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Regulations" class="control-label" style="font-weight:700;font-size:15px;"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">#</div>
+                    </div>
+                    <input asp-for="Regulations" class="form-control" />
+                </div>
+                <span asp-validation-for="Regulations" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary btn-block" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
