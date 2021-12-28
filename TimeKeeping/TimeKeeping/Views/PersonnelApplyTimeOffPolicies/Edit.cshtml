@@ -12,8 +12,8 @@
     <div class="col-md">
         <form asp-action="Edit" asp-controller="PersonnelApplyTimeOffPolicies">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PersonnelId" />
-            <input type="hidden" asp-for="TimeOffPolicyId" />
+            <input type="text" asp-for="PersonnelId" />
+            <input type="text" asp-for="TimeOffPolicyId" />
             <div class="form-group">
                 <label asp-for="EffectiveDate" class="control-label"></label>
                 <input asp-for="EffectiveDate" class="form-control" />
