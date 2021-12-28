@@ -18,14 +18,13 @@ namespace TimeKeeping.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            //var listRequest = _context.YeuCauNghiPheps.Where(yc => yc.MaNguoiQuanLy == session["userId"]).ToListAsync();
+
             var listRequest = await _context.TimeOffRequests.ToListAsync();
             return View(listRequest);
         }
 
         public async Task<IActionResult> Edit(string id)
         {
-            //string id = "TOR01";
             if (id == null)
             {
                 return NotFound();
@@ -36,12 +35,15 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-            var nhansu = _context.Personnel.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
-            ViewBag.PersonName = nhansu.LastName + " " + nhansu.FirstName;
+            var personnel = _context.Personnel.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
+            ViewBag.PersonName = personnel.LastName + " " + personnel.FirstName;
             //ViewBag.PersonName = timeOffRequest.Personnel.LastName + " " + timeOffRequest.Personnel.FirstName;
-            var mauNghiPhep = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
-            ViewBag.FormTimeOffName = mauNghiPhep.FormTimeOffName;
-
+            var form = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
+            ViewBag.FormTimeOffName = form.FormTimeOffName;
+            var statusName = _context.TimeOffRequestStates.SingleOrDefault(st => st.TimeOffRequestStateId == timeOffRequest.TimeOffRequestStateId).TimeOffRequestStateName;
+            ViewBag.status = statusName;
+            var manager = _context.Personnel.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.ManagerId);
+            ViewBag.ManagerName = manager.LastName + " " + manager.FirstName;
             return View(timeOffRequest);
         }
 
@@ -56,22 +58,7 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-            timeOffRequest.TimeOffRequestState.TimeOffRequestStateName = status;
-            if (status == "Approved")
-            {
-                //Update remaining days off of employee in personnelApplyTimeOffPolicy table
-                
-               /* var personnelApplyTimeOffPolicy = _context.PersonnelApplyTimeOffPolicies.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
-                var formTimeOff = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
-                var numday = formTimeOff.LimitedDaysOff;
-
-                if (personnelApplyTimeOffPolicy.NumberOfDaysOffLastYear > 0 && personnelApplyTimeOffPolicy.NumberOfDaysOffLastYear >= numday) personnelApplyTimeOffPolicy.NumberOfDaysOffLastYear -= numday;
-                else if (personnelApplyTimeOffPolicy.NumberOfDaysOffSeniority > 0 && personnelApplyTimeOffPolicy.NumberOfDaysOffSeniority >= numday) personnelApplyTimeOffPolicy.NumberOfDaysOffSeniority -= numday;
-                else if (personnelApplyTimeOffPolicy.NumberOfDaysOffStandard > 0 && personnelApplyTimeOffPolicy.NumberOfDaysOffStandard >= numday) personnelApplyTimeOffPolicy.NumberOfDaysOffStandard -= numday;
-
-                _context.Update(personnelApplyTimeOffPolicy);
-                */
-            }
+            timeOffRequest.TimeOffRequestStateId = status;
             _context.Update(timeOffRequest);
             await _context.SaveChangesAsync();
             return RedirectToAction("Edit", "ApproveTimeoff", new { id = id });
