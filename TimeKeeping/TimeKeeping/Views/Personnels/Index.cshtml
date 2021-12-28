@@ -4,6 +4,8 @@
 	ViewData["Title"] = "List of Personnel";
 }
 
+<link href="~/css/button-style.css" rel="stylesheet" />
+
 <form asp-action="Index" method="get">
 	<div class="form-actions no-color">
 		<div class="form-group row">
@@ -45,26 +47,26 @@
 			</div>
 		</div>
 		<input type="submit" value="Search" class="btn btn-outline-primary" />
-		<a asp-action="Index">Back to Full List</a>
+		<a class="btn btn-outline-primary" asp-action="Index">Full list</a>
 	</div>
 </form>
 
-<h1 class="text-center">List of Personnel</h1>
+<h1 class="text-center">Employee list</h1>
 
 <p>
-	<a class="btn btn-primary" asp-action="Create">Create A New Personnel</a>
+	<a class="btn btn-primary" asp-action="Create">Create</a>
 </p>
 
-<h5>@Model.Count() staffs</h5>
+<h5>@Model.Count() employees</h5>
 
-<table class="table">
-	<thead class="bg-light">
+<table class="table table-bordered table-hover table-responsive">
+	<thead class="bg-success">
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.FirstName)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.FirstName)</a>
 			</th>
 			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
+				@Html.DisplayNameFor(model => model.LastName)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Sex)
@@ -88,98 +90,110 @@
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["PositionParm"]">@Html.DisplayNameFor(model => model.Position)</a>
 			</th>
 			<th>
-				<a asp-action="Index" asp-route-sortOrder="@ViewData["workScheduleParm"]">@Html.DisplayNameFor(model => model.WorkScheduleId)</a>
+				@Html.DisplayNameFor(model => model.WorkingAreaId)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.WorkingAreaId)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["workScheduleParm"]">@Html.DisplayNameFor(model => model.WorkScheduleId)</a>
 			</th>
 			<th>
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
-			<th></th>
+			<th colspan="3" style="text-align:center">
+				Action
+			</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.FirstName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.LastName)
-				</td>
-				<td>
-					@*@Html.DisplayFor(modelItem => item.Sex)*@
-					@{
-						string displayGender;
-						if (item.Sex == true)
-						{
-							displayGender = "Male";
+			if (item.Active == true)
+			{
+				<tr class="table-success">
+					<td>
+						@Html.DisplayFor(modelItem => item.FirstName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.LastName)
+					</td>
+					<td>
+						@*@Html.DisplayFor(modelItem => item.Sex)*@
+						@{
+							string displayGender;
+							if (item.Sex == true)
+							{
+								displayGender = "Male";
+							}
+							else
+							{
+								displayGender = "Female";
+							}
 						}
-						else
-						{
-							displayGender = "Female";
-						}
-					}
 
-					@displayGender
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.DateOfBirth)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Phone)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Email)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.PersonnelAddress)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Office.OfficeName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Position.PositionName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.WorkSchedule.WorkScheduleName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.WorkingArea.WorkingAreaName)
-				</td>
-				<td>
-					@*@Html.DisplayFor(modelItem => item.Active)*@
+						@displayGender
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.DateOfBirth)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Phone)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Email)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.PersonnelAddress)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Office.OfficeName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Position.PositionName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.WorkingArea.WorkingAreaName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.WorkSchedule.WorkScheduleName)
+					</td>
+					<td>
+						@*@Html.DisplayFor(modelItem => item.Active)*@
+						@{
+							string displayDeleteState1;
+							if (item.Active == true)
+							{
+								displayDeleteState1 = "Active";
+							}
+							else
+							{
+								displayDeleteState1 = "Inactive";
+							}
+						}
+
+						@displayDeleteState1
+					</td>
 					@{
-						string displayDeleteState;
 						if (item.Active == true)
 						{
-							displayDeleteState = "Using";
-						}
-						else
-						{
-							displayDeleteState = "Don't use";
-						}
-					}
+							<td>
+								<a class="btn btn-info" asp-action="Edit" asp-route-id="@item.PersonnelId">Edit</a>
+							</td>
+							<td>
+								<a class="btn btn-info" asp-action="Details" asp-route-id="@item.PersonnelId">Details</a>
+							</td>
+							<td>
+								<a class="btn btn-outline-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.PersonnelId">Delete</a>
 
-					@displayDeleteState
-				</td>
-				<td>
-					<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.PersonnelId">Edit</a>
-					<a class="btn btn-info" asp-action="Details" asp-route-id="@item.PersonnelId">Details</a>
-					@{
-						if (item.Active == true)
-						{
-							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.PersonnelId">Delete</a>
+							</td>
 						}
 						else
 						{
-							<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.PersonnelId">Restore</a>
+							<td>
+								<a class="btn btn-outline-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.PersonnelId">Restore</a>
+							</td>
 						}
 					}
-				</td>
-			</tr>
+				</tr>
+			}
 		}
 	</tbody>
 </table>

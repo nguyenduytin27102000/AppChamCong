@@ -31,7 +31,7 @@
 
 <h1 class="text-center">List of Timeoff Policy</h1>
 <p>
-	<a class="btn btn-primary" asp-action="Create">Create New Timeoff Policy</a>
+	<a class="btn btn-primary" asp-action="Create">Create</a>
 </p>
 
 <h5>@Model.Count() timeoff policies</h5>
@@ -57,7 +57,9 @@
 			<th>
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
-			<th></th>
+			<th colspan="3" style="text-align:center">
+				Action
+			</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -96,18 +98,24 @@
 				</td>
 				<td>
 					<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId" class="btn btn-warning">Edit</a>
-					<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
-					@{
-						if (item.Active == true)
-						{
-							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
-						}
-						else
-						{
-							<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.TimeOffPolicyId">Restore</a>
-						}
-					}
 				</td>
+				<td>
+					<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
+				</td>
+				@{
+					if (item.Active == true)
+					{
+						<td>
+							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
+						</td>
+					}
+					else
+					{
+						<td>
+							<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.TimeOffPolicyId">Restore</a>
+						</td>
+					}
+				}
 			</tr>
 		}
 	</tbody>
