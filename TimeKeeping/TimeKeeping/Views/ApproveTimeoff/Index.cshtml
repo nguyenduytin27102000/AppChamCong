@@ -6,59 +6,61 @@
     TimeKeepingDBContext context = new TimeKeepingDBContext();
 }
 
-<h1>List Timeoff request</h1>
+<div class="container">
+    <h1>List Timeoff request</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Personnel Name
-            </th>
-            <th>
-                Title
-            </th>
-            <th>
-                Create Date
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+    <table class="table">
+        <thead>
             <tr>
+                <th>
+                    Personnel Name
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Create Date
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @{
+                        var pers = context.Personnel.SingleOrDefault(p => p.PersonnelId == item.PersonnelId);
+                            var name = pers.LastName + " " + pers.FirstName;
+                        }
+                    @name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
                 <td>
                     @{
-                    var pers = context.Personnel.SingleOrDefault(p => p.PersonnelId == item.PersonnelId);
-                        var name = pers.LastName + " " + pers.FirstName;
+                            var date = item.TimeOffDate.ToShortDateString();
                     }
-                @name
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @{
-                        var date = item.TimeOffDate.ToShortDateString();
-                }
-                @date
-            </td>
-            <td>
 
-                @{
-                    var status = context.TimeOffRequestStates.SingleOrDefault(p => p.TimeOffRequestStateId == item.TimeOffRequestStateId).TimeOffRequestStateName;
-                  }
-                @status
+                    @date
+                </td>
+                <td>
+                    @{
+                        var status = context.TimeOffRequestStates.SingleOrDefault(p => p.TimeOffRequestStateId == item.TimeOffRequestStateId).TimeOffRequestStateName;
+                      }
+                    @status
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
 
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
 

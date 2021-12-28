@@ -4,77 +4,118 @@
     ViewData["Title"] = "Detail";
     TimeKeepingDBContext context = new TimeKeepingDBContext();
     var status = context.TimeOffRequestStates;
+
+    var stylebtn = "btn btn-outline-primary";
+    string requireHandOver = "";
+
 }
 
-<h1>Approve Timeoff Reqest</h1>
+<div class="container">
+    <h1>Approve Timeoff Reqest</h1>
 
-<div>
-    @foreach (var item in status)
-    {
-        @Html.ActionLink(@item.TimeOffRequestStateName, "UpdateStatus", "ApproveTimeoff",
-            new {
-                id = @Model.TimeOffRequestId,
-                status=@item.TimeOffRequestStateId
-            },
-            new{
-                @class="btn btn-outline-primary",
-                style="width:200",
-                onclick="return confirm('Are you sure?');"
+
+    <div>
+        @foreach (var item in status)
+        {
+            if (@item.TimeOffRequestStateId == Model.TimeOffRequestStateId)
+            {
+                stylebtn = "btn btn-primary";
             }
-        ) 
-        <span> </span>
-    }
+            else
+            {
+                stylebtn = "btn btn-outline-primary";
+            } 
+            @Html.ActionLink(@item.TimeOffRequestStateName, "UpdateStatus", "ApproveTimeoff",
+                new {
+                    id = @Model.TimeOffRequestId,
+                    status=@item.TimeOffRequestStateId
+                },
+                new{
+                    @class= stylebtn,
+                    style="width:200",
+                    onclick="return confirm('Are you sure?');"
+                }
+            ) 
+            <span> </span>
+        }
     
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Title
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            Personnel Name
-        </dt>
-        <dd class = "col-sm-10">
-            @ViewBag.PersonName
-        </dd>
-        <dt class = "col-sm-2">
-            Form Timeoff
-        </dt>
-        <dd class = "col-sm-10">
-            @ViewBag.FormTimeOffName
-        </dd>
-        <dt class = "col-sm-2">
-            Reason
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Reason)
-        </dd>
-        <dt class = "col-sm-2">
-            Handing over Works
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HandOverWorks)
-        </dd>
-        <dt class = "col-sm-2">
-            Create Date
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.TimeOffDate.ToShortDateString()
-        </dd>
-        <dt class = "col-sm-2">
-            Status
-        </dt>
-        <dd class = "col-sm-10">
-
-            @ViewBag.status
-
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                Title
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class = "col-sm-2">
+                Personnel Name
+            </dt>
+            <dd class = "col-sm-10">
+                @ViewBag.PersonName
+            </dd>
+            <dt class = "col-sm-2">
+                Form Timeoff
+            </dt>
+            <dd class = "col-sm-10">
+                @ViewBag.FormTimeOffName
+            </dd>
+            <dt class = "col-sm-2">
+                Reason
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Reason)
+            </dd>
+            <dt class = "col-sm-2">
+                Require Hand Over
+            </dt>
+            <dd class = "col-sm-10">
+                @{
+                    if (Model.RequireHandOver) requireHandOver = "Yes";
+                    else requireHandOver = "None";
+                }
+                @requireHandOver
+            </dd>
+            <dt class = "col-sm-2">
+                Handing over Works
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.HandOverWorks)
+            </dd>
+            <dt class = "col-sm-2">
+                Time Off Date
+            </dt>
+            <dd class = "col-sm-10">
+                @Model.TimeOffDate.ToShortDateString()
+            </dd>
+            <dt class = "col-sm-2">
+                Manager
+            </dt>
+            <dd class = "col-sm-10">
+                @ViewBag.ManagerName
+            </dd>
+            <dt class = "col-sm-2">
+                Attachment
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Attachment)
+            </dd>
+            <dt class = "col-sm-2">
+                Status
+            </dt>
+            <dd class = "col-sm-10">
+                @ViewBag.status
+            </dd>
+            <dt class = "col-sm-2">
+                Feedback
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Attachment)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
 
 

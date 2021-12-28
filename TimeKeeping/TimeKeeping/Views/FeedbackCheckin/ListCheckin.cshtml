@@ -1,0 +1,59 @@
+﻿@using TimeKeeping.Models
+@model IEnumerable<TimeKeeping.Models.Checkin>
+
+@{
+    ViewData["Title"] = "Checkin list";
+    TimeKeepingDBContext context = new TimeKeepingDBContext();
+}
+
+<div class="container">
+    <h1>List Checkin</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Personnel Name
+                </th>
+                <th>
+                    Time
+                </th>
+                <th>
+                    Active
+                </th>
+                <th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @{
+                                    var pers = context.Personnel.SingleOrDefault(p => p.PersonnelId == item.PersonnelId);
+                                    var name = pers.LastName + " " + pers.FirstName;
+                                }
+                            @name
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @{
+                        string active = "";
+                            if (item.Active == true) active = "Using";
+                            else active = "None";
+                            }
+                            @active;
+                        </td>
+                        <td>
+                            <a asp-action="Feedback" asp-route-id="@item.CheckinId">Feedback</a>
+                            <a asp-action="Feedback" asp-route-id="@item.CheckinId">List Feedback</a>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
