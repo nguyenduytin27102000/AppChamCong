@@ -6,9 +6,9 @@ INSERT INTO Office VALUES
 ('OF003', 'Office C', 'Hung Vuong Street', '0789123456', 'c@gmail.com', 1)
  
 INSERT INTO TypeWorkSchedule VALUES
-('TWS001', 'Type 001', 1),
-('TWS002', 'Type 002', 1),
-('TWS003', 'Type 003', 1)
+('TWS001', 'Full-time', 1),
+('TWS002', 'Part-time', 1),
+('TWS003', 'Spectify', 1)
 
 INSERT INTO CheckinPolicy VALUES
 ('CP001', 'Checkin Policy 1', 1),

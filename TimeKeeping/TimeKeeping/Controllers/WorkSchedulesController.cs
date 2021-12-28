@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -111,7 +110,7 @@ namespace TimeKeeping.Controllers
             };
 
             // Use for day of week id.
-            string[] index = { "1", "2", "3", "4", "5", "6", "7" };
+            string[] index = { "DW001", "DW002", "DW003", "DW004", "DW005", "DW006", "DW007" };
 
             // haft-day
             string[] halfDay =
@@ -153,7 +152,7 @@ namespace TimeKeeping.Controllers
                 _context.Add(workSchedule);
                 await _context.SaveChangesAsync();
 
-                if (String.Compare(fields["duration"], "1") == 0)
+                if (String.Compare(fields["duration"], "TWS001") == 0)
                 {
                     for (int i = 0; i < dayOfWeek.Length; i++)
                     {
@@ -170,7 +169,7 @@ namespace TimeKeeping.Controllers
                         }
                     }
                 }
-                else if (String.Compare(fields["duration"], "2") == 0)
+                else if (String.Compare(fields["duration"], "TWS002") == 0)
                 {
                     for (int i = 0; i < dayOfWeek.Length; i++)
                     {
@@ -198,7 +197,7 @@ namespace TimeKeeping.Controllers
                         }
                     }
                 }
-                else if (String.Compare(fields["duration"], "3") == 0)
+                else if (String.Compare(fields["duration"], "TWS003") == 0)
                 {
                     for (int i = 0; i < dayOfWeek.Length; i++)
                     {
