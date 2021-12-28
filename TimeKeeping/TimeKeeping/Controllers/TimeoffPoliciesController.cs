@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeKeeping.Models;
+using TimeKeeping.Services;
 
 namespace TimeKeeping.Controllers
 {
     public class TimeOffPoliciesController : Controller
     {
         private readonly TimeKeepingDBContext _context;
+        private readonly IdentityFactory _identityFactory;
 
-        public TimeOffPoliciesController(TimeKeepingDBContext context)
+        public TimeOffPoliciesController(TimeKeepingDBContext context, IdentityFactory identityFactory)
         {
             _context = context;
+            _identityFactory = identityFactory;
         }
 
         // GET: TimeOffPolicies
@@ -110,14 +113,17 @@ namespace TimeKeeping.Controllers
             var listTimeoffPolicies = _context.TimeOffPolicies.ToList();
 
             // If Id is exict in database, then alert.
-            foreach (var oldTimeOffPolicy in listTimeoffPolicies)
-            {
-                if (timeOffPolicy.TimeOffPolicyId == oldTimeOffPolicy.TimeOffPolicyId)
-                {
-                    ModelState.AddModelError("", "This ID is exict in list!");
-                    break;
-                }
-            }
+            //foreach (var oldTimeOffPolicy in listTimeoffPolicies)
+            //{
+            //    if (timeOffPolicy.TimeOffPolicyId == oldTimeOffPolicy.TimeOffPolicyId)
+            //    {
+            //        ModelState.AddModelError("", "This ID is exict in list!");
+            //        break;
+            //    }
+            //}
+
+            // Id auto
+            timeOffPolicy.TimeOffPolicyId = _identityFactory.GenerateId2(_context.TimeOffPolicies.Max(w => w.TimeOffPolicyId), "TOP");
 
             if (ModelState.IsValid)
             {

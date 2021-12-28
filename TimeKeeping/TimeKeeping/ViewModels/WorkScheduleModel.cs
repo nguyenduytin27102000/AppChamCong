@@ -36,13 +36,13 @@ namespace TimeKeeping.ViewModels
 
         [Display(Name = "Start date")]
         [DataType(DataType.Date)]
-        public DateTime? StartDay { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [Display(Name = "End date")]
         [DataType(DataType.Date)]
-        public DateTime? EndDay { get; set; }
+        public DateTime? EndDate { get; set; }
         public bool? States { get; set; }
-        public bool? Del { get; set; }
+        public bool? Active { get; set; }
 
         public virtual TypeWorkSchedule TypeWorkSchedule { get; set; }
         public virtual ICollection<Personnel> Personnel { get; set; }

@@ -39,9 +39,10 @@ namespace TimeKeeping.Controllers
             var nhansu = _context.Personnel.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
             ViewBag.PersonName = nhansu.LastName + " " + nhansu.FirstName;
             //ViewBag.PersonName = timeOffRequest.Personnel.LastName + " " + timeOffRequest.Personnel.FirstName;
-            var mauNghiPhep = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
-            ViewBag.FormTimeOffName = mauNghiPhep.FormTimeOffName;
-
+            var form = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
+            ViewBag.FormTimeOffName = form.FormTimeOffName;
+            var statusName = _context.TimeOffRequestStates.SingleOrDefault(st => st.TimeOffRequestStateId == timeOffRequest.TimeOffRequestStateId).TimeOffRequestStateName;
+            ViewBag.status = statusName;
             return View(timeOffRequest);
         }
 
@@ -56,12 +57,16 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-            timeOffRequest.TimeOffRequestState.TimeOffRequestStateName = status;
+
+            timeOffRequest.TimeOffRequestStateId = status;
+            var statusName = _context.TimeOffRequestStates.SingleOrDefault(st => st.TimeOffRequestStateId == status).TimeOffRequestStateName;
+
             if (status == "Approved")
             {
                 //Update remaining days off of employee in personnelApplyTimeOffPolicy table
-                
-               /* var personnelApplyTimeOffPolicy = _context.PersonnelApplyTimeOffPolicies.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
+                /*
+                var personnelApplyTimeOffPolicy = _context.PersonnelApplyTimeOffPolicies.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
+               
                 var formTimeOff = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
                 var numday = formTimeOff.LimitedDaysOff;
 

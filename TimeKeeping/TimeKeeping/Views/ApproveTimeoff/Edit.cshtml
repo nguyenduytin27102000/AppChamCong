@@ -2,44 +2,28 @@
 
 @{
     ViewData["Title"] = "Detail";
+    TimeKeepingDBContext context = new TimeKeepingDBContext();
+    var status = context.TimeOffRequestStates;
 }
 
 <h1>Approve Timeoff Reqest</h1>
 
 <div>
-    @Html.ActionLink("Pending Approval", "UpdateStatus", "ApproveTimeoff",
-        new {
-            id = @Model.TimeOffRequestId,
-            status="Pending Approval"
-        },
-        new{
-            @class="btn btn-outline-primary",
-            style="width:200",
-            onclick="return confirm('Are you sure?');"
-        }
-    )
-    @Html.ActionLink("Cancelled", "UpdateStatus", "ApproveTimeoff",
-        new {
-            id = @Model.TimeOffRequestId,
-            status="Cancelled"
-        },
-        new{
-            @class="btn btn-outline-primary",
-            style="width:200",
-            onclick="return confirm('Are you sure?');"
-        }
-    )
-    @Html.ActionLink("Approved", "UpdateStatus", "ApproveTimeoff",
-        new {
-            id = @Model.TimeOffRequestId,
-            status="Approved"
-        },
-        new{
-            @class="btn btn-outline-primary",
-            style="width:200",
-            onclick="return confirm('Are you sure?');"
-        }
-    )
+    @foreach (var item in status)
+    {
+        @Html.ActionLink(@item.TimeOffRequestStateName, "UpdateStatus", "ApproveTimeoff",
+            new {
+                id = @Model.TimeOffRequestId,
+                status=@item.TimeOffRequestStateId
+            },
+            new{
+                @class="btn btn-outline-primary",
+                style="width:200",
+                onclick="return confirm('Are you sure?');"
+            }
+        ) 
+        <span> </span>
+    }
     
     <hr />
     <dl class="row">
@@ -83,7 +67,9 @@
             Status
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model=>model.TimeOffRequestState.TimeOffRequestStateName)
+
+            @ViewBag.status
+
         </dd>
     </dl>
 </div>
