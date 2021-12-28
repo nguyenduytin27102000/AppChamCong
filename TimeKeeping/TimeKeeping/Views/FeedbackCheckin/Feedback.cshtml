@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md">
-        <div>This is id @ViewBag.checkinId</div>
+       <!--<div>This is id @ViewBag.checkinId</div>--> 
         <form asp-action="Feedback" asp-controller="FeedbackCheckin" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CheckinId" value="@ViewBag.checkinId"/>

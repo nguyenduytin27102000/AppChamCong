@@ -123,7 +123,7 @@
                 </td>
 
                 <td>
-                    <a asp-controller="TimeKeepingFeedbacks" asp-action="Create" asp-route-id="@item.CheckinId">Feedback</a>
+                    <a asp-controller="FeedbackCheckin" asp-action="Feedback" asp-route-id="@item.CheckinId">Feedback</a>
                 </td>
             </tr>
             if (@item.DayOff != true)
