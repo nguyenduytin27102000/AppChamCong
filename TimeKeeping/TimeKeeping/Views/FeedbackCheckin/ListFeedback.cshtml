@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "List feedback for checkin";
 }
+<style>
+        .nut{
+            width:160px;
+        }
+
+</style>
 
 <h1>List Feedback</h1>
 
@@ -24,7 +30,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.TimeOffRequestState)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -45,15 +50,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TimeOffRequestState.TimeOffRequestStateName)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TimeKeepingFeedbackId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TimeKeepingFeedbackId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TimeKeepingFeedbackId">Delete</a>
-            </td>
         </tr>
 }
     </tbody>
 </table>
 <div>
-        <a asp-action="ListCheckin">Back to List checkin</a>
-    </div>
+    <a asp-action="ListCheckin" class="btn btn-primary nut">Back</a>  
+    <a asp-action="Feedback" asp-route-id="@ViewBag.CheckinID" class="btn btn-primary nut">Create Feedback</a>
+</div>

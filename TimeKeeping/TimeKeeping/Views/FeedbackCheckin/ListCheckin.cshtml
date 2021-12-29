@@ -8,7 +8,6 @@
 
 <div class="container">
     <h1>List Checkin</h1>
-
     <table class="table">
         <thead>
             <tr>
@@ -41,14 +40,14 @@
                         <td>
                             @{
                         string active = "";
-                            if (item.Active == true) active = "Using";
+                            if (item.Active == true) active = "Active";
                             else active = "None";
                             }
-                            @active;
+                            @active
                         </td>
                         <td>
-                            <a asp-action="Feedback" asp-route-id="@item.CheckinId">Feedback</a>
-                            <a asp-action="Feedback" asp-route-id="@item.CheckinId">List Feedback</a>
+                            <a asp-action="Feedback" asp-route-id="@item.CheckinId">Feedback</a> | 
+                            <a asp-action="ListFeedback" asp-route-id="@item.CheckinId">List Feedback</a>
                         </td>
                     </tr>
             }

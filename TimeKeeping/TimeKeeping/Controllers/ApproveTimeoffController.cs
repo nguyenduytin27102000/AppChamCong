@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TimeKeeping.Models;
 
 namespace TimeKeeping.Controllers
@@ -11,10 +10,12 @@ namespace TimeKeeping.Controllers
     public class ApproveTimeoffController : Controller
     {
         private readonly TimeKeepingDBContext _context;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ApproveTimeoffController(TimeKeepingDBContext context)
+        public ApproveTimeoffController(TimeKeepingDBContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
         public async Task<IActionResult> Index()
         {
@@ -35,11 +36,13 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
+
             var personnel = _context.Personnel.SingleOrDefault(ns => ns.PersonnelId == timeOffRequest.PersonnelId);
             ViewBag.PersonName = personnel.LastName + " " + personnel.FirstName;
-            //ViewBag.PersonName = timeOffRequest.Personnel.LastName + " " + timeOffRequest.Personnel.FirstName;
+
             var form = _context.FormTimeOffs.SingleOrDefault(np => np.FormTimeOffId == timeOffRequest.FormTimeOffId);
             ViewBag.FormTimeOffName = form.FormTimeOffName;
+
             var statusName = _context.TimeOffRequestStates.SingleOrDefault(st => st.TimeOffRequestStateId == timeOffRequest.TimeOffRequestStateId).TimeOffRequestStateName;
             ViewBag.status = statusName;
 
@@ -55,6 +58,7 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
+
             var timeOffRequest = await _context.TimeOffRequests.FindAsync(id);
             if (timeOffRequest == null)
             {
@@ -64,7 +68,18 @@ namespace TimeKeeping.Controllers
             timeOffRequest.TimeOffRequestStateId = status;
             _context.Update(timeOffRequest);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Edit", "ApproveTimeoff", new { id = id });
+
+            return RedirectToAction("Index", "ApproveTimeoff");
         }
+        public FileResult Download(string attachment)
+        {
+            //path of wwwrot
+            string path = _hostingEnvironment.WebRootPath + "/storage/attachments/" + attachment;
+
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, System.Net.Mime.MediaTypeNames.Application.Octet, path);
+        }
+
     }
 }
