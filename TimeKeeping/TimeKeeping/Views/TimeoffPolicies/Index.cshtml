@@ -78,7 +78,7 @@
 			<th class="align-middle">
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
-			<th colspan="1" class="text-center">
+			<th colspan="2" class="text-center">
 				Action
 			</th>
 		</tr>
@@ -119,9 +119,9 @@
 						}
 						@displayDeleteSate
 					</td>
-					@*<td class="align-middle">
+					<td class="align-middle">
 						<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Edit</a>
-					</td>*@
+					</td>
 					@*<td class="align-middle">
 						<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
 					</td>*@

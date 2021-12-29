@@ -24,7 +24,7 @@
 					<label asp-for="TimeOffPolicyName" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="TimeOffPolicyName" class="form-control" />
+					<input asp-for="TimeOffPolicyName" class="form-control" rules="required" />
 					<span asp-validation-for="TimeOffPolicyName" class="text-danger form-message"></span>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 					<label asp-for="NumberOfDaysOffStandard" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="NumberOfDaysOffStandard" class="form-control" />
+					<input asp-for="NumberOfDaysOffStandard" class="form-control" rules="required" />
 					<span asp-validation-for="NumberOfDaysOffStandard" class="text-danger form-message"></span>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 					<label asp-for="NumberOfDaysOffLastYear" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="NumberOfDaysOffLastYear" class="form-control" />
+					<input asp-for="NumberOfDaysOffLastYear" class="form-control" rules="required|lessEqual:#NumberOfDaysOffStandard" />
 					<span asp-validation-for="NumberOfDaysOffLastYear" class="text-danger form-message"></span>
 				</div>
 			</div>
@@ -59,8 +59,8 @@
 					<label asp-for="Describe" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="Describe" class="form-control" />
-					<span asp-validation-for="Describe" class="text-danger"></span>
+					<input asp-for="Describe" class="form-control" rules="required" />
+					<span asp-validation-for="Describe" class="text-danger form-message"></span>
 				</div>
 			</div>
 
