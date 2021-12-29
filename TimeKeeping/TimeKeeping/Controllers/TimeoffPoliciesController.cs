@@ -129,7 +129,10 @@ namespace TimeKeeping.Controllers
             {
                 _context.Add(timeOffPolicy);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = $"You have successfully create timeoff policy: {timeOffPolicy.TimeOffPolicyId}";
+                ViewBag.Status = "success";
+                ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
+                return View(timeOffPolicy);
             }
             ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
             return View(timeOffPolicy);
@@ -200,7 +203,10 @@ namespace TimeKeeping.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = $"You have successfully edit timeoff policy: {timeOffPolicy.TimeOffPolicyId}";
+                ViewBag.Status = "success";
+                ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyId", timeOffPolicy.TypePolicyId);
+                return View(timeOffPolicy);
             }
             ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyId", timeOffPolicy.TypePolicyId);
             return View(timeOffPolicy);

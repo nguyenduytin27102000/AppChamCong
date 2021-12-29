@@ -1,12 +1,12 @@
 ﻿@model TimeKeeping.ViewModels.WorkScheduleModel
 
 @{
-	ViewData["Title"] = "Create a new work schedule";
+	ViewData["Title"] = "Create new work schedule";
 }
 
 <link href="~/css/button-style.css" rel="stylesheet" />
 
-<h4>Create a new work schedule</h4>
+<h4>Create new work schedule</h4>
 <hr />
 <div class="row">
 	<div class="col-md-12">
@@ -266,7 +266,7 @@
 						<label asp-for="StartDate" class="control-label"></label>
 					</div>
 					<div class="col-3">
-						<input asp-for="StartDate" class="form-control" />
+						<input asp-for="StartDate" class="form-control" rules="greaterToday" />
 						<span asp-validation-for="StartDate" class="text-danger form-message"></span>
 					</div>
 				</div>
@@ -280,7 +280,6 @@
 					</div>
 				</div>
 			</div>
-
 
 			<div class="form-group">
 				<a asp-action="Index" class="btn btn-secondary">Back</a>

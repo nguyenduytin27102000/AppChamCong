@@ -82,7 +82,7 @@
 							<label asp-for="Phone" class="control-label"></label>
 						</div>
 						<div class="col-9">
-							<input asp-for="Phone" class="form-control" rules="required" />
+							<input asp-for="Phone" class="form-control" rules="required|phoneNumber" />
 							<span asp-validation-for="Phone" class="text-danger form-message"></span>
 						</div>
 					</div>
@@ -94,7 +94,7 @@
 							<label asp-for="Email" class="control-label"></label>
 						</div>
 						<div class="col-9">
-							<input asp-for="Email" class="form-control" rules="required" />
+							<input asp-for="Email" class="form-control" rules="required|onlyEmail" />
 							<span asp-validation-for="Email" class="text-danger form-message"></span>
 						</div>
 					</div>
@@ -205,7 +205,7 @@
 							<label asp-for="BasicSalary" class="control-label"></label>
 						</div>
 						<div class="col-9">
-							<input asp-for="BasicSalary" class="form-control" rules="required" />
+							<input asp-for="BasicSalary" class="form-control" rules="required|onlyNumber" />
 							<span asp-validation-for="BasicSalary" class="text-danger form-message"></span>
 						</div>
 					</div>
@@ -217,7 +217,7 @@
 							<label asp-for="ActualSalary" class="control-label"></label>
 						</div>
 						<div class="col-9">
-							<input asp-for="ActualSalary" class="form-control" rules="required" />
+							<input asp-for="ActualSalary" class="form-control" rules="required|onlyNumber" />
 							<span asp-validation-for="ActualSalary" class="text-danger form-message"></span>
 						</div>
 					</div>

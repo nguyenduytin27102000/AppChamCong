@@ -33,6 +33,33 @@
                 return previous.value <= value ? undefined : `Must greater than ${label}`;
             }
         },
+        lessEqual: function (selector) {
+            return function (value) {
+                const previous = document.querySelector(selector);
+                const label = getParentElement(previous, groupSelector).querySelector('label').innerText;
+                return previous.value >= value ? undefined : `Must less than ${label}`;
+            }
+        },
+        onlyAlphabet: function (value) {
+            return value.search(/[^a-zA-Z]+/) === -1 ? undefined : "Only allow alphabet!";
+        },
+        phoneNumber: function (value) {
+            return value.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) ? undefined : "Only allow for phone number!";
+        },
+        onlyEmail: function (value) {
+            return value.match(/\S+@\S+\.\S+/) ? undefined : "Only allow for email address!";
+        },
+        onlyNumber: function (value) {
+            return value.match(/^[0-9]*$/) ? undefined : "Only allow number!";
+        },
+        greaterToday: function (value) {
+            const today = new Date();
+            const valueDate = new Date(value);
+            const todayString = today.toLocaleDateString();
+            const valueDateString = valueDate.toLocaleDateString();
+
+            return todayString == valueDateString || valueDate >= today ? undefined : "Must greater than or equal to today!";
+        }
     }
     const formElement = document.querySelector(formSelector);
     if(formElement){

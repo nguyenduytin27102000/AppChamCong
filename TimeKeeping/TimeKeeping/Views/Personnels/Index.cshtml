@@ -2,6 +2,15 @@
 
 @{
 	ViewData["Title"] = "List of Personnel";
+
+	int count = 0;
+	foreach (var item in Model)
+	{
+		if (item.Active == true)
+		{
+			count++;
+		}
+	}
 }
 
 <link href="~/css/button-style.css" rel="stylesheet" />
@@ -57,7 +66,7 @@
 	<a class="btn btn-primary" asp-action="Create">Create</a>
 </p>
 
-<h5>@Model.Count() employees</h5>
+<h5>@count employees</h5>
 
 <table class="table table-bordered table-hover table-responsive">
 	<thead class="bg-success">
@@ -98,7 +107,7 @@
 			<th>
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
-			<th colspan="3" style="text-align:center">
+			<th colspan="3" class="text-center align-middle">
 				Action
 			</th>
 		</tr>

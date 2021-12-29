@@ -1,8 +1,19 @@
 ﻿@model IEnumerable<TimeKeeping.Models.TimeOffPolicy>
 
 @{
-	ViewData["Title"] = "List of Timeoff Policy";
+	ViewData["Title"] = "Timeoff policy list";
+
+	int count = 0;
+	foreach (var item in Model)
+	{
+		if (item.Active == true)
+		{
+			count++;
+		}
+	}
 }
+
+<link href="~/css/button-style.css" rel="stylesheet" />
 
 <form asp-action="Index" method="post">
 	<div class="form-actions no-color">
@@ -26,38 +37,48 @@
 		</div>
 	</div>
 	<input type="submit" value="Search" class="btn btn-outline-primary" />
-	<a asp-action="Index">Back to Full List</a>
+	<a class="btn btn-outline-primary" asp-action="Index">Full list</a>
 </form>
 
-<h1 class="text-center">List of Timeoff Policy</h1>
+<h1 class="text-center">Timeoff policy list</h1>
 <p>
 	<a class="btn btn-primary" asp-action="Create">Create</a>
 </p>
 
-<h5>@Model.Count() timeoff policies</h5>
+@{
+	if (count == 0 || count == 1)
+	{
+		<h5>@count timeoff policy</h5>
+	}
+	else
+	{
+		<h5>@count timeoff policies</h5>
+	}
+}
 
-<table class="table">
-	<thead class="bg-light">
+
+<table class="table table-bordered table-hover table-responsive">
+	<thead class="bg-success">
 		<tr>
-			<th>
+			<th class="align-middle">
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.TimeOffPolicyName)</a>
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.NumberOfDaysOffStandard)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.NumberOfDaysOffLastYear)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.Describe)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.TypePolicy)
 			</th>
-			<th>
+			<th class="align-middle">
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
-			<th colspan="3" style="text-align:center">
+			<th colspan="3" class="text-center">
 				Action
 			</th>
 		</tr>
@@ -65,58 +86,52 @@
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.TimeOffPolicyName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.NumberOfDaysOffStandard)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.NumberOfDaysOffLastYear)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Describe)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TypePolicy.TypePolicyName)
-				</td>
-				<td>
-					@*@Html.DisplayFor(modelItem => item.Del)*@
-					@{
-						string displayDeleteSate;
-						if (item.Active == true)
-						{
-							displayDeleteSate = "Using";
+			if (item.Active == true)
+			{
+				<tr class="table-success">
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.TimeOffPolicyName)
+					</td>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.NumberOfDaysOffStandard)
+					</td>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.NumberOfDaysOffLastYear)
+					</td>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.Describe)
+					</td>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.TypePolicy.TypePolicyName)
+					</td>
+					<td class="align-middle">
+						@*@Html.DisplayFor(modelItem => item.Del)*@
+						@{
+							string displayDeleteSate;
+							if (item.Active == true)
+							{
+								displayDeleteSate = "Active";
+							}
+							else
+							{
+								displayDeleteSate = "Inactive";
+							}
 						}
-						else
-						{
-							displayDeleteSate = "Don't use";
-						}
-					}
-					@displayDeleteSate
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId" class="btn btn-warning">Edit</a>
-				</td>
-				<td>
-					<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
-				</td>
-				@{
-					if (item.Active == true)
-					{
-						<td>
-							<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
-						</td>
-					}
-					else
-					{
-						<td>
-							<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.TimeOffPolicyId">Restore</a>
-						</td>
-					}
-				}
-			</tr>
+						@displayDeleteSate
+					</td>
+					<td class="align-middle">
+						<a asp-action="Edit" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Edit</a>
+					</td>
+					<td class="align-middle">
+						<a asp-action="Details" asp-route-id="@item.TimeOffPolicyId" class="btn btn-info">Details</a>
+					</td>
+
+					<td>
+						<a class="btn btn-outline-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.TimeOffPolicyId">Delete</a>
+					</td>
+
+				</tr>
+			}
 		}
 	</tbody>
 </table>

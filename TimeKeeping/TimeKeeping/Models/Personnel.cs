@@ -62,11 +62,11 @@ namespace TimeKeeping.Models
         public string Title { get; set; }
 
         [Display(Name = "Actual salary")]
-        [Required(ErrorMessage = "Please enter actual salary!")]
+        //[Required(ErrorMessage = "Please enter actual salary!")]
         public decimal ActualSalary { get; set; }
 
         [Display(Name = "Basic salary")]
-        [Required(ErrorMessage = "Please enter basic salary!")]
+        //[Required(ErrorMessage = "Please enter basic salary!")]
         public decimal BasicSalary { get; set; }
 
         [DataType(DataType.Date)]
