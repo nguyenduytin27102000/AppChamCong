@@ -26,8 +26,10 @@ namespace TimeKeeping.Controllers
             string nextid = id.ToString();
             return nextid;
         }*/
+        
         public string GetTimeKeepingFeedbackId(string f) // f is firt in char id. vd: FB001. 'FB' is f 
         {
+            /*
             string nextId;
             int temp;
             // which table ??
@@ -42,7 +44,12 @@ namespace TimeKeeping.Controllers
             else if (nextId.Length == 1)
                 nextId = "00" + nextId;
             nextId = f + nextId;
-            return nextId;
+            return nextId;*/
+
+            var date = DateTime.Now;
+            string id = Convert.ToString(date.Day) + Convert.ToString(date.Month);
+            id = id + Convert.ToString(date.Hour) + Convert.ToString(date.Minute) + Convert.ToString(date.Second);
+            return id;
         }
         public IActionResult Index()
         {
@@ -61,9 +68,9 @@ namespace TimeKeeping.Controllers
             {
                 return NotFound();
             }
-            ViewBag.checkinId = id;
+            ViewBag.CheckinID = id;
             //ViewData["CheckinId"] = _context.Checkins.SingleOrDefault(ck => ck.CheckinId == id);
-           // ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
+            //ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
             return View();
         }
 
@@ -82,6 +89,7 @@ namespace TimeKeeping.Controllers
             if (timeKeepingFeedback.Reason == null)
             {
                 ViewBag.Notify = "Error: You have not entered comments!";
+                ViewBag.Style = "alert alert-danger";
                 return View(timeKeepingFeedback);
             }
             
@@ -90,16 +98,18 @@ namespace TimeKeeping.Controllers
                 _context.Add(timeKeepingFeedback);
                 await _context.SaveChangesAsync();
                 ViewBag.Notify = "Successful";
+                ViewBag.Style = "alert alert-success";
                 return View(timeKeepingFeedback);
             }
             ViewData["CheckinId"] = new SelectList(_context.Checkins.Where(c => c.CheckinId == timeKeepingFeedback.CheckinId), "CheckinId", "CheckinId");
-            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "001"), "TimeOffRequestStateId", "TimeOffRequestStateId");
+            ViewData["TimeOffRequestStateId"] = new SelectList(_context.TimeOffRequestStates.Where(s => s.TimeOffRequestStateId == "TORS1"), "TimeOffRequestStateId", "TimeOffRequestStateId");
             ViewBag.Notify = "Error";
             return View(timeKeepingFeedback);
         }
 
         public async Task<IActionResult> ListFeedback(string id)
         {
+            ViewBag.CheckinID = id;
             var list = _context.TimeKeepingFeedbacks.Where(t => t.CheckinId == id);
             return View(await list.ToListAsync());
         }

@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md">
-       <!--<div>This is id @ViewBag.checkinId</div>--> 
+       <!--<div>This is id @ViewBag.checkinId</div>-->
         <form asp-action="Feedback" asp-controller="FeedbackCheckin" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CheckinId" value="@ViewBag.checkinId"/>
@@ -29,19 +29,15 @@
                 <span asp-validation-for="Time" class="text-danger"></span>
             </div>
             -->
-            <div class="form-group" hidden>
-                <label asp-for="TimeOffRequestStateId" class="control-label"></label>
-                <select asp-for="TimeOffRequestStateId" class ="form-control" asp-items="ViewBag.TimeOffRequestStateId" readonly ></select>
-            </div>
             <div class="form-group">
                 <a asp-action="ListCheckin" class="btn btn-primary" style="width:80px">Back</a>
-                <input type="submit" value="Create" class="btn btn-primary" style="width:80px"/>
+                <input type="submit" value="Submit" class="btn btn-primary" style="width:80px"/>
             </div>
         </form>
         
         @if(@ViewBag.Notify != null)
         {
-            <div class="alert alert-success" role="alert">
+            <div class="@ViewBag.Style" role="alert">
               @ViewBag.Notify
             </div>
         }

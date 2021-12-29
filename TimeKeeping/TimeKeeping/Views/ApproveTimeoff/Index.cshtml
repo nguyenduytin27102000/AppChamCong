@@ -4,7 +4,16 @@
 @{
     ViewData["Title"] = "Index";
     TimeKeepingDBContext context = new TimeKeepingDBContext();
+    var status = context.TimeOffRequestStates;
+
+    var stylebtn = "btn btn-outline-primary";
+    var disable = "";
 }
+<style>
+    .btn{
+        width:100px;
+    }
+</style>
 
 <div class="container">
     <h1>List Timeoff request</h1>
@@ -13,24 +22,28 @@
         <thead>
             <tr>
                 <th>
-                    Personnel Name
-                </th>
-                <th>
                     Title
                 </th>
                 <th>
-                    Create Date
+                    Personnel Name
+                </th>
+                <th>
+                    TimeOff Date
                 </th>
                 <th>
                     Status
                 </th>
-                <th>
-                <th></th>
+                <th class="text-center">
+                    Action
+                </th>
             </tr>
         </thead>
         <tbody>
     @foreach (var item in Model) {
                 <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">@Html.DisplayFor(modelItem => item.Title)</a>
+                </td>
                     <td>
                         @{
                         var pers = context.Personnel.SingleOrDefault(p => p.PersonnelId == item.PersonnelId);
@@ -39,23 +52,42 @@
                     @name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
                     @{
-                            var date = item.TimeOffDate.ToShortDateString();
+                        var date = item.TimeOffDate.ToShortDateString();
                     }
-
                     @date
                 </td>
                 <td>
                     @{
-                        var status = context.TimeOffRequestStates.SingleOrDefault(p => p.TimeOffRequestStateId == item.TimeOffRequestStateId).TimeOffRequestStateName;
+                        var statustable = context.TimeOffRequestStates.SingleOrDefault(p => p.TimeOffRequestStateId == item.TimeOffRequestStateId).TimeOffRequestStateName;
                       }
-                    @status
+                    @statustable
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.TimeOffRequestId">Edit</a>
+                <td class="text-center">
+                    @foreach (var sta in status)
+                        {
+                            if (@sta.TimeOffRequestStateId == item.TimeOffRequestStateId)
+                            {
+                                stylebtn = "btn btn-primary";
+                                <button class="btn btn-outline-secondary" type="button" disabled>@sta.TimeOffRequestStateName</button>
+                            }
+                            else
+                            {
+                                stylebtn = "btn btn-primary";
+                                @Html.ActionLink(@sta.TimeOffRequestStateName, "UpdateStatus", "ApproveTimeoff",
+                                    new {
+                                        id = @item.TimeOffRequestId,
+                                        status=@sta.TimeOffRequestStateId
+                                    },
+                                    new{
+                                        @class= stylebtn,
+                                        style="width:200",
+                                        onclick="return confirm('Are you sure?');"
+                                    }
+                                ) 
+                            }
+                            <span> </span>
+                        }
                 </td>
             </tr>
     }
