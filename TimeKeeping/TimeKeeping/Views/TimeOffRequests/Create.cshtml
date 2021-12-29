@@ -11,6 +11,7 @@
 </style>
 <section class="container">
     <h4 class="font-weight-bold">Create Time Off Request</h4>
+    <h5>number of days of leave allowed : @ViewData["RemainDayOffCount"]</h5>
     <hr />
     <div class="border-1">
         @if (ViewData["message"] != null)
@@ -104,7 +105,7 @@
                         <small class="text-muted">from day off</small>
                     </div>
                     <div class="col-sm-9">
-                        <input asp-for="FromDate" class="form-control" rules="required" />
+                        <input asp-for="FromDate" class="form-control" rules="required|greaterToday" />
                         <span class="text-danger form-message"></span>
                     </div>
                 </div>
