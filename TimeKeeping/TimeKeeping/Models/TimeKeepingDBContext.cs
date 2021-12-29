@@ -57,8 +57,8 @@ namespace TimeKeeping.Models
 
 
 
-                //optionsBuilder.UseSqlServer("Server=SONIC\\SQLEXPRESS;Database=TimeKeepingDB1;Trusted_Connection=True");
-                optionsBuilder.UseSqlServer("Server=.;Database=TimeKeepingDB;Trusted_Connection=True;UID=sa;PWD=123456");
+                optionsBuilder.UseSqlServer("Server=SONIC\\SQLEXPRESS;Database=TimeKeepingDB1;Trusted_Connection=True");
+                //optionsBuilder.UseSqlServer("Server=.;Database=TimeKeepingDB;Trusted_Connection=True;UID=sa;PWD=123456");
                 //optionsBuilder.UseSqlServer("Server=SONIC\\SQLEXPRESS;Database=TimeKeepingDB1;Trusted_Connection=True");
                 //optionsBuilder.UseSqlServer("Server=ST7\\SQLEXPRESS;Database=TimeKeepingDB;Trusted_Connection=True");
                 //optionsBuilder.UseSqlServer("Server=DESKTOP-CA57SN6\\SQLEXPRESS;Database=TimeKeepingDB;Trusted_Connection=True;");
