@@ -20,7 +20,7 @@ namespace TimeKeeping.Models
         [Display(Name = "Work schedule name")]
         public string WorkScheduleName { get; set; }
 
-        [Display(Name = "Type work schedule")]
+        [Display(Name = "Work schedule type")]
         public string TypeWorkScheduleId { get; set; }
 
         public string CheckinPolicyId { get; set; }

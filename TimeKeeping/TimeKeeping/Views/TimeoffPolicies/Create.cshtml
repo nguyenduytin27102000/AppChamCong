@@ -1,26 +1,34 @@
 ﻿@model TimeKeeping.Models.TimeOffPolicy
 
 @{
-	ViewData["Title"] = "Create new Timeoff Policy";
+	ViewData["Title"] = "Create new timeoff policy";
 }
 
-<h4 class="text-center">Create new Timeoff Policy</h4>
+<link href="~/css/button-style.css" rel="stylesheet" />
+
+<h4 class="text-center">Create new timeoff policy</h4>
+@if (ViewData["Message"] != null)
+{
+	<div class="alert alert-@ViewData["Status"]" role="alert">
+		@ViewData["Message"]
+	</div>
+}
 <hr />
 <div class="row">
 	<div class="col-md-12">
-		<form asp-action="Create">
+		<form asp-action="Create" id="createTimeoffPolicyForm">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group row">
-				<div class="col-2">
+				<div class="col-3">
 					<label asp-for="TimeOffPolicyName" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="TimeOffPolicyName" class="form-control" />
-					<span asp-validation-for="TimeOffPolicyName" class="text-danger"></span>
+					<input asp-for="TimeOffPolicyName" class="form-control" rules="required" />
+					<span asp-validation-for="TimeOffPolicyName" class="text-danger form-message"></span>
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-2">
+				<div class="col-3">
 					<label asp-for="TypePolicyId" class="control-label"></label>
 				</div>
 				<div class="col-5">
@@ -28,43 +36,59 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-2">
+				<div class="col-3">
 					<label asp-for="NumberOfDaysOffStandard" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="NumberOfDaysOffStandard" class="form-control" />
-					<span asp-validation-for="NumberOfDaysOffStandard" class="text-danger"></span>
+					<input asp-for="NumberOfDaysOffStandard" class="form-control" rules="required" />
+					<span asp-validation-for="NumberOfDaysOffStandard" class="text-danger form-message"></span>
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-2">
+				<div class="col-3">
 					<label asp-for="NumberOfDaysOffLastYear" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="NumberOfDaysOffLastYear" class="form-control" />
-					<span asp-validation-for="NumberOfDaysOffLastYear" class="text-danger"></span>
+					<input asp-for="NumberOfDaysOffLastYear" class="form-control" rules="required|lessEqual:#NumberOfDaysOffStandard" />
+					<span asp-validation-for="NumberOfDaysOffLastYear" class="text-danger form-message"></span>
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-2">
+				<div class="col-3">
 					<label asp-for="Describe" class="control-label"></label>
 				</div>
 				<div class="col-5">
-					<input asp-for="Describe" class="form-control" />
-					<span asp-validation-for="Describe" class="text-danger"></span>
+					<input asp-for="Describe" class="form-control" rules="required" />
+					<span asp-validation-for="Describe" class="text-danger form-message"></span>
 				</div>
 			</div>
+
 			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary" />
+				<input type="submit" value="Create" class="btn btn-secondary" />
+				<input type="reset" value="Reset" class="btn btn-secondary" />
+				<a asp-action="Index" class="btn btn-secondary">Back</a>
 			</div>
 		</form>
 	</div>
 </div>
 
-<div>
-	<a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+		<script src="~/js/Validator.js"></script>
+		<script>
+			const validator = Validator('#createTimeoffPolicyForm', '.form-group', '.form-message', 'invalid');
+		</script>
+	}
+
+	@* Reload to list (Index) *@
+	@if (ViewData["Message"] != null)
+	{
+		<script>
+		function pageRedirect() {
+			window.location.href = '@Url.Action("Index", "TimeOffPolicies")';
+		}
+		setTimeout("pageRedirect()", 5000);
+		</script>
+	}
 }

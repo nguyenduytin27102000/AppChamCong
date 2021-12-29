@@ -108,7 +108,7 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TimeOffPolicyId,TimeOffPolicyName,TypePolicyId,NumberOfDaysOffStandard,NumberOfDaysOffLastYear,Describe,Del")] TimeOffPolicy timeOffPolicy)
+        public async Task<IActionResult> Create([Bind("TimeOffPolicyId,TimeOffPolicyName,TypePolicyId,NumberOfDaysOffStandard,NumberOfDaysOffLastYear,Describe,Active")] TimeOffPolicy timeOffPolicy)
         {
             var listTimeoffPolicies = _context.TimeOffPolicies.ToList();
 
@@ -129,7 +129,10 @@ namespace TimeKeeping.Controllers
             {
                 _context.Add(timeOffPolicy);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = $"You have successfully create timeoff policy: {timeOffPolicy.TimeOffPolicyId}";
+                ViewBag.Status = "success";
+                ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
+                return View(timeOffPolicy);
             }
             ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
             return View(timeOffPolicy);
@@ -154,13 +157,13 @@ namespace TimeKeeping.Controllers
             }
 
             // Save list typeOfPolicyID though ViewData use for view.
-            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyId", timeOffPolicy.TypePolicyId);
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
 
             // List state of timeoff policy.
             var deleteSate = new Dictionary<bool, string>()
             {
-                {true, "Using" },
-                {false, "Don't use"}
+                {true, "Active" },
+                {false, "Inactive"}
             };
 
             // Use ViewBag save list of delete state use for view.
@@ -173,7 +176,7 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("TimeOffPolicyId,TimeOffPolicyName,TypePolicyId,NumberOfDaysOffStandard,NumberOfDaysOffLastYear,Describe,Del")] TimeOffPolicy timeOffPolicy)
+        public async Task<IActionResult> Edit(string id, [Bind("TimeOffPolicyId,TimeOffPolicyName,TypePolicyId,NumberOfDaysOffStandard,NumberOfDaysOffLastYear,Describe,Active")] TimeOffPolicy timeOffPolicy)
         {
             // If this time off policy doesn't exict, then display not found.
             if (id != timeOffPolicy.TimeOffPolicyId)
@@ -186,6 +189,7 @@ namespace TimeKeeping.Controllers
             {
                 try
                 {
+                    timeOffPolicy.Active = true;
                     _context.Update(timeOffPolicy);
                     await _context.SaveChangesAsync();
                 }
@@ -200,9 +204,12 @@ namespace TimeKeeping.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = $"You have successfully edit timeoff policy: {timeOffPolicy.TimeOffPolicyId}";
+                ViewBag.Status = "success";
+                ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
+                return View(timeOffPolicy);
             }
-            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyId", timeOffPolicy.TypePolicyId);
+            ViewData["TypePolicyId"] = new SelectList(_context.TypePolicies, "TypePolicyId", "TypePolicyName", timeOffPolicy.TypePolicyId);
             return View(timeOffPolicy);
         }
 

@@ -65,11 +65,6 @@ namespace TimeKeeping.Controllers
                 Days = p.Checkins.Where(c => c.Time.Month == month && c.Time.Year == year).Select(c => c.Time.Date).Distinct().Count(),
 
                 
-                //Off = p.TimeOffRequestPersonnel
-                //        .Where(t => t.TimeOffDate.Month == month && t.TimeOffDate.Year == year
-                //            && t.TimeOffRequestState.TimeOffRequestStateName.ToLower()
-                //        .Equals("accepted")).Count(),
-                
                 // tính số ngày xin off (xin off nhưng phải được duyệt)
                 Off = _context.DayOffs
                     .Where(d => p.PersonnelId == d.TimeOffRequest.PersonnelId 
@@ -291,7 +286,6 @@ namespace TimeKeeping.Controllers
 
         public IActionResult ChangeTimeSheetOverview(int month, int year)
         {
-            //return Redirect($"/Timesheet/Overview?month={year}&{month}");
             return RedirectToAction(nameof(Overview), new { month = month, year = year });
         }
     }

@@ -4,6 +4,8 @@
 	ViewData["Title"] = "Work Schedule: " + @Model.WorkScheduleName;
 }
 
+<link href="~/css/button-style.css" rel="stylesheet" />
+
 <div>
 	<h4>Work Schedule: @Model.WorkScheduleName</h4>
 	<hr />
@@ -14,7 +16,7 @@
 		<dd class="col-sm-9">
 			@Html.DisplayFor(model => model.WorkScheduleName)
 		</dd>
-		<dt class="col-sm-3">
+		@*<dt class="col-sm-3">
 			@Html.DisplayNameFor(model => model.RequireCheckout)
 		</dt>
 		<dd class="col-sm-9">
@@ -37,19 +39,19 @@
 		</dt>
 		<dd class="col-sm-9">
 			@Html.DisplayFor(model => model.MinutesEarly)
-		</dd>
+		</dd>*@
 		<dt class="col-sm-3">
 			@Html.DisplayNameFor(model => model.TypeWorkSchedule)
 		</dt>
 		<dd class="col-sm-9">
 			@Html.DisplayFor(model => model.TypeWorkSchedule.TypeWorkScheduleName)
 		</dd>
-		<dt class="col-sm-3">
+		@*<dt class="col-sm-3">
 			@Html.DisplayNameFor(model => model.States)
 		</dt>
 		<dd class="col-sm-9">
 			@Html.DisplayFor(model => model.States)
-		</dd>
+		</dd>*@
 		<dt class="col-sm-3">
 			@Html.DisplayNameFor(model => model.Active)
 		</dt>
@@ -58,11 +60,11 @@
 				string displayDeleteState;
 				if (Model.Active == true)
 				{
-					displayDeleteState = "Using";
+					displayDeleteState = "Active";
 				}
 				else
 				{
-					displayDeleteState = "Don't use";
+					displayDeleteState = "Inactive";
 				}
 			}
 			@displayDeleteState
@@ -73,6 +75,6 @@
 @Html.Partial("_ShiftsInWorkSchedulePartial", Model.Shifts)
 
 <div>
-	<a asp-action="Edit" asp-route-id="@Model.WorkScheduleId">Edit</a> |
-	<a asp-action="Index">Back to List</a>
+	@*<a asp-action="Edit" asp-route-id="@Model.WorkScheduleId" class="btn btn-secondary" >Edit</a> |*@
+	<a asp-action="Index" class="btn btn-secondary">Back</a>
 </div>

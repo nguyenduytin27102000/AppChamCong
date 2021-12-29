@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<TimeKeeping.Models.Shift>;
 
-<table class="table">
+<table class="table table-bordered table-hover">
 	<thead>
 		<tr>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.DaysOfWeek.DaysOfWeekName)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.ShiftName)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.StartTime)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.EndTime)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.Active)
 			</th>
 		</tr>
@@ -25,31 +25,31 @@
 			foreach (var item in Model)
 			{
 				<tr>
-					<td>
+					<td class="align-middle">
 						@Html.DisplayFor(modelItem => item.DaysOfWeek.DaysOfWeekName)
 					</td>
-					<td>
+					<td class="align-middle">
 						@Html.DisplayFor(modelItem => item.ShiftName)
 					</td>
-					<td>
+					<td class="align-middle">
 						@item.StartTime.ToString("HH:mm")
 					</td>
-					<td>
+					<td class="align-middle">
 						@item.EndTime.ToString("HH:mm")
 					</td>
-					<td>
+					<td class="align-middle">
 						@{
-							string deleteState;
+							string activeState;
 							if (item.Active == true)
 							{
-								deleteState = "Using";
+								activeState = "Active";
 							}
 							else
 							{
-								deleteState = "Don't use";
+								activeState = "Inactive";
 							}
 						}
-						@deleteState
+						@activeState
 					</td>
 				</tr>
 			}

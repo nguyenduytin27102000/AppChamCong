@@ -94,34 +94,34 @@ namespace TimeKeeping.Controllers
             switch (sortOrder)
             {
                 case "name":
-                    personnels = personnels.OrderBy(p => p.LastName);
+                    personnels = personnels.OrderByDescending(p => p.Active).ThenBy(p => p.LastName);
                     break;
                 case "name_desc":
-                    personnels = personnels.OrderByDescending(p => p.LastName);
+                    personnels = personnels.OrderByDescending(p => p.Active).ThenByDescending(p => p.FirstName);
                     break;
                 case "date":
-                    personnels = personnels.OrderBy(p => p.DateOfBirth);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderBy(p => p.DateOfBirth);
                     break;
                 case "date_desc":
-                    personnels = personnels.OrderByDescending(p => p.DateOfBirth);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderByDescending(p => p.DateOfBirth);
                     break;
                 case "office":
-                    personnels = personnels.OrderBy(p => p.Office.OfficeName);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderBy(p => p.Office.OfficeName);
                     break;
                 case "position":
-                    personnels = personnels.OrderByDescending(p => p.Position.PositionName);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderByDescending(p => p.Position.PositionName);
                     break;
                 case "position_desc":
-                    personnels = personnels.OrderBy(p => p.Position.PositionName);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderBy(p => p.Position.PositionName);
                     break;
                 case "office_desc":
-                    personnels = personnels.OrderByDescending(p => p.Office.OfficeName);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderByDescending(p => p.Office.OfficeName);
                     break;
                 case "workSchedule":
-                    personnels = personnels.OrderBy(p => p.WorkSchedule.WorkScheduleName);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderBy(p => p.WorkSchedule.WorkScheduleName);
                     break;
                 case "workSchedule_desc":
-                    personnels = personnels.OrderBy(p => p.WorkSchedule.WorkScheduleName);
+                    personnels = personnels.OrderByDescending(p => p.Active).OrderBy(p => p.WorkSchedule.WorkScheduleName);
                     break;
                 case "active":
                     personnels = personnels.OrderBy(p => p.Active);
@@ -203,14 +203,25 @@ namespace TimeKeeping.Controllers
             {
                 _context.Add(personnel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = "You have successfully create a work schedule";
+                ViewBag.Status = "success";
+
+                ViewData["OfficeId"] = new SelectList(_context.Offices, "OfficeId", "OfficeName", personnel.OfficeId);
+                ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionName", personnel.PositionId);
+                ViewData["SalaryPolicyId"] = new SelectList(_context.SalaryPolicies, "SalaryPolicyId", "SalaryPolicyName", personnel.SalaryPolicyId);
+                ViewData["TypePersonnelId"] = new SelectList(_context.TypePersonnel, "TypePersonnelId", "TypePersonnelName", personnel.TypePersonnelId);
+                ViewData["WorkScheduleId"] = new SelectList(_context.WorkSchedules, "WorkScheduleId", "WorkScheduleName", personnel.WorkScheduleId);
+                ViewData["WorkingAreaId"] = new SelectList(_context.WorkingAreas, "WorkingAreaId", "WorkingAreaName", personnel.WorkingAreaId);
+                return View(personnel);
             }
+
             ViewData["OfficeId"] = new SelectList(_context.Offices, "OfficeId", "OfficeName", personnel.OfficeId);
             ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionName", personnel.PositionId);
             ViewData["SalaryPolicyId"] = new SelectList(_context.SalaryPolicies, "SalaryPolicyId", "SalaryPolicyName", personnel.SalaryPolicyId);
             ViewData["TypePersonnelId"] = new SelectList(_context.TypePersonnel, "TypePersonnelId", "TypePersonnelName", personnel.TypePersonnelId);
             ViewData["WorkScheduleId"] = new SelectList(_context.WorkSchedules, "WorkScheduleId", "WorkScheduleName", personnel.WorkScheduleId);
             ViewData["WorkingAreaId"] = new SelectList(_context.WorkingAreas, "WorkingAreaId", "WorkingAreaName", personnel.WorkingAreaId);
+
             return View(personnel);
         }
 

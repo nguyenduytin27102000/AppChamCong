@@ -22,22 +22,22 @@ namespace TimeKeeping.Models
         public string PersonnelId { get; set; }
 
         [Display(Name = "First name")]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
-            ErrorMessage = "Characters are not allowed.")]
-        [Required(ErrorMessage = "Please enter first name!")]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
+        //    ErrorMessage = "Only enter letters!")]
+        //[Required(ErrorMessage = "Please enter first name!")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last name")]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
-            ErrorMessage = "Characters are not allowed.")]
-        [Required(ErrorMessage = "Please enter last name!")]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
+        //    ErrorMessage = "Characters are not allowed.")]
+        //[Required(ErrorMessage = "Please enter last name!")]
         public string LastName { get; set; }
 
         [NotMapped]
         public string FullName { get => $"{FirstName} {LastName}"; }
 
         [DataType(DataType.EmailAddress)]
-        [Required(ErrorMessage = "Please enter email!")]
+        [Required(ErrorMessage = "Please enter employee email!")]
         public string Email { get; set; }
 
         [Display(Name = "Office")]
@@ -55,18 +55,18 @@ namespace TimeKeeping.Models
         [Display(Name = "Salary policy")]
         public string SalaryPolicyId { get; set; }
 
-        [Display(Name = "Type personnel")]
+        [Display(Name = "Type employee")]
         public string TypePersonnelId { get; set; }
 
-        [Required(ErrorMessage = "Please enter title!")]
+        [Required(ErrorMessage = "Please enter something!")]
         public string Title { get; set; }
 
         [Display(Name = "Actual salary")]
-        [Required(ErrorMessage = "Please enter actual salary!")]
+        //[Required(ErrorMessage = "Please enter actual salary!")]
         public decimal ActualSalary { get; set; }
 
         [Display(Name = "Basic salary")]
-        [Required(ErrorMessage = "Please enter basic salary!")]
+        //[Required(ErrorMessage = "Please enter basic salary!")]
         public decimal BasicSalary { get; set; }
 
         [DataType(DataType.Date)]
@@ -80,11 +80,15 @@ namespace TimeKeeping.Models
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
         public DateTime DateOfBirth { get; set; }
+
+        [Required(ErrorMessage = "Please enter employee phone!")]
         public string Phone { get; set; }
+        
+        [Display(Name = "Gender")]
         public bool Sex { get; set; }
 
-        [Display(Name = "Personal address")]
-        [Required(ErrorMessage = "Please enter personnel address!")]
+        [Display(Name = "Address")]
+        [Required(ErrorMessage = "Please enter employee address!")]
         public string PersonnelAddress { get; set; }
         public bool? Active { get; set; }
 

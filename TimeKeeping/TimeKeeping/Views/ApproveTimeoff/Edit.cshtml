@@ -9,35 +9,40 @@
     string requireHandOver = "";
 
 }
-
+<style>
+    .btn{
+        width:100px;
+    }
+</style>
 <div class="container">
     <h1>Approve Timeoff Reqest</h1>
 
 
     <div>
-        @foreach (var item in status)
-        {
-            if (@item.TimeOffRequestStateId == Model.TimeOffRequestStateId)
-            {
-                stylebtn = "btn btn-primary";
-            }
-            else
-            {
-                stylebtn = "btn btn-outline-primary";
-            } 
-            @Html.ActionLink(@item.TimeOffRequestStateName, "UpdateStatus", "ApproveTimeoff",
-                new {
-                    id = @Model.TimeOffRequestId,
-                    status=@item.TimeOffRequestStateId
-                },
-                new{
-                    @class= stylebtn,
-                    style="width:200",
-                    onclick="return confirm('Are you sure?');"
-                }
-            ) 
-            <span> </span>
-        }
+        @foreach (var sta in status)
+                        {
+                            if (@sta.TimeOffRequestStateId == Model.TimeOffRequestStateId)
+                            {
+                                stylebtn = "btn btn-primary";
+                                <button class="btn btn-outline-secondary" type="button" disabled>@sta.TimeOffRequestStateName</button>
+                            }
+                            else
+                            {
+                                stylebtn = "btn btn-primary";
+                                @Html.ActionLink(@sta.TimeOffRequestStateName, "UpdateStatus", "ApproveTimeoff",
+                                    new {
+                                        id = Model.TimeOffRequestId,
+                                        status=@sta.TimeOffRequestStateId
+                                    },
+                                    new{
+                                        @class= stylebtn,
+                                        style="width:200",
+                                        onclick="return confirm('Are you sure?');"
+                                    }
+                                ) 
+                            }
+                            <span> </span>
+                        }
     
         <hr />
         <dl class="row">
@@ -97,7 +102,20 @@
                 Attachment
             </dt>
             <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Attachment)
+                @if(Model.Attachment == null)
+                {
+                    @Html.DisplayFor(model => model.Attachment)
+                }else{
+                    @Html.ActionLink(Model.Attachment, "Download", "ApproveTimeoff",
+                        new {
+                            attachment = Model.Attachment,
+                        },
+                        new{
+                            style="width:200",
+                            onclick="return confirm('Are you sure?');"
+                        }
+                    )
+                }
             </dd>
             <dt class = "col-sm-2">
                 Status
@@ -105,16 +123,10 @@
             <dd class = "col-sm-10">
                 @ViewBag.status
             </dd>
-            <dt class = "col-sm-2">
-                Feedback
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Attachment)
-            </dd>
         </dl>
     </div>
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary">Back</a>
     </div>
 </div>
 

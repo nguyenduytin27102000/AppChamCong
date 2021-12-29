@@ -1,119 +1,150 @@
 ﻿@model IEnumerable<TimeKeeping.Models.WorkSchedule>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
+	int count = 0;
+	foreach (var item in Model)
+	{
+		if (item.Active == true)
+		{
+			count++;
+		}
+	}
 }
 
-<h4 class="text-center">List of work schedule</h4>
+<link href="~/css/button-style.css" rel="stylesheet" />
+
+<h4 class="text-center">Work schedule list</h4>
 
 <p>
-	<a asp-action="Create" class="btn btn-primary">Create new work schedule</a>
+	<a asp-action="Create" class="btn btn-primary">Create</a>
 </p>
-<table class="table ">
-    <thead class="thead-light">
+
+@{
+	if (count == 0 || count == 1)
+	{
+		<h5>@count work schedule</h5>
+	}
+	else
+	{
+		<h5>@count work schedules</h5>
+	}
+}
+
+<table class="table table-bordered table-hover">
+	<thead class="thead-light">
 		<tr>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.WorkScheduleName)
 			</th>
 			@*<th>
-				@Html.DisplayNameFor(model => model.RequireCheckout)
-			</th>*@
+					@Html.DisplayNameFor(model => model.RequireCheckout)
+				</th>*@
 			@*<th>
-				@Html.DisplayNameFor(model => model.WorkingHoursPerDay)
-			</th>*@
+					@Html.DisplayNameFor(model => model.WorkingHoursPerDay)
+				</th>*@
 			@*<th>
-				@Html.DisplayNameFor(model => model.MinutesLate)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.MinutesEarly)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.States)
-			</th>*@
-			<th>
+					@Html.DisplayNameFor(model => model.MinutesLate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.MinutesEarly)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.States)
+				</th>*@
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.TypeWorkScheduleId)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.StartDate)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.EndDate)
 			</th>
-			<th>
+			<th class="align-middle">
 				@Html.DisplayNameFor(model => model.Active)
 			</th>
-			<th></th>
+			<th colspan="2" class="text-center">
+				Action
+			</th>
 		</tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model)
-{
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.WorkScheduleName)
-			</td>
-			@*<td>
-				@Html.DisplayFor(modelItem => item.RequireCheckout)
-			</td>*@
-			@*<td>
-				@Html.DisplayFor(modelItem => item.WorkingHoursPerDay)
-			</td>*@
-			@*<td>
-				@Html.DisplayFor(modelItem => item.MinutesLate)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.MinutesEarly)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.States)
-			</td>*@
-			<td>
-				@Html.DisplayFor(modelItem => item.TypeWorkSchedule.TypeWorkScheduleName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.StartDate)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.EndDate)
-				@{
-					string displayEndDate = "";
-					if (item.EndDate == null)
-					{
-						displayEndDate = "forever";
-					}
-				}
-				@displayEndDate
-			</td>
-			<td>
-				@{
-					string deleteSate = "";
-					if (item.Active == true)
-					{
-						deleteSate = "Using";
-					}
-					else
-					{
-						deleteSate = "Don't use";
-					}
-				}
-				@deleteSate
-			<td>
-				<a asp-action="Edit" asp-route-id="@item.WorkScheduleId" class="btn btn-warning">Edit</a>
-				<a asp-action="Details" asp-route-id="@item.WorkScheduleId" class="btn btn-info">Details</a>
-				@{
-					if (item.Active == true)
-					{
-						<a class="btn btn-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.WorkScheduleId">Delete</a>
-					}
-					else
-					{
-						<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.WorkScheduleId">Restore</a>
-					}
-				}
-			</td>
-		</tr>
-}
-    </tbody>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			if (item.Active == true)
+			{
+				<tr>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.WorkScheduleName)
+					</td>
+					@*<td>
+							@Html.DisplayFor(modelItem => item.RequireCheckout)
+						</td>*@
+					@*<td>
+							@Html.DisplayFor(modelItem => item.WorkingHoursPerDay)
+						</td>*@
+					@*<td>
+							@Html.DisplayFor(modelItem => item.MinutesLate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.MinutesEarly)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.States)
+						</td>*@
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.TypeWorkSchedule.TypeWorkScheduleName)
+					</td>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.StartDate)
+					</td>
+					<td class="align-middle">
+						@Html.DisplayFor(modelItem => item.EndDate)
+						@{
+							string displayEndDate = "";
+							if (item.EndDate == null)
+							{
+								displayEndDate = "forever";
+							}
+						}
+						@displayEndDate
+					</td>
+					<td class="align-middle">
+						@{
+							string deleteSate = "";
+							if (item.Active == true)
+							{
+								deleteSate = "Active";
+							}
+							else
+							{
+								deleteSate = "Inactive";
+							}
+						}
+						@deleteSate
+						@*<td class="align-middle">
+								<a asp-action="Edit" asp-route-id="@item.WorkScheduleId" class="btn btn-info">Edit</a>
+							</td>*@
+					<td class="align-middle">
+						<a asp-action="Details" asp-route-id="@item.WorkScheduleId" class="btn btn-info">Details</a>
+					</td>
+					<td class="align-middle">
+						@{
+							if (item.Active == true)
+							{
+								<a class="btn btn-outline-danger" onclick="deleteAlert()" asp-action="Delete" asp-route-id="@item.WorkScheduleId">Delete</a>
+							}
+							else
+							{
+								<a class="btn btn-success" onclick="restoreAlert()" asp-action="Restore" asp-route-id="@item.WorkScheduleId">Restore</a>
+							}
+						}
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
 </table>
 
 <script>
