@@ -17,7 +17,7 @@ namespace TimeKeeping.ViewModels
         [Display(Name = "Work schedule name")]
         public string WorkScheduleName { get; set; }
 
-        [Display(Name = "Type work schedule")]
+        [Display(Name = "Work schedule type")]
         public string TypeWorkScheduleId { get; set; }
 
         [Display(Name = "Require checkout")]

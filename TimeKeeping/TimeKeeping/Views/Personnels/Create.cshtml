@@ -25,7 +25,7 @@
 							<label asp-for="FirstName" class="control-label"></label>
 						</div>
 						<div class="col-9">
-							<input asp-for="FirstName" class="form-control" rules="required" />
+							<input asp-for="FirstName" class="form-control" rules="required|onlyAlphabet" />
 							<small class="text-muted">Please enter unsigned</small>
 							<span asp-validation-for="FirstName" class="text-danger form-message"></span>
 						</div>
@@ -38,7 +38,7 @@
 							<label asp-for="LastName" class="control-label"></label>
 						</div>
 						<div class="col-9">
-							<input asp-for="LastName" class="form-control" rules="required" />
+							<input asp-for="LastName" class="form-control" rules="required|onlyAlphabet" />
 							<small class="text-muted">Please enter unsigned</small>
 							<span asp-validation-for="LastName" class="text-danger form-message"></span>
 						</div>

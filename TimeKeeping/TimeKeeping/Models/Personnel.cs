@@ -22,15 +22,15 @@ namespace TimeKeeping.Models
         public string PersonnelId { get; set; }
 
         [Display(Name = "First name")]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
-            ErrorMessage = "Only enter letters!")]
-        [Required(ErrorMessage = "Please enter first name!")]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
+        //    ErrorMessage = "Only enter letters!")]
+        //[Required(ErrorMessage = "Please enter first name!")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last name")]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
-            ErrorMessage = "Characters are not allowed.")]
-        [Required(ErrorMessage = "Please enter last name!")]
+        //[RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
+        //    ErrorMessage = "Characters are not allowed.")]
+        //[Required(ErrorMessage = "Please enter last name!")]
         public string LastName { get; set; }
 
         [NotMapped]

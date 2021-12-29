@@ -205,6 +205,13 @@ namespace TimeKeeping.Controllers
                 await _context.SaveChangesAsync();
                 ViewBag.Message = "You have successfully create a work schedule";
                 ViewBag.Status = "success";
+
+                ViewData["OfficeId"] = new SelectList(_context.Offices, "OfficeId", "OfficeName", personnel.OfficeId);
+                ViewData["PositionId"] = new SelectList(_context.Positions, "PositionId", "PositionName", personnel.PositionId);
+                ViewData["SalaryPolicyId"] = new SelectList(_context.SalaryPolicies, "SalaryPolicyId", "SalaryPolicyName", personnel.SalaryPolicyId);
+                ViewData["TypePersonnelId"] = new SelectList(_context.TypePersonnel, "TypePersonnelId", "TypePersonnelName", personnel.TypePersonnelId);
+                ViewData["WorkScheduleId"] = new SelectList(_context.WorkSchedules, "WorkScheduleId", "WorkScheduleName", personnel.WorkScheduleId);
+                ViewData["WorkingAreaId"] = new SelectList(_context.WorkingAreas, "WorkingAreaId", "WorkingAreaName", personnel.WorkingAreaId);
                 return View(personnel);
             }
 
