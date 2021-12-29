@@ -4,35 +4,13 @@
     ViewData["Title"] = "Index";
 
 }
+<link rel="stylesheet" type="text/css" href="~/css/CheckinIndex.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<style>
-    #tsTime {
-        color: red;
-        font-size: large;
-    }
 
-    #quickSearch {
-        padding-left: 40px;
-    }
 
-    i.icon {
-        position: absolute;
-        padding: 5px;
-    }
 
-    #table {
-        background-color: #caf4ed;
-    }
-
-    #dayofweek {
-        font-size: 26px;
-        color: blue;
-        text-shadow: 2px 2px 4px #000000;
-    }
-</style>
-
+<img id="logo" src="~/icon/Logo.png" alt="Infodation">
 <h1 class="text-center">Person Timesheet</h1>
-
 <div class="form-group">
     <i class="fas fa-search icon" style="font-size:26px; "></i>
     <!--This is for "not found"" when model.count = 0, it mean not any data. Different if else is onkeyup="quickSearch()" -->
@@ -46,44 +24,8 @@
             <input type="text" id="quickSearch" onkeyup="quickSearch()" placeholder="Search for date.." title="Type in a date" class="form-control  mr-2">
         }
     }
-    <label for="month" class="mr-2 text-bolb" form="timeform"><strong>Month: </strong></label>
-    <select id="month" name="month" class="form-control mr-2" form="timeform">
-        @{
-            for (int i = 1; i <= 12; i++)
-            {
-                if (i == ViewBag.Month)
-                {
-                    <option selected>@i</option>
-                }
-                <option>@i</option>
-            }
-        }
-    </select>
-    <label for="year" class="mr-2" form="timeform"> <strong>Year: </strong></label>
-    <select id="year" name="year" class="form-control mr-2" form="timeform">
-        <!--Year range between 1990 2025.-->
-        @{
-
-            for (int i = 1990; i <= 2025; i++)
-            {
-                if (i == ViewBag.Year)
-                {
-                    <option selected>@i</option>
-                }
-                <option>@i</option>
-            }
-        }
-    </select>
 </div>
-<form asp-action="Index" asp-controller="Checkins" method="GET" class="form-inline" id="timeform">
 
-    <div class="form-group">
-        <input type="text" id="id" name="id" value="@ViewBag.Id" class="form-control" hidden>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Go" class="btn btn-primary" />
-    </div>
-</form>
 <!--<p id="tsTime">Timesheet of @ViewBag.Month-@ViewBag.Year</p>-->
 <table class="table  table-striped table-bordered" id="table">
     <thead>
@@ -155,13 +97,13 @@
                     if (minutesLate > @item.MinutesLate)
                     {
 
-                        <td>You late: @minutesLate</td>
+                        <td>@minutesLate<i class="fas fa-clock"></i></td>
                         if (@item.DayOff != true)
                             totalMinuteLates = totalMinuteLates + minutesLate;
                     }
                     else
                     {
-                        <td>You not late</td>
+                        <td>0<i class="fas fa-check"></i></td>
                     }
                 }
 
@@ -174,14 +116,17 @@
                 </td>
 
                 <td>
-                    <a class="btn btn-primary" asp-controller="FeedbackCheckin" asp-action="Feedback" asp-route-id="@item.CheckinId">Feedback</a>
+                    <a class="btn bt"  asp-controller="FeedbackCheckin" asp-action="Feedback" asp-route-id="@item.CheckinId">Feedback</a>
                 </td>
             </tr>
             if (@item.DayOff != true)
                 count = count + 1;
         }
         <tr>
-            <h2>Your total shifts: <span style="color:red;">@count </span> . Your total minutes late: <span style="color:red;"> @totalMinuteLates </span> </h2>
+            <ul class="total">
+                <li> Total shifts: <span id="totalShifts">@count </span> </li>
+                <li> Total minutes late: <span id="totalMinutes"> @totalMinuteLates </span> </li>
+            </ul>
         </tr>
     </tbody>
 </table>
@@ -211,8 +156,27 @@
       } else {
            tr[1].style.display = "";
       }
-
+      minuteTotal();
     }
 
+
+    function minuteTotal() {
+      var totalMinutes,totalShifts,td,tr,table;
+      totalMinutes=0;
+      totalShifts=0;
+      table = document.getElementById("table");
+      tr = table.getElementsByTagName("tr");
+      for (i = 2; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[3];
+        if(tr[i].style.display!="none"){
+            if (td) {
+                totalMinutes=totalMinutes + parseFloat(td.innerHTML);
+                totalShifts = totalShifts + 1;
+            }
+        }
+      }
+      document.getElementById("totalMinutes").innerHTML = totalMinutes;
+      document.getElementById("totalShifts").innerHTML = totalShifts;
+    }
 
 </script>

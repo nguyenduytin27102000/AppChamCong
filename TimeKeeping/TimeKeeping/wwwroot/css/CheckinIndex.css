@@ -1,0 +1,59 @@
+#tsTime {
+    color: red;
+    font-size: large;
+}
+
+#quickSearch {
+    padding-left: 40px;
+}
+
+i.icon {
+    position: absolute;
+    padding: 5px;
+}
+
+#table {
+    background-color: #A9F2ED;
+    text-align:center;
+}
+
+#dayofweek {
+    font-size: 26px;
+    color: #F74474;
+    text-shadow: 3px 3px 5px #000000;
+}
+
+thead, h1 {
+    color: #F74474;
+}
+
+body {
+    background-image: url("../icon/bg.png");
+}
+
+#logo {
+    border-radius: 50%;
+}
+
+#totalMinutes, #totalShifts {
+    color: #F74474;
+    font-weight: bold;
+}
+
+ul.total li {
+    float: left;
+    padding-right: 50px;
+    list-style-image: url("../icon/bullet.png");
+    border-radius: 50%;
+    font-size: 30px;
+
+}
+.bt {
+    background-color: #F74474;
+    color: #A9F2ED;
+}
+.fa-clock, .fa-check {
+    color: #F74474;
+    float: right;
+    font-size: 20px;
+}

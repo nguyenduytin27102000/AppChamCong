@@ -23,19 +23,12 @@ namespace TimeKeeping.Controllers
         // view checkin (same meaning Timesheet)
         // this is view checkin for a employee. id is a employee id. and month-year to view.
         // but it hasn't checked Author yet. I mean Identity user and role. We will to add user if possiable 
-        public async Task<IActionResult> Index(string id, int month, int year)
+        public async Task<IActionResult> Index(string id)
         {
             if (id == null)
             {
                 return NotFound();
-            }
-            // by default month and year is datetime now
-            if (month == 0)
-                month = DateTime.Now.Month;
-            if (year == 0)
-                year = DateTime.Now.Year;
-            ViewBag.Month = month;
-            ViewBag.Year = year;
+            }         
             ViewBag.Id = id;
             var timeKeepingDBContext = _context.Checkins.Include(c => c.Personnel);
             var per = (from c in _context.Checkins
@@ -43,7 +36,8 @@ namespace TimeKeeping.Controllers
                        join w in _context.WorkSchedules on p.WorkScheduleId equals w.WorkScheduleId
                        join s in _context.Shifts on w.WorkScheduleId equals s.WorkScheduleId
                        // 6 is 6:00 AM. It is used to determine Morning or Evening 6:00 AM is a milestone
-                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <= 5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5)) && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year && c.Active == true)
+                       where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <= 5) || (s.StartTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5)) && (c.PersonnelId == id && c.Active == true)
+                      // where ((s.StartTime.Hour - 6 <= 5 && c.Time.Hour - 6 <= 5) || (s.EndTime.Hour - 6 > 5 && c.Time.Hour - 6 > 5)) && (c.PersonnelId == id && c.Time.Month == month && c.Time.Year == year && c.Active == true)
 
                        select new CheckinWithView
                        {
