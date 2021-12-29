@@ -107,7 +107,7 @@
 			<th>
 				<a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveParm"]">@Html.DisplayNameFor(model => model.Active)</a>
 			</th>
-			<th colspan="3" class="text-center align-middle">
+			<th colspan="2" class="text-center align-middle">
 				Action
 			</th>
 		</tr>
@@ -183,9 +183,9 @@
 					@{
 						if (item.Active == true)
 						{
-							<td>
+							@*<td>
 								<a class="btn btn-info" asp-action="Edit" asp-route-id="@item.PersonnelId">Edit</a>
-							</td>
+							</td>*@
 							<td>
 								<a class="btn btn-info" asp-action="Details" asp-route-id="@item.PersonnelId">Details</a>
 							</td>

@@ -37,11 +37,19 @@
             return function (value) {
                 const previous = document.querySelector(selector);
                 const label = getParentElement(previous, groupSelector).querySelector('label').innerText;
-                return previous.value >= value ? undefined : `Must less than ${label}`;
+                
+                console.log(previous.value);
+                console.log(value)
+
+
+                return parseInt(previous.value) >= parseInt(value) ? undefined : `Must less than ${label}`;
             }
         },
         onlyAlphabet: function (value) {
-            return value.search(/[^a-zA-Z]+/) === -1 ? undefined : "Only allow alphabet!";
+            return value.match(/[^a-zA-Z]+/) ? undefined : "Only allow alphabet!";
+        },
+        onlyCharacter: function (value) {
+            return value.match(/^([a-zA-Z]+\s)*[a-zA-Z]+$/) ? undefined : "Only allow character!";
         },
         phoneNumber: function (value) {
             return value.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) ? undefined : "Only allow for phone number!";
