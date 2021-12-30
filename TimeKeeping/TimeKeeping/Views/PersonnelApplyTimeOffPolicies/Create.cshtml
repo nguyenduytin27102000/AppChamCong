@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Create";
 }
+<link rel="stylesheet" type="text/css" href="~/css/PersonnelApplyTimeOffPolicieIndex.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-<h1>Apply Timeoff policy for employee</h1>
+<img id="logo" src="~/icon/Logo.png" alt="Infodation">
+<h1 class="text-center">Apply Timeoff Policy</h1>
 <hr />
 <div class="row">
     <div class="col-md">
@@ -17,13 +20,20 @@
                </div>
                -->
             <div class="form-group">
-                <label asp-for="Personnel.LastName" class="control-label"></label>
+                <label asp-for="Personnel.LastName" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <select name="LastName" class="form-control">
                     @{
-
+                       
+                        var count = 0;
                         foreach (var p in ViewBag.LastName)
                         {
+                            count = count + 1;
                             <option>@p.PersonnelId-@p.LastName</option>
+                        }
+                         if(count==0)
+                        {
+                            <option>No one</option>
                         }
                     }
                 </select>
@@ -34,8 +44,9 @@
                             <select asp-for="TimeOffPolicyId" class="form-control" asp-items="ViewBag.TimeOffPolicyId"></select>
                         </div>
             -->
-            <div class="form-group"> <!--the format like this: 001-Tuan -->
-                <label asp-for="TimeOffPolicy.TimeOffPolicyName" class="control-label"></label>
+            <div class="form-group"> <!--the format like this: PS001-Tuan -->
+                <label asp-for="TimeOffPolicy.TimeOffPolicyName" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <select name="TimeOffPolicyName" class="form-control">
                     @{
 
@@ -48,45 +59,58 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="EffectiveDate" class="control-label"></label>
+                <label asp-for="EffectiveDate" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <input asp-for="EffectiveDate" class="form-control" />
                 <span asp-validation-for="EffectiveDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfDaysOffLastYear" class="control-label"></label>
+                <label asp-for="NumberOfDaysOffLastYear" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <input asp-for="NumberOfDaysOffLastYear" class="form-control" />
                 <span asp-validation-for="NumberOfDaysOffLastYear" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfDaysOffStandard" class="control-label"></label>
+                <label asp-for="NumberOfDaysOffStandard" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <input asp-for="NumberOfDaysOffStandard" class="form-control" />
                 <span asp-validation-for="NumberOfDaysOffStandard" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfDaysOffSeniority" class="control-label"></label>
+                <label asp-for="NumberOfDaysOffSeniority" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <input asp-for="NumberOfDaysOffSeniority" class="form-control" />
                 <span asp-validation-for="NumberOfDaysOffSeniority" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfDaysOffOffset" class="control-label"></label>
+                <label asp-for="NumberOfDaysOffOffset" class="control-label" style="color: #F74474;"></label>
+                <img src="~/icon/bullet.png" alt="bullet" class="bullet">
                 <input asp-for="NumberOfDaysOffOffset" class="form-control" />
                 <span asp-validation-for="NumberOfDaysOffOffset" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Note" class="control-label"></label>
-                <input asp-for="Note" class="form-control" />
+                <label asp-for="Note" class="control-label" style="color: #F74474;"></label>
+                <textarea asp-for="Note" class="form-control" rows="5"> </textarea>
                 <span asp-validation-for="Note" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                @{
+                    if(count!=0)
+                    {
+                        <input type="submit" value="Submit" class="btn bt" />
+                    }
+                    else
+                    {
+                        <input type="submit" value="Submit" class="btn bt"  disabled/>
+                    }
+
+                }
+                 <a asp-action="Index" >Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{

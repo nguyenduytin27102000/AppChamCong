@@ -18,9 +18,9 @@ namespace TimeKeeping.Controllers
         }
         // this function update day off for employee on 01/01 every year. but it is not  update automatically.
         // When action index is call. this function is called. we need it update automatically by another way
-        public async Task UpdateDayPolicy()
+        public async Task<IActionResult> UpdateDayPolicy()
         {
-            if (DateTime.Now.Day == 1 && DateTime.Now.Month == 1)
+            if (DateTime.Now.Day == 30 && DateTime.Now.Month == 12)
             {
                 var timeKeepingDBContext = _context.PersonnelApplyTimeOffPolicies.Include(p => p.Personnel).Include(p => p.TimeOffPolicy);
                 var listPersonnels = await timeKeepingDBContext.ToListAsync();
@@ -44,13 +44,14 @@ namespace TimeKeeping.Controllers
                     }
                 }
             }
+            return RedirectToAction(nameof(Index));
         }
         // GET: PersonnelApplyTimeOffPolicies
-       //View Employee's days off. 
+        //View Employee's days off. 
         public async Task<IActionResult> Index()
         {
-            await UpdateDayPolicy();
-            var timeKeepingDBContext = _context.PersonnelApplyTimeOffPolicies.Where(p => p.Active==true).Include(p => p.Personnel).Include(p => p.TimeOffPolicy);
+            
+            var timeKeepingDBContext = _context.PersonnelApplyTimeOffPolicies.Where(p => p.Active == true).Include(p => p.Personnel).Include(p => p.TimeOffPolicy);
             return View(await timeKeepingDBContext.ToListAsync());
         }
 
@@ -79,8 +80,8 @@ namespace TimeKeeping.Controllers
         // This function apply Timeoff policy for emloyee
         public IActionResult Create()
         {
-           // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId");
-            ViewData["LastName"] = _context.Personnel.ToList();
+            // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId");
+            ViewData["LastName"] = _context.Personnel.Where(p1 => !_context.PersonnelApplyTimeOffPolicies.Any(p2 => (p2.PersonnelId == p1.PersonnelId)&&(p2.Active==true) ) ).ToList();
             // ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId");
             ViewData["TimeOffPolicyName"] = _context.TimeOffPolicies.ToList();
             return View();
@@ -94,7 +95,7 @@ namespace TimeKeeping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Active")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy, string LastName, string TimeOffPolicyName)
         {
-            if(TimeOffPolicyName == null && LastName == null)
+            if (TimeOffPolicyName == null && LastName == null)
             {
                 return NotFound();
             }
@@ -111,9 +112,9 @@ namespace TimeKeeping.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId", personnelApplyTimeOffPolicy.PersonnelId);
+            // ViewData["PersonnelId"] = new SelectList(_context.Personnel, "PersonnelId", "PersonnelId", personnelApplyTimeOffPolicy.PersonnelId);
             ViewData["LastName"] = _context.Personnel.ToList();
-           // ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId", personnelApplyTimeOffPolicy.TimeOffPolicyId);
+            // ViewData["TimeOffPolicyId"] = new SelectList(_context.TimeOffPolicies, "TimeOffPolicyId", "TimeOffPolicyId", personnelApplyTimeOffPolicy.TimeOffPolicyId);
             ViewData["TimeOffPolicyName"] = _context.TimeOffPolicies.ToList();
             return View(personnelApplyTimeOffPolicy);
         }
@@ -143,7 +144,7 @@ namespace TimeKeeping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( [Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Active")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
+        public async Task<IActionResult> Edit([Bind("PersonnelId,TimeOffPolicyId,EffectiveDate,NumberOfDaysOffLastYear,NumberOfDaysOffStandard,NumberOfDaysOffSeniority,NumberOfDaysOffOffset,Note,Active")] PersonnelApplyTimeOffPolicy personnelApplyTimeOffPolicy)
         {
             /*if (personnalId != personnelApplyTimeOffPolicy.PersonnelId || policyId != personnelApplyTimeOffPolicy.TimeOffPolicyId)
             {
@@ -197,18 +198,18 @@ namespace TimeKeeping.Controllers
 
         // POST: PersonnelApplyTimeOffPolicies/Delete/5
         [HttpPost, ActionName("Delete")]
-       
+
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string PersonnelId, string TimeOffPolicyId)
         {
             if (PersonnelId == null || TimeOffPolicyId == null)
             {
-              //  return NotFound();
+                //  return NotFound();
                 return RedirectToAction(nameof(Index));
-            }    
+            }
             var personnelApplyTimeOffPolicy = await _context.PersonnelApplyTimeOffPolicies.FindAsync(PersonnelId, TimeOffPolicyId);
-            personnelApplyTimeOffPolicy.Active = false; // why i need this ?? because Active is not default in database. so for sure. i insert it
-            _context.PersonnelApplyTimeOffPolicies.Update(personnelApplyTimeOffPolicy);
+           // personnelApplyTimeOffPolicy.Active = false; // why i need this ?? because Active is not default in database. so for sure. i insert it
+            _context.PersonnelApplyTimeOffPolicies.Remove(personnelApplyTimeOffPolicy);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
