@@ -1,4 +1,5 @@
-
+DROP DATABASE IF EXISTS TimeKeepingDB;
+GO
 CREATE DATABASE TimeKeepingDB
 GO
 USE TimeKeepingDB
